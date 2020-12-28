@@ -110,7 +110,8 @@ public class ButtonPanel extends javax.swing.JPanel {
 
 				LinkedList<String> archivos = new LinkedList<String>();
 
-				archivos = Metodos.directorio(fc.getSelectedFile().toString() + "/", ".", true, true, false);
+				archivos = Metodos.directorio(fc.getSelectedFile().toString() + Animator.getSeparador(), ".", true,
+						true, false);
 
 				for (int i = 0; i < archivos.size(); i++) {
 
@@ -148,7 +149,7 @@ public class ButtonPanel extends javax.swing.JPanel {
 			}
 
 			catch (Exception ex) {
-				
+
 			}
 
 		}

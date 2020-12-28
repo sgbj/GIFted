@@ -14,11 +14,21 @@ import javax.swing.JScrollPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import utils.Metodos;
+
 public class Animator {
 
 	static Animator animator;
 
 	static GifFrameList lista;
+
+	static String os = System.getProperty("os.name");
+
+	static String separador = Metodos.saberSeparador(os);
+
+	public static String getSeparador() {
+		return separador;
+	}
 
 	private static GifFramePanel panel;
 

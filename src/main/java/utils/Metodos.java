@@ -5,6 +5,14 @@ import java.util.LinkedList;
 
 public class Metodos {
 
+	public static String saberSeparador(String os) {
+		if (os.equals("Linux")) {
+			return "/";
+		} else {
+			return "\\";
+		}
+	}
+
 	public static String eliminarEspacios(String cadena) {
 
 		cadena = cadena.trim();
