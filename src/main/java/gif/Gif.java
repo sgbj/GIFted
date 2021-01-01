@@ -18,9 +18,6 @@ import javax.imageio.stream.ImageOutputStream;
 
 public final class Gif {
 
-	private Gif() {
-	}
-
 	public static void write(List<GifFrame> frames, boolean loopContinuously, File file)
 			throws IIOInvalidTreeException, IOException {
 
@@ -72,27 +69,37 @@ public final class Gif {
 		writer.endWriteSequence();
 
 		writer.reset();
+
 		out.close();
+
 	}
 
 	public static List<GifFrame> read(File file) throws IOException {
+
 		ImageReader reader = ImageIO.getImageReadersByFormatName("gif").next();
+
 		reader.setInput(ImageIO.createImageInputStream(file));
 
 		int numImages = reader.getNumImages(true);
 
 		List<GifFrame> frames = new ArrayList<GifFrame>();
 
-		for (int i = 0; i < numImages; i++) {
+		for (int i = 0; i < --numImages; i++) {
+
 			BufferedImage image = reader.read(i);
 
 			IIOMetadata metadata = reader.getImageMetadata(i);
+
 			String fmt = metadata.getNativeMetadataFormatName();
+
 			IIOMetadataNode root = (IIOMetadataNode) metadata.getAsTree(fmt);
 
 			IIOMetadataNode gce = getNode(root, "GraphicControlExtension");
+
 			String delayTime = gce.getAttribute("delayTime");
+
 			long delay = 500;
+
 			if (!delayTime.isEmpty()) {
 				delay = Long.parseLong(delayTime);
 			}
@@ -104,14 +111,22 @@ public final class Gif {
 	}
 
 	private static IIOMetadataNode getNode(IIOMetadataNode rootNode, String nodeName) {
+
 		int nNodes = rootNode.getLength();
+
 		for (int i = 0; i < nNodes; i++) {
+
 			if (rootNode.item(i).getNodeName().compareToIgnoreCase(nodeName) == 0) {
 				return ((IIOMetadataNode) rootNode.item(i));
 			}
 		}
+
 		IIOMetadataNode node = new IIOMetadataNode(nodeName);
+
 		rootNode.appendChild(node);
+
 		return (node);
+
 	}
+
 }

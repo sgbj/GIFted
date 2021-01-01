@@ -122,7 +122,7 @@ public class Animator {
 		return new GifFrame(image, delay);
 	}
 
-	public static void main(String[] args) {
+	public static void iniciar() {
 
 		try {
 
@@ -135,6 +135,12 @@ public class Animator {
 		catch (Exception ex) {
 
 		}
+
+	}
+
+	public static void main(String[] args) {
+
+		iniciar();
 
 	}
 

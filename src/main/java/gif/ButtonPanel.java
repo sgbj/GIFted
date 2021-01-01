@@ -90,7 +90,7 @@ public class ButtonPanel extends javax.swing.JPanel {
 
 			fc.setCurrentDirectory(new java.io.File("."));
 
-			fc.setDialogTitle("choosertitle");
+			fc.setDialogTitle("Elige una carpeta");
 
 			fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 
@@ -103,7 +103,15 @@ public class ButtonPanel extends javax.swing.JPanel {
 		if (o == JFileChooser.APPROVE_OPTION) {
 
 			if (!carpeta) {
-				files.add(fc.getSelectedFile());
+
+				String archivo = fc.getSelectedFile().toString();
+
+				String extension = Metodos.extraerExtension(archivo);
+
+				if (extension.equals("jpg") || extension.equals("png") || extension.equals("gif")) {
+					files.add(new File(archivo));
+				}
+
 			}
 
 			else {
@@ -132,6 +140,7 @@ public class ButtonPanel extends javax.swing.JPanel {
 						List<GifFrame> frames = Gif.read(files.get(i));
 
 						for (GifFrame frame : frames) {
+
 							animator.addGifFrame(frame);
 						}
 
@@ -156,7 +165,7 @@ public class ButtonPanel extends javax.swing.JPanel {
 
 	}
 
-	private void saveActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_saveActionPerformed
+	private void saveActionPerformed(java.awt.event.ActionEvent evt) {
 
 		JFileChooser fc = new JFileChooser();
 
