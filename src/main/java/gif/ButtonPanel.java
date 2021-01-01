@@ -20,6 +20,11 @@ import utils.Metodos;
 
 public class ButtonPanel extends javax.swing.JPanel {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	private Animator animator;
 
 	public ButtonPanel(Animator animator) {

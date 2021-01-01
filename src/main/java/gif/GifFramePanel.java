@@ -27,6 +27,8 @@ import javax.swing.SwingConstants;
 import utils.Metodos;
 
 public class GifFramePanel extends JPanel {
+
+	private static final long serialVersionUID = 1L;
 	private Animator animator;
 	static GifFrame frame;
 	public static JLabel image;

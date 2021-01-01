@@ -8,17 +8,15 @@ import javax.swing.JPanel;
 
 public class AnimationPanel extends JPanel {
 
-	private List<GifFrame> frames;
+	private static final long serialVersionUID = 1L;
 
-	private boolean loop;
+	private List<GifFrame> frames;
 
 	private int index;
 
 	public AnimationPanel(final List<GifFrame> frames, final boolean loop) {
 
 		this.frames = frames;
-
-		this.loop = loop;
 
 		new Thread(new Runnable() {
 

@@ -30,9 +30,10 @@ import javax.swing.TransferHandler;
 import javax.swing.UIManager;
 import javax.swing.plaf.basic.BasicListUI;
 
-public class GifFrameList extends JList {
+public class GifFrameList extends JList<Object> {
 
-	DefaultListModel m = (DefaultListModel) getModel();
+	private static final long serialVersionUID = 1L;
+	DefaultListModel<Object> m = (DefaultListModel<Object>) getModel();
 
 	public GifFrameList(Object[] listData) {
 		super(createDefaultListModel(listData));
@@ -57,23 +58,23 @@ public class GifFrameList extends JList {
 
 			@Override
 			public void keyReleased(KeyEvent e) {
-				
+
 				if (e.getKeyCode() == KeyEvent.VK_DELETE) {
-					
+
 					int[] indices = getSelectedIndices();
 
 					for (int i = indices.length - 1; i >= 0; i--) {
-						
+
 						m.remove(indices[i]);
-						
+
 					}
-					
+
 				}
-				
+
 			}
-			
+
 		});
-		
+
 	}
 
 	@Override
@@ -86,8 +87,8 @@ public class GifFrameList extends JList {
 		return d;
 	}
 
-	public static final DefaultListModel createDefaultListModel(Object[] listData) {
-		DefaultListModel m = new DefaultListModel();
+	public static final DefaultListModel<Object> createDefaultListModel(Object[] listData) {
+		DefaultListModel<Object> m = new DefaultListModel<Object>();
 		for (Object o : listData) {
 			m.addElement(o);
 		}
@@ -95,12 +96,12 @@ public class GifFrameList extends JList {
 	}
 
 	public void addGifFrame(GifFrame frame) {
-		DefaultListModel m = (DefaultListModel) getModel();
+
 		m.addElement(frame);
 	}
 
 	public List<GifFrame> getGifFrames() {
-		DefaultListModel m = (DefaultListModel) getModel();
+		DefaultListModel<?> m = (DefaultListModel<?>) getModel();
 		Object[] a = m.toArray();
 		List<GifFrame> frames = new ArrayList<GifFrame>();
 		for (Object o : a) {
@@ -111,6 +112,11 @@ public class GifFrameList extends JList {
 
 	private static class GifFrameTransferHandler extends TransferHandler {
 
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+
 		@Override
 		public int getSourceActions(JComponent c) {
 			return TransferHandler.COPY_OR_MOVE;
@@ -118,7 +124,8 @@ public class GifFrameList extends JList {
 
 		@Override
 		protected Transferable createTransferable(JComponent c) {
-			JList list = (JList) c;
+			JList<?> list = (JList<?>) c;
+			@SuppressWarnings("deprecation")
 			final Object[] values = list.getSelectedValues();
 			return new GifFrameSelection(values);
 		}
@@ -140,7 +147,8 @@ public class GifFrameList extends JList {
 			}
 
 			Transferable t = support.getTransferable();
-			JList list = (JList) support.getComponent();
+			@SuppressWarnings("unchecked")
+			JList<Object> list = (JList<Object>) support.getComponent();
 
 			int index = list.getUI().locationToIndex(list, support.getDropLocation().getDropPoint());
 			Rectangle rect = list.getCellBounds(index, index);
@@ -154,7 +162,7 @@ public class GifFrameList extends JList {
 					}
 				}
 			}
-			DefaultListModel m = (DefaultListModel) list.getModel();
+			DefaultListModel<Object> m = (DefaultListModel<Object>) list.getModel();
 
 			if (support.isDataFlavorSupported(GifFrameSelection.GIF_FRAME_FLAVOR)) {
 				Object[] data = null;
@@ -185,10 +193,10 @@ public class GifFrameList extends JList {
 					}
 				}
 			} else if (support.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
-				List data = null;
+				List<?> data = null;
 
 				try {
-					data = (List) t.getTransferData(DataFlavor.javaFileListFlavor);
+					data = (List<?>) t.getTransferData(DataFlavor.javaFileListFlavor);
 				} catch (Exception ex) {
 					JOptionPane.showMessageDialog(list, ex, "Exception", JOptionPane.ERROR_MESSAGE);
 					return false;
@@ -272,8 +280,12 @@ public class GifFrameList extends JList {
 		}
 	}
 
-	private static class GifFrameListCellRenderer extends JPanel implements ListCellRenderer {
+	private static class GifFrameListCellRenderer extends JPanel implements ListCellRenderer<Object> {
 
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
 		private BufferedImage normal = read(getClass().getResource("resource/normal.png"));
 		private BufferedImage pressed = read(getClass().getResource("resource/pressed.png"));
 		private GifFrame frame;
@@ -302,7 +314,7 @@ public class GifFrameList extends JList {
 			g.drawImage(selected ? pressed : normal, 10, 12, 58, 58, this);
 		}
 
-		public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected,
+		public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected,
 				boolean cellHasFocus) {
 
 			frame = (GifFrame) value;
