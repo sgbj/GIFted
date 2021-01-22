@@ -1,6 +1,7 @@
 package utils;
 
 import java.io.File;
+import java.util.Collections;
 import java.util.LinkedList;
 
 public class Metodos {
@@ -78,6 +79,16 @@ public class Metodos {
 		return cadena;
 	}
 
+	public static void renombrar(String ruta1, String ruta2) {
+
+		File f1 = new File(ruta1);
+
+		File f2 = new File(ruta2);
+
+		f1.renameTo(f2);
+
+	}
+
 	public static LinkedList<String> directorio(String ruta, String extension, boolean filtro, boolean carpeta,
 			boolean mover) {
 
@@ -109,9 +120,18 @@ public class Metodos {
 
 						if (folder.isFile()) {
 
-							if (extension.equals("webp") && extensionArchivo.equals("webp")
-									|| extension.equals("jpeg") && extensionArchivo.equals("jpeg")
-									|| extension.equals(".") || extension.equals(extensionArchivo)) {
+							if (fichero.length() > 5 && fichero.substring(0, fichero.length() - 5).contains(".")) {
+
+								renombrar(ruta + fichero, ruta + eliminarPuntos(fichero));
+
+							}
+
+							if ((extension.equals("images")
+									&& (extensionArchivo.equals("jpg") || extensionArchivo.equals("png")
+											|| extensionArchivo.equals("gif") || extensionArchivo.equals("jpeg")))
+									|| (extension.equals("webp") && extensionArchivo.equals("webp")
+											|| extension.equals("jpeg") && extensionArchivo.equals("jpeg")
+											|| extension.equals(".") || extension.equals(extensionArchivo))) {
 
 								if (carpeta) {
 									lista.add(ruta + fichero);
@@ -129,15 +149,13 @@ public class Metodos {
 
 					else {
 
-						if (folder.isDirectory()) {
+						if (carpeta) {
+							lista.add(ruta + fichero);
+						}
 
-							if (carpeta) {
-								lista.add(ruta + fichero);
-							}
+						else {
 
-							else {
-
-								fichero = fichero.trim();
+							if (folder.isDirectory()) {
 
 								if (!fichero.isEmpty()) {
 									lista.add(fichero);
@@ -157,6 +175,8 @@ public class Metodos {
 		catch (Exception e) {
 
 		}
+
+		Collections.sort(lista);
 
 		return lista;
 

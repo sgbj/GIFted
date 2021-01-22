@@ -20,9 +20,6 @@ import utils.Metodos;
 
 public class ButtonPanel extends javax.swing.JPanel {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	private Animator animator;
@@ -123,7 +120,7 @@ public class ButtonPanel extends javax.swing.JPanel {
 
 				LinkedList<String> archivos = new LinkedList<String>();
 
-				archivos = Metodos.directorio(fc.getSelectedFile().toString() + Animator.getSeparador(), ".", true,
+				archivos = Metodos.directorio(fc.getSelectedFile().toString() + Animator.getSeparador(), "images", true,
 						true, false);
 
 				for (int i = 0; i < archivos.size(); i++) {
