@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -19,6 +20,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JSeparator;
 import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import utils.Metodos;
 
@@ -47,6 +49,8 @@ public class ButtonPanel extends javax.swing.JPanel {
 	private JSeparator separator_2;
 
 	private boolean gif = false;
+
+	LinkedList<String> carpetasSeleccion = new LinkedList<String>();
 
 	public ButtonPanel(Animator animator) {
 
@@ -131,6 +135,12 @@ public class ButtonPanel extends javax.swing.JPanel {
 
 		LinkedList<File> files = new LinkedList<File>();
 
+		fc.setDialogTitle("Multiple selection");
+
+		fc.setMultiSelectionEnabled(true);
+
+		fc.addChoosableFileFilter(new FileNameExtensionFilter("Images", "jpg", "png", "gif"));
+
 		if (carpeta) {
 
 			fc.setCurrentDirectory(new java.io.File("."));
@@ -143,58 +153,80 @@ public class ButtonPanel extends javax.swing.JPanel {
 
 		}
 
+		fc.setAcceptAllFileFilterUsed(true);
+
 		int o = fc.showOpenDialog(getParent());
 
 		if (o == JFileChooser.APPROVE_OPTION) {
 
 			if (!carpeta) {
 
-				String archivo = fc.getSelectedFile().toString();
+				files.clear();
 
-				String extension = Metodos.extraerExtension(archivo);
+				File[] filesSeleccion = fc.getSelectedFiles();
 
-				if (extension.equals("jpg") || extension.equals("png") || extension.equals("gif")) {
+				Arrays.asList(filesSeleccion).forEach(x -> {
 
-					if (extension.equals("gif")) {
+					if (x.isFile()) {
 
-						archivoGif = archivo;
+						String extension = Metodos.extraerExtension(x.getAbsolutePath());
 
-						gif = true;
+						if (extension.equals("jpg") || extension.equals("png") || extension.equals("gif")) {
 
-					}
+							if (extension.equals("gif")) {
 
-					else {
+								archivoGif = x.getAbsolutePath();
 
-						if (!gif) {
-							archivos++;
+								gif = true;
+
+							}
+
+							else {
+
+								if (!gif) {
+									archivos++;
+								}
+
+							}
+
+							files.add(new File(x.getAbsolutePath()));
+
 						}
 
 					}
 
-					files.add(new File(archivo));
-
-				}
+				});
 
 			}
 
 			else {
 
-				LinkedList<String> archivos = new LinkedList<String>();
+				files.clear();
 
-				archivos = Metodos.directorio(fc.getSelectedFile().toString() + Animator.getSeparador(), "images", true,
-						true, false);
+				File[] carpetas = fc.getSelectedFiles();
 
-				for (int i = 0; i < archivos.size(); i++) {
+				Arrays.asList(carpetas).forEach(x -> {
 
-					files.add(new File(archivos.get(i)));
+					if (x.isDirectory()) {
 
-				}
+						this.carpetasSeleccion = Metodos.directorio(x.getAbsolutePath() + Animator.getSeparador(),
+								"images", true, true, false);
 
-				vueltas = files.size();
+						for (int i = 0; i < carpetasSeleccion.size(); i++) {
+
+							files.add(new File(carpetasSeleccion.get(i)));
+
+						}
+
+					}
+
+				});
 
 			}
 
 			try {
+
+				vueltas = files.size();
 
 				for (int i = 0; i < vueltas; i++) {
 
@@ -221,7 +253,7 @@ public class ButtonPanel extends javax.swing.JPanel {
 			}
 
 			catch (Exception ex) {
-
+				ex.printStackTrace();
 			}
 
 		}
