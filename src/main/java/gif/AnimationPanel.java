@@ -64,8 +64,13 @@ public class AnimationPanel extends JPanel {
 	}
 
 	@Override
+	
 	protected void paintComponent(Graphics g) {
+		
 		super.paintComponent(g);
+		
 		g.drawImage(frames.get(index).getImage(), 0, 0, this);
+		
 	}
+	
 }

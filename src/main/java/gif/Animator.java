@@ -3,6 +3,7 @@ package gif;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Toolkit;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.List;
@@ -32,9 +33,15 @@ public class Animator {
 
 	private static GifFramePanel panel;
 
+	public static String getOs() {
+		return os;
+	}
+
 	public Animator(GifFrame[] frames) {
 
 		final JFrame f = new JFrame("Gif Animator");
+
+		f.setIconImage(Toolkit.getDefaultToolkit().getImage(Animator.class.getResource("/images/ico.png")));
 
 		f.setResizable(false);
 
@@ -101,25 +108,30 @@ public class Animator {
 		lista.addGifFrame(frame);
 	}
 
-	public boolean loop() {
-		return panel.loop();
-	}
-
 	public List<GifFrame> getGifFrames() {
 		return lista.getGifFrames();
 	}
 
 	static GifFrame createDemoGifFrame(int w, int h, String str, int delay) {
+
 		BufferedImage image = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
+
 		Graphics2D g = image.createGraphics();
+
 		g.setColor(Color.WHITE);
+
 		g.fillRect(0, 0, w, h);
+
 		Rectangle2D bounds = g.getFontMetrics().getStringBounds(str, g);
+
 		g.setColor(Color.BLACK);
 
 		g.drawString(str, (int) ((w / 2) - (bounds.getWidth() / 2)), (int) ((h / 2) + (bounds.getHeight() / 2)));
+
 		g.dispose();
+
 		return new GifFrame(image, delay);
+
 	}
 
 	public static void iniciar() {

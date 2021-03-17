@@ -2,6 +2,7 @@
 package gif;
 
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
@@ -12,8 +13,11 @@ import java.util.List;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JSeparator;
 import javax.swing.filechooser.FileFilter;
 
 import utils.Metodos;
@@ -22,11 +26,31 @@ public class ButtonPanel extends javax.swing.JPanel {
 
 	private static final long serialVersionUID = 1L;
 
-	private Animator animator;
+	private static Animator animator;
+
+	private javax.swing.JButton open;
+
+	private javax.swing.JButton save;
+
+	private JSeparator separator;
+
+	private JSeparator separator_1;
+
+	public static JCheckBox loop;
+
+	public static String archivoGif;
+
+	public static int archivos;
+
+	private JLabel lblNewLabel;
+
+	private JSeparator separator_2;
+
+	private boolean gif = false;
 
 	public ButtonPanel(Animator animator) {
 
-		this.animator = animator;
+		ButtonPanel.animator = animator;
 
 		initComponents();
 
@@ -74,9 +98,28 @@ public class ButtonPanel extends javax.swing.JPanel {
 
 		});
 
+		separator = new JSeparator();
+		add(separator);
+
 		add(open_1);
 
+		separator_1 = new JSeparator();
+		add(separator_1);
+
 		add(save);
+
+		separator_2 = new JSeparator();
+		add(separator_2);
+
+		lblNewLabel = new JLabel("");
+		lblNewLabel.setIcon(new ImageIcon(ButtonPanel.class.getResource("/images/repeat.png")));
+		add(lblNewLabel);
+
+		loop = new JCheckBox();
+		loop.setText("Loop");
+		loop.setSelected(true);
+		loop.setFont(new Font("Tahoma", Font.PLAIN, 22));
+		add(loop);
 
 	}
 
@@ -111,7 +154,25 @@ public class ButtonPanel extends javax.swing.JPanel {
 				String extension = Metodos.extraerExtension(archivo);
 
 				if (extension.equals("jpg") || extension.equals("png") || extension.equals("gif")) {
+
+					if (extension.equals("gif")) {
+
+						archivoGif = archivo;
+
+						gif = true;
+
+					}
+
+					else {
+
+						if (!gif) {
+							archivos++;
+						}
+
+					}
+
 					files.add(new File(archivo));
+
 				}
 
 			}
@@ -169,45 +230,43 @@ public class ButtonPanel extends javax.swing.JPanel {
 
 	private void saveActionPerformed(java.awt.event.ActionEvent evt) {
 
-		JFileChooser fc = new JFileChooser();
+		if (animator.getGifFrames().size() > 1) {
 
-		fc.setSelectedFile(new File("*.gif"));
+			JFileChooser fc = new JFileChooser();
 
-		fc.setFileFilter(new FileFilter() {
+			fc.setSelectedFile(new File("*.gif"));
 
-			@Override
-			public boolean accept(File f) {
-				return f.getName().toLowerCase().endsWith(".gif");
-			}
+			fc.setFileFilter(new FileFilter() {
 
-			@Override
-			public String getDescription() {
-				return "GIF (*.gif)";
-			}
+				@Override
+				public boolean accept(File f) {
+					return f.getName().toLowerCase().endsWith(".gif");
+				}
 
-		});
+				@Override
+				public String getDescription() {
+					return "GIF (*.gif)";
+				}
 
-		int o = fc.showSaveDialog(getParent());
+			});
 
-		if (o == JFileChooser.APPROVE_OPTION) {
+			int o = fc.showSaveDialog(getParent());
 
-			File file = fc.getSelectedFile();
+			if (o == JFileChooser.APPROVE_OPTION) {
 
-			try {
-				Gif.write(animator.getGifFrames(), animator.loop(), file);
+				File file = fc.getSelectedFile();
 
-			}
+				try {
+					Gif.write(animator.getGifFrames(), loop.isSelected(), file);
 
-			catch (Exception ex) {
-				JOptionPane.showMessageDialog(this, ex, "Exception", JOptionPane.ERROR_MESSAGE);
+				}
+
+				catch (Exception ex) {
+					JOptionPane.showMessageDialog(this, ex, "Exception", JOptionPane.ERROR_MESSAGE);
+				}
+
 			}
 
 		}
-
 	}
-
-	private javax.swing.JButton open;
-
-	private javax.swing.JButton save;
-
 }
