@@ -4,4 +4,8 @@
   <artifactId>Easy_GIF_Animated_Creator</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <description>Easy GIF Animated Creator</description>
+  
+  <dependencies>
+
+  </dependencies>
 </project>

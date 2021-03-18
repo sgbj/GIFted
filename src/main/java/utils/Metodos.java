@@ -1,20 +1,58 @@
 package utils;
 
+import java.awt.Font;
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import java.util.Collections;
 import java.util.LinkedList;
 
+import javax.imageio.ImageIO;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
+import alertas.AlertError;
+import alertas.AlertInformation;
+import alertas.AlertSuccess;
+import alertas.AlertWarningSalir;
+import gif.Animator;
+
 public class Metodos {
 
-	public static String saberSeparador(String os) {
-		if (os.equals("Linux")) {
-			return "/";
-		} else {
-			return "\\";
+	public static void abrirCarpeta(String ruta) throws Exception {
+
+		if (Animator.getOs().contentEquals("Linux")) {
+
+			Runtime.getRuntime().exec("xdg-open " + ruta);
+
 		}
+
+		else {
+
+			Runtime.getRuntime().exec("cmd /c explorer " + "\"" + ruta + "\"");
+
+		}
+
 	}
 
-	public static String eliminarEspacios(String cadena) {
+	public static String saberSeparador(String os) {
+
+		if (os.equals("Linux")) {
+
+			return "/";
+
+		}
+
+		else {
+
+			return "\\";
+
+		}
+
+	}
+
+	public static String eliminarEspacios(String cadena, boolean filtro) {
 
 		cadena = cadena.trim();
 
@@ -22,7 +60,12 @@ public class Metodos {
 
 		cadena = cadena.trim();
 
+		if (filtro) {
+			cadena = cadena.replace(" ", "");
+		}
+
 		return cadena;
+
 	}
 
 	public static String extraerExtension(String nombreArchivo) {
@@ -69,10 +112,13 @@ public class Metodos {
 		String cadena2 = cadena;
 
 		try {
+
 			cadena2 = cadena.substring(0, cadena.length() - 4);
 
 			cadena = cadena2.replace(".", "_") + "." + extraerExtension(cadena);
-		} catch (Exception e) {
+		}
+
+		catch (Exception e) {
 
 		}
 
@@ -86,6 +132,137 @@ public class Metodos {
 		File f2 = new File(ruta2);
 
 		f1.renameTo(f2);
+
+	}
+
+	public static void mensaje(String mensaje, int titulo, boolean filtro) {
+
+		String tituloSuperior = "";
+
+		int tipo = 0;
+
+		switch (titulo) {
+
+		case 1:
+
+			if (filtro) {
+
+				AlertError error;
+
+				error = new AlertError(null, false);
+
+				error.setTitulo(mensaje);
+
+				error.setVisible(true);
+			}
+
+			else {
+
+				tipo = JOptionPane.ERROR_MESSAGE;
+
+				tituloSuperior = "Error";
+			}
+
+			break;
+
+		case 2:
+
+			if (filtro) {
+				AlertInformation informacion;
+
+				informacion = new AlertInformation(null, false);
+
+				informacion.setTitulo(mensaje);
+
+				informacion.setVisible(true);
+			}
+
+			else {
+				tipo = JOptionPane.INFORMATION_MESSAGE;
+				tituloSuperior = "Informacion";
+			}
+
+			break;
+
+		case 3:
+
+			if (filtro) {
+
+				AlertWarningSalir salir;
+
+				salir = new AlertWarningSalir(null, false);
+
+				salir.setTitulo(mensaje);
+
+				salir.setVisible(true);
+			}
+
+			else {
+				tipo = JOptionPane.WARNING_MESSAGE;
+				tituloSuperior = "Advertencia";
+			}
+
+			break;
+
+		case 4:
+
+			if (filtro) {
+				AlertSuccess exito;
+
+				exito = new AlertSuccess(null, false);
+
+				exito.setTitulo(mensaje);
+
+				exito.setVisible(true);
+			}
+
+			else {
+
+				tipo = JOptionPane.INFORMATION_MESSAGE;
+
+				tituloSuperior = "Informacion";
+
+			}
+
+			break;
+
+		default:
+			break;
+
+		}
+
+		if (!filtro) {
+
+			JLabel alerta = new JLabel(mensaje);
+
+			alerta.setFont(new Font("Arial", Font.BOLD, 18));
+
+			JOptionPane.showMessageDialog(null, alerta, tituloSuperior, tipo);
+
+		}
+
+	}
+
+	public static void resizeImage(String inputImagePath, String outputImagePath, int scaledWidth, int scaledHeight)
+			throws IOException {
+
+		// reads input image
+		File inputFile = new File(inputImagePath);
+		BufferedImage inputImage = ImageIO.read(inputFile);
+
+		// creates output image
+		BufferedImage outputImage = new BufferedImage(scaledWidth, scaledHeight, inputImage.getType());
+
+		// scales the input image to the output image
+		Graphics2D g2d = outputImage.createGraphics();
+		g2d.drawImage(inputImage, 0, 0, scaledWidth, scaledHeight, null);
+		g2d.dispose();
+
+		// extracts extension of output file
+		String formatName = outputImagePath.substring(outputImagePath.lastIndexOf(".") + 1);
+
+		// writes to output file
+		ImageIO.write(outputImage, formatName, new File(outputImagePath));
 
 	}
 
