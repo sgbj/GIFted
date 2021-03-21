@@ -205,8 +205,6 @@ public class GifFramePanel extends JPanel {
 
 					if (actual.isSelected()) {
 
-						indice = Animator.lista.getSelectedIndex();
-
 						indice -= ButtonPanel.archivos;
 
 						vueltas = indice;
@@ -232,19 +230,29 @@ public class GifFramePanel extends JPanel {
 
 						}
 
+						if (actual.isSelected()) {
+
+							for (int i = 0; i < vueltas; i++) {
+
+								Metodos.eliminarArchivos(ruta + "output" + Animator.getSeparador() + imagenes.get(i));
+							}
+
+						}
+
 					}
 
 				}
 
-				Metodos.mensaje("Resize finished", 2, true);
-
 			}
+
+			Metodos.mensaje("Resize finished", 2, true);
 
 		}
 
 		catch (Exception e) {
 			Metodos.mensaje("Error", 1, true);
 		}
+
 	}
 
 	private void initComponents() {
@@ -325,7 +333,7 @@ public class GifFramePanel extends JPanel {
 
 				if (!Animator.lista.m.isEmpty()) {
 
-					int resp = JOptionPane.showConfirmDialog(null, "¿Quieres borrar todos los frames?", "Clear Frames",
+					int resp = JOptionPane.showConfirmDialog(null, "ï¿½Quieres borrar todos los frames?", "Clear Frames",
 							JOptionPane.YES_NO_OPTION);
 
 					if (resp == 0) {

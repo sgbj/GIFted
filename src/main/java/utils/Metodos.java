@@ -135,6 +135,31 @@ public class Metodos {
 
 	}
 
+	public static void eliminarFichero(String archivo) {
+
+		File fichero = new File(archivo);
+
+		if (fichero.exists() && !fichero.isDirectory()) {
+			fichero.delete();
+		}
+
+	}
+
+	public static void eliminarArchivos(String ruta) {
+
+		LinkedList<String> frames = directorio(ruta, ".", true, false);
+
+		for (int i = 0; i < frames.size(); i++) {
+
+			if (!frames.get(i).isEmpty()) {
+
+				eliminarFichero(ruta + Animator.getSeparador() + frames.get(i));
+			}
+
+		}
+
+	}
+
 	public static void mensaje(String mensaje, int titulo, boolean filtro) {
 
 		String tituloSuperior = "";
@@ -266,8 +291,7 @@ public class Metodos {
 
 	}
 
-	public static LinkedList<String> directorio(String ruta, String extension, boolean filtro, boolean carpeta,
-			boolean mover) {
+	public static LinkedList<String> directorio(String ruta, String extension, boolean filtro, boolean carpeta) {
 
 		LinkedList<String> lista = new LinkedList<String>();
 
