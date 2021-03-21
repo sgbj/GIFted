@@ -153,7 +153,7 @@ public class Metodos {
 
 			if (!frames.get(i).isEmpty()) {
 
-				eliminarFichero(ruta + Animator.getSeparador() + frames.get(i));
+				eliminarFichero(ruta + frames.get(i));
 			}
 
 		}
