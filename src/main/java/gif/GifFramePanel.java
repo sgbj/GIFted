@@ -232,10 +232,7 @@ public class GifFramePanel extends JPanel {
 
 						if (actual.isSelected()) {
 
-							for (int i = 0; i < vueltas; i++) {
-
-								Metodos.eliminarArchivos(ruta + "output" + Animator.getSeparador() + imagenes.get(i));
-							}
+							Metodos.eliminarArchivos(ruta + "output" + Animator.getSeparador());
 
 						}
 
