@@ -139,7 +139,9 @@ public class ButtonPanel extends javax.swing.JPanel {
 
 		fc.setMultiSelectionEnabled(true);
 
-		fc.addChoosableFileFilter(new FileNameExtensionFilter("Images", "jpg", "png", "gif"));
+		fc.addChoosableFileFilter(new FileNameExtensionFilter("Images (jpg,png,gif)", "jpg", "png", "gif"));
+
+		fc.addChoosableFileFilter(new FileNameExtensionFilter("Gif", "gif"));
 
 		if (carpeta) {
 
@@ -210,7 +212,7 @@ public class ButtonPanel extends javax.swing.JPanel {
 					if (x.isDirectory()) {
 
 						this.carpetasSeleccion = Metodos.directorio(x.getAbsolutePath() + Animator.getSeparador(),
-								"images", true, true, false);
+								"images", true, true);
 
 						for (int i = 0; i < carpetasSeleccion.size(); i++) {
 
@@ -253,7 +255,7 @@ public class ButtonPanel extends javax.swing.JPanel {
 			}
 
 			catch (Exception ex) {
-				ex.printStackTrace();
+
 			}
 
 		}

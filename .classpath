@@ -24,8 +24,9 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="libs/MaterialButtoms.jar"/>
-	<classpathentry kind="lib" path="libs/NefAnimacion_V2.1_jdk18.jar"/>
-	<classpathentry kind="lib" path="libs/swingx-core-1.6.2-2.jar"/>
+	<classpathentry kind="lib" path="src/main/java/libs/GifAnimator.jar"/>
+	<classpathentry kind="lib" path="src/main/java/libs/MaterialButtoms.jar"/>
+	<classpathentry kind="lib" path="src/main/java/libs/NefAnimacion_V2.1_jdk18.jar"/>
+	<classpathentry kind="lib" path="src/main/java/libs/swingx-core-1.6.2-2.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

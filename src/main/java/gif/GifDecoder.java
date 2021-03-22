@@ -335,17 +335,27 @@ public class GifDecoder {
 	 * @return read status code (0 = no errors)
 	 */
 	public int read(String name) {
+
 		status = STATUS_OK;
 		try {
-			name = name.trim().toLowerCase();
+
+			name = name.trim();
+
 			if ((name.indexOf("file:") >= 0) || (name.indexOf(":/") > 0)) {
 				URL url = new URL(name);
 				in = new BufferedInputStream(url.openStream());
-			} else {
+			}
+
+			else {
+
 				in = new BufferedInputStream(new FileInputStream(name));
 			}
+
 			status = read(in);
-		} catch (IOException e) {
+
+		}
+
+		catch (IOException e) {
 			status = STATUS_OPEN_ERROR;
 		}
 
