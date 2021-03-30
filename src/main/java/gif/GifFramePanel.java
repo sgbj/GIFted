@@ -198,12 +198,13 @@ public class GifFramePanel extends JPanel {
 
 				extraerFrames(ButtonPanel.archivoGif, false);
 
-				String medidasImagen = Metodos.eliminarEspacios(recorte.getText(), true);
+				String medidasImagen = Metodos.eliminarEspacios(recorte.getText(), false);
 
-				int width = Integer.parseInt(medidasImagen.substring(0, medidasImagen.indexOf("x")));
+				int width = Integer.parseInt(
+						Metodos.eliminarEspacios(medidasImagen.substring(0, medidasImagen.indexOf("x")), true));
 
-				int height = Integer
-						.parseInt(medidasImagen.substring(medidasImagen.indexOf("x") + 1, medidasImagen.length()));
+				int height = Integer.parseInt(Metodos.eliminarEspacios(
+						medidasImagen.substring(medidasImagen.indexOf("x") + 1, medidasImagen.length()), true));
 
 				if (width > 0 && height > 0) {
 
@@ -221,31 +222,26 @@ public class GifFramePanel extends JPanel {
 
 					}
 
-					if (indice >= 0) {
+					LinkedList<String> images = new LinkedList<String>();
 
-						LinkedList<String> imagenes = new LinkedList<String>();
+					for (int i = 0; i < vueltas; i++) {
+						images.add(path.substring(path.lastIndexOf(Animator.getSeparador()) + 1, path.length() - 4)
+								+ "_" + i + ".png");
+					}
 
-						for (int i = 0; i < vueltas; i++) {
-							imagenes.add(
-									path.substring(path.lastIndexOf(Animator.getSeparador()) + 1, path.length() - 4)
-											+ "_" + i + ".png");
-						}
+					for (int i = indice; i < vueltas; i++) {
 
-						for (int i = indice; i < vueltas; i++) {
-
-							Metodos.resizeImage(
-									ruta + "output" + Animator.getSeparador() + nombreGif + Animator.getSeparador()
-											+ imagenes.get(i),
-									ruta + "Resized" + Animator.getSeparador() + nombreGif + Animator.getSeparador()
-											+ "test_" + i + ".png",
-									width, height);
-
-						}
-
-						Metodos.eliminarArchivos(
-								ruta + "output" + Animator.getSeparador() + nombreGif + Animator.getSeparador());
+						Metodos.resizeImage(
+								ruta + "output" + Animator.getSeparador() + nombreGif + Animator.getSeparador()
+										+ images.get(i),
+								ruta + "Resized" + Animator.getSeparador() + nombreGif + Animator.getSeparador()
+										+ "test_" + i + ".png",
+								width, height);
 
 					}
+
+					Metodos.eliminarArchivos(
+							ruta + "output" + Animator.getSeparador() + nombreGif + Animator.getSeparador());
 
 				}
 
@@ -256,7 +252,7 @@ public class GifFramePanel extends JPanel {
 		}
 
 		catch (Exception e) {
-
+			//
 		}
 
 	}
@@ -406,7 +402,8 @@ public class GifFramePanel extends JPanel {
 
 					catch (Exception e1) {
 
-						Metodos.mensaje("Error", 1, true);
+						Metodos.mensaje("Error", 1, false);
+
 					}
 
 				}
@@ -459,7 +456,7 @@ public class GifFramePanel extends JPanel {
 
 					catch (Exception e1) {
 
-						Metodos.mensaje("Error", 1, true);
+						Metodos.mensaje("Error", 1, false);
 					}
 
 				}
@@ -473,28 +470,36 @@ public class GifFramePanel extends JPanel {
 		lblNewLabel_2.setIcon(new ImageIcon(GifFramePanel.class.getResource("/images/multiple.png")));
 
 		lblNewLabel_3 = new JLabel("");
+
 		lblNewLabel_3.setIcon(new ImageIcon(GifFramePanel.class.getResource("/images/simple.png")));
 
 		JButton btnNewButton_2 = new JButton("Resized Images");
+
 		btnNewButton_2.addActionListener(new ActionListener() {
+
 			public void actionPerformed(ActionEvent e) {
+
 				try {
 					Metodos.abrirCarpeta(ruta + "Resized" + Animator.getSeparador() + nombreGif);
 				} catch (Exception e1) {
-					Metodos.mensaje("Error", 1, true);
+					Metodos.mensaje("Error", 1, false);
 				}
 			}
+
 		});
+
 		btnNewButton_2.setFont(new Font("Tahoma", Font.PLAIN, 16));
+
 		btnNewButton_2.setIcon(new ImageIcon(GifFramePanel.class.getResource("/images/folder.png")));
 
 		JButton btnNewButton_3 = new JButton("Extract Frames Folder");
+
 		btnNewButton_3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					Metodos.abrirCarpeta(ruta + "output" + Animator.getSeparador() + nombreGif);
 				} catch (Exception e1) {
-					Metodos.mensaje("Error", 1, true);
+					Metodos.mensaje("Error", 1, false);
 				}
 			}
 		});
@@ -567,6 +572,7 @@ public class GifFramePanel extends JPanel {
 				.addPreferredGap(ComponentPlacement.UNRELATED)
 				.addComponent(imageScrollPane, GroupLayout.DEFAULT_SIZE, 546, Short.MAX_VALUE)));
 		this.setLayout(layout);
+
 	}
 
 	private void previewActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_previewActionPerformed
@@ -616,24 +622,32 @@ public class GifFramePanel extends JPanel {
 
 	public void setGifFrame(GifFrame frame) {
 
-		GifFramePanel.frame = frame;
+		try {
 
-		if (frame != null) {
+			GifFramePanel.frame = frame;
 
-			image.setIcon(new ImageIcon(frame.getImage()));
+			if (frame != null) {
 
-			sizeImage = Integer.toString(frame.getImage().getWidth()) + " x "
-					+ Integer.toString(frame.getImage().getHeight());
+				image.setIcon(new ImageIcon(frame.getImage()));
 
-			recorte.setText(sizeImage);
+				sizeImage = Integer.toString(frame.getImage().getWidth()) + " x "
+						+ Integer.toString(frame.getImage().getHeight());
 
+				recorte.setText(sizeImage);
+
+			}
+
+			else {
+
+				image.setIcon(null);
+
+			}
 		}
 
-		else {
-
-			image.setIcon(null);
+		catch (Exception e) {
 
 		}
 
 	}
+
 }

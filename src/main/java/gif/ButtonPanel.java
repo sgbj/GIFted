@@ -48,9 +48,9 @@ public class ButtonPanel extends javax.swing.JPanel {
 
 	private JSeparator separator_2;
 
-	private boolean gif = false;
+	private static boolean gif = false;
 
-	LinkedList<String> carpetasSeleccion = new LinkedList<String>();
+	static LinkedList<String> carpetasSeleccion = new LinkedList<String>();
 
 	public ButtonPanel(Animator animator) {
 
@@ -131,10 +131,6 @@ public class ButtonPanel extends javax.swing.JPanel {
 
 		JFileChooser fc = new JFileChooser();
 
-		int vueltas = 1;
-
-		LinkedList<File> files = new LinkedList<File>();
-
 		fc.setDialogTitle("Multiple selection");
 
 		fc.setMultiSelectionEnabled(true);
@@ -161,105 +157,110 @@ public class ButtonPanel extends javax.swing.JPanel {
 
 		if (o == JFileChooser.APPROVE_OPTION) {
 
-			if (!carpeta) {
+			addImages(carpeta, fc.getSelectedFiles());
 
-				files.clear();
+		}
 
-				File[] filesSeleccion = fc.getSelectedFiles();
+	}
 
-				Arrays.asList(filesSeleccion).forEach(x -> {
+	public static void addImages(boolean carpeta, File[] fc) {
 
-					if (x.isFile()) {
+		LinkedList<File> files = new LinkedList<File>();
 
-						String extension = Metodos.extraerExtension(x.getAbsolutePath());
+		int vueltas = 1;
 
-						if (extension.equals("jpg") || extension.equals("png") || extension.equals("gif")) {
+		if (!carpeta) {
 
-							if (extension.equals("gif")) {
+			files.clear();
 
-								archivoGif = x.getAbsolutePath();
+			Arrays.asList(fc).forEach(x -> {
 
-								gif = true;
+				if (x.isFile()) {
 
+					String extension = Metodos.extraerExtension(x.getAbsolutePath());
+
+					if (extension.equals("jpg") || extension.equals("png") || extension.equals("gif")) {
+
+						if (extension.equals("gif")) {
+
+							archivoGif = x.getAbsolutePath();
+
+							gif = true;
+
+						}
+
+						else {
+
+							if (!gif) {
+								archivos++;
 							}
 
-							else {
-
-								if (!gif) {
-									archivos++;
-								}
-
-							}
-
-							files.add(new File(x.getAbsolutePath()));
-
 						}
 
-					}
+						files.add(new File(x.getAbsolutePath()));
 
-				});
-
-			}
-
-			else {
-
-				files.clear();
-
-				File[] carpetas = fc.getSelectedFiles();
-
-				Arrays.asList(carpetas).forEach(x -> {
-
-					if (x.isDirectory()) {
-
-						this.carpetasSeleccion = Metodos.directorio(x.getAbsolutePath() + Animator.getSeparador(),
-								"images", true, true);
-
-						for (int i = 0; i < carpetasSeleccion.size(); i++) {
-
-							files.add(new File(carpetasSeleccion.get(i)));
-
-						}
-
-					}
-
-				});
-
-			}
-
-			try {
-
-				vueltas = files.size();
-
-				for (int i = 0; i < vueltas; i++) {
-
-					if (files.get(i).getName().endsWith("gif")) {
-
-						List<GifFrame> frames = Gif.read(files.get(i));
-
-						for (GifFrame frame : frames) {
-
-							animator.addGifFrame(frame);
-						}
-
-					}
-
-					else {
-
-						BufferedImage image = ImageIO.read(files.get(i));
-
-						animator.addGifFrame(new GifFrame(image, 500));
 					}
 
 				}
 
-			}
+			});
 
-			catch (Exception ex) {
+		}
+
+		else {
+
+			files.clear();
+
+			Arrays.asList(fc).forEach(x -> {
+
+				if (x.isDirectory()) {
+
+					carpetasSeleccion = Metodos.directorio(x.getAbsolutePath() + Animator.getSeparador(), "images",
+							true, true);
+
+					for (int i = 0; i < carpetasSeleccion.size(); i++) {
+
+						files.add(new File(carpetasSeleccion.get(i)));
+
+					}
+
+				}
+
+			});
+
+		}
+
+		try {
+
+			vueltas = files.size();
+
+			for (int i = 0; i < vueltas; i++) {
+
+				if (files.get(i).getName().endsWith("gif")) {
+
+					List<GifFrame> frames = Gif.read(files.get(i));
+
+					for (GifFrame frame : frames) {
+
+						animator.addGifFrame(frame);
+					}
+
+				}
+
+				else {
+
+					BufferedImage image = ImageIO.read(files.get(i));
+
+					animator.addGifFrame(new GifFrame(image, 500));
+				}
 
 			}
 
 		}
 
+		catch (Exception ex) {
+
+		}
 	}
 
 	private void saveActionPerformed(java.awt.event.ActionEvent evt) {
