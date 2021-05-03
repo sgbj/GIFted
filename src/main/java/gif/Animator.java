@@ -6,10 +6,9 @@ import java.awt.Graphics2D;
 import java.awt.Toolkit;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
-import java.io.File;
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.TooManyListenersException;
 
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
@@ -18,7 +17,6 @@ import javax.swing.JScrollPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import utils.DragAndDrop;
 import utils.Metodos;
 
 public class Animator {
@@ -43,7 +41,7 @@ public class Animator {
 		return os;
 	}
 
-	public Animator(GifFrame[] frames) {
+	public Animator(GifFrame[] frames) throws IOException {
 
 		final JFrame f = new JFrame("Gif Animator");
 
@@ -108,72 +106,6 @@ public class Animator {
 
 		f.setVisible(true);
 
-		javax.swing.border.TitledBorder dragBorder = new javax.swing.border.TitledBorder("");
-
-		try {
-
-			new DragAndDrop(listScrollPane, dragBorder, true, new DragAndDrop.Listener() {
-
-				@SuppressWarnings("null")
-
-				public void filesDropped(java.io.File[] files) {
-
-					LinkedList<String> carpetasSeleccion = new LinkedList<String>();
-
-					try {
-
-						LinkedList<File> archivos = new LinkedList<File>();
-
-						String ruta;
-
-						for (int i = 0; i < files.length; i++) {
-
-							ruta = files[i].getAbsolutePath();
-
-							if (!files[i].getAbsolutePath().contains(".")) {
-
-								carpetasSeleccion = Metodos.directorio(ruta + Animator.getSeparador(), "images", true,
-										true);
-
-								for (int x = 0; x < carpetasSeleccion.size(); x++) {
-
-									archivos.add(new File(carpetasSeleccion.get(x)));
-
-								}
-
-							}
-
-							else {
-
-								archivos.add(new File(ruta));
-							}
-
-						}
-
-						File[] resultado = new File[archivos.size()];
-
-						for (int i = 0; i < archivos.size(); i++) {
-							resultado[i] = archivos.get(i);
-						}
-
-						ButtonPanel.addImages(false, resultado);
-
-					}
-
-					catch (Exception e) {
-						e.printStackTrace();
-					}
-
-				}
-
-			});
-
-		}
-
-		catch (TooManyListenersException e1) {
-			Metodos.mensaje("Error al mover los archivos", 1, false);
-		}
-
 	}
 
 	public void addGifFrame(GifFrame frame) {
@@ -217,7 +149,7 @@ public class Animator {
 		}
 
 		catch (Exception ex) {
-
+			ex.printStackTrace();
 		}
 
 	}
