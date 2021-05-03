@@ -45,7 +45,9 @@ public final class Gif {
 			IIOMetadataNode gce = getNode(root, "GraphicControlExtension");
 
 			gce.setAttribute("disposalMethod", "none");
+
 			gce.setAttribute("userInputFlag", "FALSE");
+
 			gce.setAttribute("transparentColorFlag", "FALSE");
 
 			gce.setAttribute("delayTime", Long.toString(delay));
@@ -53,8 +55,11 @@ public final class Gif {
 			gce.setAttribute("transparentColorIndex", "0");
 
 			IIOMetadataNode appexts = getNode(root, "ApplicationExtensions");
+
 			IIOMetadataNode appext = new IIOMetadataNode("ApplicationExtension");
+
 			appext.setAttribute("applicationID", "NETSCAPE");
+
 			appext.setAttribute("authenticationCode", "2.0");
 
 			appext.setUserObject(new byte[] { 0x1, (byte) (loopContinuously ? 0x0 : 0x1), 0x0 });
@@ -64,6 +69,7 @@ public final class Gif {
 			metadata.setFromTree(fmt, root);
 
 			writer.writeToSequence(new IIOImage(image, null, metadata), writer.getDefaultWriteParam());
+
 		}
 
 		writer.endWriteSequence();
@@ -108,6 +114,7 @@ public final class Gif {
 		}
 
 		return frames;
+
 	}
 
 	private static IIOMetadataNode getNode(IIOMetadataNode rootNode, String nodeName) {
