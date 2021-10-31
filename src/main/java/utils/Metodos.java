@@ -23,12 +23,12 @@ import gif.ButtonPanel;
 
 public class Metodos {
 
-	public static int saberNumero(String cadena) {
+	public static float saberNumero(String cadena) {
 
-		int resultado = 0;
+		float resultado = 0f;
 
 		try {
-			resultado = Integer.parseInt(cadena.trim());
+			resultado = Float.parseFloat(cadena.trim());
 		}
 
 		catch (Exception e) {

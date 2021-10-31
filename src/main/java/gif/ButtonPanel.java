@@ -419,11 +419,15 @@ public class ButtonPanel extends javax.swing.JPanel {
 					LinkedList<String> lista = new LinkedList<String>();
 
 					if (lectura[11].equals("Merge")) {
+
 						lista = listaImagenes;
+
 					}
 
 					else {
+
 						lista = listaImagenesInterlace;
+
 					}
 
 					for (int i = 0; i < lista.size(); i++) {

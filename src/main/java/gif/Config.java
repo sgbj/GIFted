@@ -217,25 +217,25 @@ public class Config extends javax.swing.JFrame implements ActionListener, Change
 
 		try {
 
-			int color = Metodos.saberNumero(colores.getText().trim());
+			int color = (int) Metodos.saberNumero(colores.getText().trim());
 
-			int optimizar = Metodos.saberNumero(optimize.getText().trim());
+			int optimizar = (int) Metodos.saberNumero(optimize.getText().trim());
 
-			int scala = Metodos.saberNumero(escala.getText().trim());
+			float scala = Metodos.saberNumero(escala.getText().trim());
 
-			int lossy = Metodos.saberNumero(perdida.getText().trim());
+			int lossy = (int) Metodos.saberNumero(perdida.getText().trim());
 
-			int retardo = Metodos.saberNumero(delay.getText().trim());
+			int retardo = (int) Metodos.saberNumero(delay.getText().trim());
 
-			int loop = Metodos.saberNumero(loopCount.getText().trim());
+			int loop = (int) Metodos.saberNumero(loopCount.getText().trim());
 
-			int width = Metodos.saberNumero(ancho.getText().trim());
+			int width = (int) Metodos.saberNumero(ancho.getText().trim());
 
-			int height = Metodos.saberNumero(alto.getText().trim());
+			int height = (int) Metodos.saberNumero(alto.getText().trim());
 
-			int spaceLeft = Metodos.saberNumero(espacioLeft.getText().trim());
+			int spaceLeft = (int) Metodos.saberNumero(espacioLeft.getText().trim());
 
-			int spaceTop = Metodos.saberNumero(espacioTop.getText().trim());
+			int spaceTop = (int) Metodos.saberNumero(espacioTop.getText().trim());
 
 			FileWriter flS = new FileWriter("ConfigEasyGifCreator.txt");
 

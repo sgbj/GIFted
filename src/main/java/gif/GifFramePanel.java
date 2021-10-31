@@ -119,7 +119,7 @@ public class GifFramePanel extends JPanel {
 		}
 
 		catch (Exception e) {
-
+			e.printStackTrace();
 		}
 
 	}
@@ -137,7 +137,7 @@ public class GifFramePanel extends JPanel {
 	public void extraerFrames(String path, boolean mensaje) {
 
 		try {
-
+			System.out.println(ruta + "output");
 			File carpeta = new File(ruta + "output");
 
 			carpeta.mkdir();
@@ -185,7 +185,7 @@ public class GifFramePanel extends JPanel {
 		}
 
 		catch (Exception e) {
-
+			e.printStackTrace();
 		}
 
 	}
