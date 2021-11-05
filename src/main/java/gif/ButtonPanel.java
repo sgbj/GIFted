@@ -410,7 +410,7 @@ public class ButtonPanel extends javax.swing.JPanel {
 
 			if (lectura.length == 19) {
 
-				String comando = "gifsicle -O3";
+				String comando = "";
 
 				if (!lectura[11].equals("None")) {
 
@@ -450,9 +450,95 @@ public class ButtonPanel extends javax.swing.JPanel {
 
 				}
 
-				if (Float.parseFloat(lectura[2]) > 0f) {
+				Animator.saberSize();
 
-					comando += " --scale " + lectura[2];
+				String escala = lectura[2];
+
+				String tam = GifFramePanel.recorte.getText();
+
+				int ancho = 0;
+
+				int alto = 0;
+
+				int wancho;
+
+				int halto;
+
+				int proporcion;
+
+				if (escala.contains("%") && !tam.isEmpty()) {
+
+					try {
+
+						proporcion = Integer.parseInt(escala.substring(0, escala.indexOf("%")));
+
+						if (proporcion != 100) {
+
+							ancho = Integer.parseInt(tam.substring(0, tam.indexOf("x")).trim());
+
+							alto = Integer.parseInt(tam.substring(tam.indexOf("x") + 1, tam.length()).trim());
+
+							if (proporcion < 100) {
+
+								wancho = (proporcion * 2) / 50;
+
+								halto = (proporcion * 2) / 50;
+
+								ancho /= wancho;
+
+								alto /= halto;
+
+							}
+
+							else {
+
+								wancho = (proporcion * 2) / 200;
+
+								halto = (proporcion * 2) / 200;
+
+								ancho *= wancho;
+
+								alto *= halto;
+
+							}
+
+						}
+
+						else {
+
+							escala = tam;
+
+						}
+
+						escala = ancho + "x" + alto;
+
+					}
+
+					catch (Exception e) {
+
+					}
+
+					comando += " --resize " + escala;
+
+				}
+
+				if (escala.contains("x")) {
+					comando += " --resize " + escala;
+				}
+
+				else {
+
+					try {
+
+						if (Float.parseFloat(escala) > 0f) {
+							comando += " --scale " + escala;
+						}
+
+					}
+
+					catch (Exception e) {
+
+					}
 
 				}
 
@@ -581,6 +667,18 @@ public class ButtonPanel extends javax.swing.JPanel {
 
 				comando += " -i " + file.toString() + " -o " + file.toString();
 
+				if (os.contains("indows")) {
+
+					comando = directorioActual + "gifsicle.exe -O3" + comando;
+
+				}
+
+				else {
+
+					comando = "gifsicle -O3" + comando;
+
+				}
+				System.out.println(comando);
 				Runtime.getRuntime().exec(comando);
 
 			}

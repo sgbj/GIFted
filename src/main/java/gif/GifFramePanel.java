@@ -55,7 +55,7 @@ public class GifFramePanel extends JPanel {
 
 	private JTextField texto;
 
-	private JTextField recorte;
+	public static JTextField recorte;
 
 	public static String sizeImage;
 
@@ -119,7 +119,7 @@ public class GifFramePanel extends JPanel {
 		}
 
 		catch (Exception e) {
-			e.printStackTrace();
+
 		}
 
 	}
@@ -137,12 +137,16 @@ public class GifFramePanel extends JPanel {
 	public void extraerFrames(String path, boolean mensaje) {
 
 		try {
-			System.out.println(ruta + "output");
+
 			File carpeta = new File(ruta + "output");
 
 			carpeta.mkdir();
 
 			carpeta = new File(ruta + "output" + Animator.getSeparador() + nombreGif);
+
+			carpeta.mkdir();
+
+			carpeta = new File(ruta + "Resized");
 
 			carpeta.mkdir();
 
@@ -185,7 +189,7 @@ public class GifFramePanel extends JPanel {
 		}
 
 		catch (Exception e) {
-			e.printStackTrace();
+
 		}
 
 	}
@@ -214,21 +218,21 @@ public class GifFramePanel extends JPanel {
 
 					int vueltas = GifDef.mFrameImageList.size();
 
-					if (actual.isSelected()) {
-
-						indice -= ButtonPanel.archivos;
-
-						vueltas = indice;
-
-						vueltas++;
-
-					}
-
 					LinkedList<String> images = new LinkedList<String>();
 
 					for (int i = 0; i < vueltas; i++) {
 						images.add(path.substring(path.lastIndexOf(Animator.getSeparador()) + 1, path.length() - 4)
 								+ "_" + i + ".png");
+					}
+
+					if (actual.isSelected()) {
+
+						indice = Animator.lista.getSelectedIndex();
+
+						vueltas = indice;
+
+						vueltas++;
+
 					}
 
 					for (int i = indice; i < vueltas; i++) {
@@ -482,10 +486,15 @@ public class GifFramePanel extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 
 				try {
+
 					Metodos.abrirCarpeta(ruta + "Resized" + Animator.getSeparador() + nombreGif);
-				} catch (Exception e1) {
-					Metodos.mensaje("Error", 1, false);
+
 				}
+
+				catch (Exception e1) {
+
+				}
+
 			}
 
 		});
@@ -499,6 +508,7 @@ public class GifFramePanel extends JPanel {
 		btnNewButton_3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
+
 					Metodos.abrirCarpeta(ruta + "output" + Animator.getSeparador() + nombreGif);
 				} catch (Exception e1) {
 					Metodos.mensaje("Error", 1, false);
@@ -628,7 +638,7 @@ public class GifFramePanel extends JPanel {
 					}
 
 					catch (Exception e) {
-						e.printStackTrace();
+						
 					}
 
 				}

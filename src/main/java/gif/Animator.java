@@ -41,6 +41,14 @@ public class Animator {
 		return os;
 	}
 
+	public static void saberSize() {
+
+		GifFrame frame = (GifFrame) lista.getGifFrames().get(0);
+
+		panel.setGifFrame(frame);
+
+	}
+
 	public Animator(GifFrame[] frames) throws IOException {
 
 		final JFrame f = new JFrame("Gif Animator");
@@ -149,7 +157,7 @@ public class Animator {
 		}
 
 		catch (Exception ex) {
-			ex.printStackTrace();
+			
 		}
 
 	}

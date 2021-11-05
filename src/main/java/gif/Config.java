@@ -38,7 +38,6 @@ import utils.Metodos;
 public class Config extends javax.swing.JFrame implements ActionListener, ChangeListener {
 
 	private JTextField escala;
-
 	private JTextField perdida;
 
 	private JTextField delay;
@@ -116,7 +115,7 @@ public class Config extends javax.swing.JFrame implements ActionListener, Change
 		}
 
 		catch (Exception e) {
-			e.printStackTrace();
+			
 		}
 
 	}
@@ -221,7 +220,7 @@ public class Config extends javax.swing.JFrame implements ActionListener, Change
 
 			int optimizar = (int) Metodos.saberNumero(optimize.getText().trim());
 
-			float scala = Metodos.saberNumero(escala.getText().trim());
+			String scala = escala.getText().trim();
 
 			int lossy = (int) Metodos.saberNumero(perdida.getText().trim());
 
@@ -396,7 +395,7 @@ public class Config extends javax.swing.JFrame implements ActionListener, Change
 				}
 
 				catch (Exception e) {
-					e.printStackTrace();
+					
 				}
 
 			}

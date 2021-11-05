@@ -68,6 +68,7 @@ public class Metodos {
 				while (texto != null && i < longitud) {
 
 					salida[i] = texto;
+
 					i++;
 
 					texto = fE.readLine();
@@ -132,7 +133,7 @@ public class Metodos {
 
 		else {
 
-			Runtime.getRuntime().exec("cmd /c explorer " + "\"" + ruta + "\"");
+			Runtime.getRuntime().exec("cmd /c C:\\Windows\\explorer.exe " + "\"" + ruta + "\"");
 
 		}
 
