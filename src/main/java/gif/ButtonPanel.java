@@ -70,6 +70,8 @@ public class ButtonPanel extends javax.swing.JPanel {
 
 	public static LinkedList<String> listaImagenesInterlace = new LinkedList<String>();
 	private JLabel lblNewLabel_1;
+	private JCheckBox reverse;
+	private JLabel lblNewLabel_2;
 
 	public static LinkedList<String> getListaImagenesInterlace() {
 		return listaImagenesInterlace;
@@ -216,6 +218,14 @@ public class ButtonPanel extends javax.swing.JPanel {
 		tool.setFont(new Font("Tahoma", Font.PLAIN, 22));
 
 		add(tool);
+
+		lblNewLabel_2 = new JLabel("");
+		lblNewLabel_2.setIcon(new ImageIcon(ButtonPanel.class.getResource("/images/reverse.png")));
+		add(lblNewLabel_2);
+
+		reverse = new JCheckBox("Reverse");
+		reverse.setFont(new Font("Tahoma", Font.PLAIN, 22));
+		add(reverse);
 
 	}
 
@@ -393,6 +403,27 @@ public class ButtonPanel extends javax.swing.JPanel {
 
 					}
 
+					if (reverse.isSelected()) {
+
+						String comando = "";
+
+						if (os.contains("indows")) {
+
+							comando = directorioActual + "gifsicle.exe ";
+
+						}
+
+						else {
+
+							comando = "gifsicle ";
+
+						}
+
+						Runtime.getRuntime().exec(comando + file.toString() + " \"#-1-0\" > "
+								+ file.toString().substring(0, file.toString().lastIndexOf(".")) + "_reverse.gif");
+
+					}
+
 				}
 
 			}
@@ -402,6 +433,7 @@ public class ButtonPanel extends javax.swing.JPanel {
 		catch (Exception e) {
 
 		}
+
 	}
 
 	private void gifsicle(File file) {
@@ -678,7 +710,7 @@ public class ButtonPanel extends javax.swing.JPanel {
 					comando = "gifsicle -O3" + comando;
 
 				}
-				System.out.println(comando);
+
 				Runtime.getRuntime().exec(comando);
 
 			}

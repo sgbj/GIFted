@@ -341,7 +341,7 @@ public class GifFramePanel extends JPanel {
 
 				if (!Animator.lista.m.isEmpty()) {
 
-					int resp = JOptionPane.showConfirmDialog(null, "Â¿Quieres borrar todos los frames?", "Clear Frames",
+					int resp = JOptionPane.showConfirmDialog(null, "¿Quieres borrar todos los frames?", "Clear Frames",
 							JOptionPane.YES_NO_OPTION);
 
 					if (resp == 0) {
@@ -638,7 +638,7 @@ public class GifFramePanel extends JPanel {
 					}
 
 					catch (Exception e) {
-						
+
 					}
 
 				}
