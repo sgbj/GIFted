@@ -3,9 +3,10 @@ package utils;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
-import java.util.Collections;
 import java.util.LinkedList;
 
 import javax.imageio.ImageIO;
@@ -17,8 +18,109 @@ import alertas.AlertInformation;
 import alertas.AlertSuccess;
 import alertas.AlertWarningSalir;
 import gif.Animator;
+import gif.ButtonPanel;
 
 public class Metodos {
+
+	public static float saberNumero(String cadena) {
+
+		float resultado = 0f;
+
+		try {
+			resultado = Float.parseFloat(cadena.trim());
+		}
+
+		catch (Exception e) {
+
+		}
+
+		return resultado;
+
+	}
+
+	public static String[] leerFicheroArray(String fichero, int longitud) throws IOException {
+
+		String[] salida = new String[longitud];
+
+		fichero = ButtonPanel.getDirectorioActual() + fichero;
+
+		File archivo = new File(fichero);
+
+		if (archivo.exists()) {
+
+			String texto = "";
+
+			int i = 0;
+
+			FileReader flE = null;
+
+			BufferedReader fE = null;
+
+			try {
+
+				flE = new FileReader(fichero);
+
+				fE = new BufferedReader(flE);
+
+				texto = fE.readLine();
+
+				while (texto != null && i < longitud) {
+
+					salida[i] = texto;
+
+					i++;
+
+					texto = fE.readLine();
+
+				}
+
+				fE.close();
+
+				flE.close();
+
+			}
+
+			catch (Exception e) {
+				//
+			}
+
+			finally {
+
+				if (fE != null) {
+
+					try {
+						fE.close();
+					}
+
+					catch (IOException e) {
+						//
+					}
+
+				}
+
+				if (flE != null) {
+
+					try {
+						flE.close();
+					}
+
+					catch (IOException e) {
+						//
+					}
+
+				}
+			}
+		}
+
+		else {
+
+			throw new IOException();
+
+		}
+
+		return salida;
+
+	}
 
 	public static void abrirCarpeta(String ruta) throws Exception {
 
@@ -30,7 +132,7 @@ public class Metodos {
 
 		else {
 
-			Runtime.getRuntime().exec("cmd /c explorer " + "\"" + ruta + "\"");
+			Runtime.getRuntime().exec("cmd /c C:\\Windows\\explorer.exe " + "\"" + ruta + "\"");
 
 		}
 
@@ -271,22 +373,20 @@ public class Metodos {
 	public static void resizeImage(String inputImagePath, String outputImagePath, int scaledWidth, int scaledHeight)
 			throws IOException {
 
-		// reads input image
 		File inputFile = new File(inputImagePath);
+
 		BufferedImage inputImage = ImageIO.read(inputFile);
 
-		// creates output image
 		BufferedImage outputImage = new BufferedImage(scaledWidth, scaledHeight, inputImage.getType());
 
-		// scales the input image to the output image
 		Graphics2D g2d = outputImage.createGraphics();
+
 		g2d.drawImage(inputImage, 0, 0, scaledWidth, scaledHeight, null);
+
 		g2d.dispose();
 
-		// extracts extension of output file
 		String formatName = outputImagePath.substring(outputImagePath.lastIndexOf(".") + 1);
 
-		// writes to output file
 		ImageIO.write(outputImage, formatName, new File(outputImagePath));
 
 	}
@@ -376,8 +476,6 @@ public class Metodos {
 		catch (Exception e) {
 
 		}
-
-		Collections.sort(lista);
 
 		return lista;
 

@@ -13,6 +13,7 @@ import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.LinkedList;
+import java.util.TooManyListenersException;
 
 import javax.imageio.ImageIO;
 import javax.swing.ButtonGroup;
@@ -31,6 +32,7 @@ import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.SwingConstants;
 
+import utils.DragAndDrop;
 import utils.Metodos;
 
 public class GifFramePanel extends JPanel {
@@ -53,7 +55,7 @@ public class GifFramePanel extends JPanel {
 
 	private JTextField texto;
 
-	private JTextField recorte;
+	public static JTextField recorte;
 
 	public static String sizeImage;
 
@@ -144,6 +146,10 @@ public class GifFramePanel extends JPanel {
 
 			carpeta.mkdir();
 
+			carpeta = new File(ruta + "Resized");
+
+			carpeta.mkdir();
+
 			carpeta = new File(ruta + "Resized" + Animator.getSeparador() + nombreGif);
 
 			carpeta.mkdir();
@@ -212,21 +218,21 @@ public class GifFramePanel extends JPanel {
 
 					int vueltas = GifDef.mFrameImageList.size();
 
-					if (actual.isSelected()) {
-
-						indice -= ButtonPanel.archivos;
-
-						vueltas = indice;
-
-						vueltas++;
-
-					}
-
 					LinkedList<String> images = new LinkedList<String>();
 
 					for (int i = 0; i < vueltas; i++) {
 						images.add(path.substring(path.lastIndexOf(Animator.getSeparador()) + 1, path.length() - 4)
 								+ "_" + i + ".png");
+					}
+
+					if (actual.isSelected()) {
+
+						indice = Animator.lista.getSelectedIndex();
+
+						vueltas = indice;
+
+						vueltas++;
+
 					}
 
 					for (int i = indice; i < vueltas; i++) {
@@ -335,7 +341,7 @@ public class GifFramePanel extends JPanel {
 
 				if (!Animator.lista.m.isEmpty()) {
 
-					int resp = JOptionPane.showConfirmDialog(null, "Â¿Quieres borrar todos los frames?", "Clear Frames",
+					int resp = JOptionPane.showConfirmDialog(null, "¿Quieres borrar todos los frames?", "Clear Frames",
 							JOptionPane.YES_NO_OPTION);
 
 					if (resp == 0) {
@@ -480,10 +486,15 @@ public class GifFramePanel extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 
 				try {
+
 					Metodos.abrirCarpeta(ruta + "Resized" + Animator.getSeparador() + nombreGif);
-				} catch (Exception e1) {
-					Metodos.mensaje("Error", 1, false);
+
 				}
+
+				catch (Exception e1) {
+
+				}
+
 			}
 
 		});
@@ -497,6 +508,7 @@ public class GifFramePanel extends JPanel {
 		btnNewButton_3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
+
 					Metodos.abrirCarpeta(ruta + "output" + Animator.getSeparador() + nombreGif);
 				} catch (Exception e1) {
 					Metodos.mensaje("Error", 1, false);
@@ -572,6 +584,72 @@ public class GifFramePanel extends JPanel {
 				.addPreferredGap(ComponentPlacement.UNRELATED)
 				.addComponent(imageScrollPane, GroupLayout.DEFAULT_SIZE, 546, Short.MAX_VALUE)));
 		this.setLayout(layout);
+
+		javax.swing.border.TitledBorder dragBorder = new javax.swing.border.TitledBorder("");
+
+		try {
+
+			new DragAndDrop(image, dragBorder, true, new DragAndDrop.Listener() {
+
+				@SuppressWarnings("null")
+
+				public void filesDropped(java.io.File[] files) {
+
+					LinkedList<String> carpetasSeleccion = new LinkedList<String>();
+
+					try {
+
+						LinkedList<File> archivos = new LinkedList<File>();
+
+						String ruta;
+
+						for (int i = 0; i < files.length; i++) {
+
+							ruta = files[i].getAbsolutePath();
+
+							if (!files[i].getAbsolutePath().contains(".")) {
+
+								carpetasSeleccion = Metodos.directorio(ruta + Animator.getSeparador(), "images", true,
+										true);
+
+								for (int x = 0; x < carpetasSeleccion.size(); x++) {
+
+									archivos.add(new File(carpetasSeleccion.get(x)));
+
+								}
+
+							}
+
+							else {
+
+								archivos.add(new File(ruta));
+							}
+
+						}
+
+						File[] resultado = new File[archivos.size()];
+
+						for (int i = 0; i < archivos.size(); i++) {
+							resultado[i] = archivos.get(i);
+						}
+
+						ButtonPanel.addImages(false, resultado);
+
+					}
+
+					catch (Exception e) {
+
+					}
+
+				}
+
+			});
+
+		}
+
+		catch (TooManyListenersException e1) {
+			Metodos.mensaje("Error al mover los archivos", 1, false);
+		}
 
 	}
 
