@@ -12,6 +12,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.TooManyListenersException;
 
@@ -626,6 +627,8 @@ public class GifFramePanel extends JPanel {
 							}
 
 						}
+
+						Collections.sort(archivos);
 
 						File[] resultado = new File[archivos.size()];
 

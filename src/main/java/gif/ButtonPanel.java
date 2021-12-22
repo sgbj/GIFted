@@ -19,6 +19,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JSeparator;
+import javax.swing.UIManager;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
@@ -229,37 +230,43 @@ public class ButtonPanel extends javax.swing.JPanel {
 
 	}
 
-	private void openActionPerformed(java.awt.event.ActionEvent evt, boolean carpeta) {
+	private void showOpenFileDialog(boolean carpeta) {
 
-		JFileChooser fc = new JFileChooser();
+		JFileChooser fileChooser = new JFileChooser();
 
-		fc.setDialogTitle("Multiple selection");
+		fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
 
-		fc.setMultiSelectionEnabled(true);
+		fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 
-		fc.addChoosableFileFilter(new FileNameExtensionFilter("Images (jpg,png,gif)", "jpg", "png", "gif"));
+		fileChooser.setMultiSelectionEnabled(true);
 
-		fc.addChoosableFileFilter(new FileNameExtensionFilter("Gif", "gif"));
+		fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("Images", "jpg", "png", "gif"));
 
-		if (carpeta) {
+		fileChooser.setAcceptAllFileFilterUsed(true);
 
-			fc.setCurrentDirectory(new java.io.File("."));
+		int result = fileChooser.showOpenDialog(this);
 
-			fc.setDialogTitle("Elige una carpeta");
+		if (result == JFileChooser.APPROVE_OPTION) {
 
-			fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+			File[] selectedFile = fileChooser.getSelectedFiles();
 
-			fc.setAcceptAllFileFilterUsed(false);
+			addImages(carpeta, selectedFile);
 
 		}
 
-		fc.setAcceptAllFileFilterUsed(true);
+	}
 
-		int o = fc.showOpenDialog(getParent());
+	private void openActionPerformed(java.awt.event.ActionEvent evt, boolean carpeta) {
 
-		if (o == JFileChooser.APPROVE_OPTION) {
+		try {
 
-			addImages(carpeta, fc.getSelectedFiles());
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+
+			showOpenFileDialog(carpeta);
+
+		}
+
+		catch (Exception e) {
 
 		}
 
