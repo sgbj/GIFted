@@ -37,7 +37,9 @@ public class AnimationPanel extends JPanel {
 						repaint();
 
 						try {
-							Thread.sleep(Long.parseLong(GifFramePanel.fps.getText() + "0"));
+
+							Thread.sleep(Long.parseLong(GifFramePanel.fps.getValor() + "0"));
+
 						}
 
 						catch (Exception ex) {
@@ -46,7 +48,7 @@ public class AnimationPanel extends JPanel {
 
 								Thread.sleep(10L);
 
-								GifFramePanel.fps.setText("10");
+								GifFramePanel.fps.setValor(10);
 
 							} catch (InterruptedException e) {
 								//
@@ -64,13 +66,13 @@ public class AnimationPanel extends JPanel {
 	}
 
 	@Override
-	
+
 	protected void paintComponent(Graphics g) {
-		
+
 		super.paintComponent(g);
-		
+
 		g.drawImage(frames.get(index).getImage(), 0, 0, this);
-		
+
 	}
-	
+
 }

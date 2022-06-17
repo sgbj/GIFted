@@ -17,7 +17,6 @@ import javax.swing.DefaultListCellRenderer;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -30,6 +29,7 @@ import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import roundedButtonsWithImage.ButtonRoundedWithImage;
 import utils.DragAndDrop;
 import utils.Metodos;
 
@@ -115,7 +115,7 @@ public class Config extends javax.swing.JFrame implements ActionListener, Change
 		}
 
 		catch (Exception e) {
-			
+
 		}
 
 	}
@@ -384,7 +384,7 @@ public class Config extends javax.swing.JFrame implements ActionListener, Change
 
 		merge.setFont(new Font("Dialog", Font.PLAIN, 20));
 
-		JButton btnNewButton = new JButton("");
+		ButtonRoundedWithImage btnNewButton = new ButtonRoundedWithImage();
 
 		btnNewButton.addActionListener(new ActionListener() {
 
@@ -395,7 +395,7 @@ public class Config extends javax.swing.JFrame implements ActionListener, Change
 				}
 
 				catch (Exception e) {
-					
+
 				}
 
 			}
@@ -596,7 +596,7 @@ public class Config extends javax.swing.JFrame implements ActionListener, Change
 
 		loopCount.setColumns(10);
 
-		JButton btnNewButton_1 = new JButton("");
+		ButtonRoundedWithImage btnNewButton_1 = new ButtonRoundedWithImage();
 
 		btnNewButton_1.addActionListener(new ActionListener() {
 
@@ -754,7 +754,7 @@ public class Config extends javax.swing.JFrame implements ActionListener, Change
 														.addComponent(lblNewLabel_4).addComponent(lblNewLabel_5)
 														.addComponent(lblNewLabel_8).addComponent(lblNewLabel_3))))
 								.addGap(55))
-						.addComponent(lblNewLabel, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 322, Short.MAX_VALUE))
+						.addComponent(lblNewLabel, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 308, Short.MAX_VALUE))
 				.addPreferredGap(
 						ComponentPlacement.RELATED)
 				.addGroup(layout.createParallelGroup(Alignment.LEADING)
@@ -807,20 +807,23 @@ public class Config extends javax.swing.JFrame implements ActionListener, Change
 												.addGap(205).addComponent(lblNewLabel_14).addGap(154))
 										.addGroup(layout.createSequentialGroup().addGroup(layout
 												.createParallelGroup(Alignment.TRAILING)
-												.addGroup(layout.createParallelGroup(Alignment.LEADING).addGroup(layout
-														.createSequentialGroup()
-														.addComponent(imagenes, GroupLayout.PREFERRED_SIZE,
-																GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-														.addGap(18).addComponent(btnNewButton_1,
-																GroupLayout.PREFERRED_SIZE, 58,
-																GroupLayout.PREFERRED_SIZE))
+												.addComponent(btnNewButton, GroupLayout.PREFERRED_SIZE, 54,
+														GroupLayout.PREFERRED_SIZE)
+												.addGroup(layout.createSequentialGroup().addGroup(layout
+														.createParallelGroup(Alignment.LEADING)
+														.addGroup(layout.createSequentialGroup()
+																.addComponent(imagenes, GroupLayout.PREFERRED_SIZE,
+																		GroupLayout.DEFAULT_SIZE,
+																		GroupLayout.PREFERRED_SIZE)
+																.addGap(18).addComponent(btnNewButton_1,
+																		GroupLayout.PREFERRED_SIZE, 58,
+																		GroupLayout.PREFERRED_SIZE))
 														.addGroup(layout.createSequentialGroup()
 																.addComponent(lblNewLabel_7)
 																.addPreferredGap(ComponentPlacement.RELATED)
 																.addComponent(merge, GroupLayout.PREFERRED_SIZE, 168,
 																		GroupLayout.PREFERRED_SIZE)))
-												.addComponent(btnNewButton, GroupLayout.PREFERRED_SIZE, 54,
-														GroupLayout.PREFERRED_SIZE)
+														.addPreferredGap(ComponentPlacement.RELATED))
 												.addGroup(layout.createSequentialGroup().addComponent(horizontal)
 														.addGap(47).addComponent(lblNewLabel_16).addGap(18)
 														.addComponent(vertical))
@@ -828,7 +831,7 @@ public class Config extends javax.swing.JFrame implements ActionListener, Change
 														.addComponent(flip, GroupLayout.PREFERRED_SIZE, 293,
 																GroupLayout.PREFERRED_SIZE)
 														.addGap(32)))
-												.addPreferredGap(ComponentPlacement.RELATED, 169, Short.MAX_VALUE))))
+												.addPreferredGap(ComponentPlacement.RELATED, 167, Short.MAX_VALUE))))
 						.addGroup(layout.createSequentialGroup().addGap(106).addComponent(resize,
 								GroupLayout.PREFERRED_SIZE, 269, GroupLayout.PREFERRED_SIZE))
 						.addGroup(layout.createSequentialGroup().addGap(132).addComponent(bn,
@@ -853,23 +856,23 @@ public class Config extends javax.swing.JFrame implements ActionListener, Change
 												.addComponent(sizeCrop, GroupLayout.PREFERRED_SIZE, 134,
 														GroupLayout.PREFERRED_SIZE)
 												.addComponent(lblNewLabel_13_1))
-								.addGroup(layout.createSequentialGroup()
-										.addGroup(layout.createParallelGroup(Alignment.TRAILING).addGroup(layout
-												.createSequentialGroup()
+								.addGroup(layout.createSequentialGroup().addGroup(layout
+										.createParallelGroup(Alignment.TRAILING)
+										.addGroup(layout.createSequentialGroup()
 												.addComponent(espacioLeft, GroupLayout.PREFERRED_SIZE, 34,
 														GroupLayout.PREFERRED_SIZE)
 												.addGap(35))
-												.addGroup(layout.createSequentialGroup()
-														.addGroup(layout.createParallelGroup(Alignment.LEADING)
-																.addComponent(btnNewButton_1).addComponent(imagenes,
-																		GroupLayout.PREFERRED_SIZE, 60,
-																		GroupLayout.PREFERRED_SIZE))
-														.addGap(18)))
+										.addGroup(layout.createSequentialGroup()
+												.addGroup(layout.createParallelGroup(Alignment.TRAILING, false)
+														.addComponent(btnNewButton_1, Alignment.LEADING, 0, 0,
+																Short.MAX_VALUE)
+														.addComponent(imagenes, Alignment.LEADING,
+																GroupLayout.DEFAULT_SIZE, 60, Short.MAX_VALUE))
+												.addGap(39)))
 										.addGap(20)
-										.addGroup(
-												layout.createParallelGroup(Alignment.BASELINE).addComponent(flip)
-														.addComponent(espacioTop, GroupLayout.PREFERRED_SIZE, 36,
-																GroupLayout.PREFERRED_SIZE))))
+										.addGroup(layout.createParallelGroup(Alignment.BASELINE).addComponent(flip)
+												.addComponent(espacioTop, GroupLayout.PREFERRED_SIZE, 36,
+														GroupLayout.PREFERRED_SIZE))))
 						.addGroup(layout.createParallelGroup(Alignment.LEADING).addGroup(layout.createSequentialGroup()
 								.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 								.addGroup(layout.createParallelGroup(Alignment.LEADING)
@@ -949,11 +952,14 @@ public class Config extends javax.swing.JFrame implements ActionListener, Change
 														.addPreferredGap(ComponentPlacement.UNRELATED)
 														.addComponent(bn, GroupLayout.PREFERRED_SIZE, 24,
 																GroupLayout.PREFERRED_SIZE)
-														.addGap(25)
-														.addGroup(layout.createParallelGroup(Alignment.LEADING)
-																.addComponent(btnNewButton).addComponent(lblNewLabel_1,
-																		GroupLayout.DEFAULT_SIZE, 58,
-																		Short.MAX_VALUE))))
+														.addPreferredGap(ComponentPlacement.RELATED, 25,
+																Short.MAX_VALUE)
+														.addComponent(lblNewLabel_1, GroupLayout.PREFERRED_SIZE, 63,
+																GroupLayout.PREFERRED_SIZE)
+														.addGap(18))
+												.addGroup(layout.createSequentialGroup().addGap(118).addComponent(
+														btnNewButton, GroupLayout.PREFERRED_SIZE, 55,
+														GroupLayout.PREFERRED_SIZE)))
 										.addGap(37))
 								.addGroup(layout.createSequentialGroup().addComponent(resize,
 										GroupLayout.PREFERRED_SIZE, 65, GroupLayout.PREFERRED_SIZE).addGap(321)))

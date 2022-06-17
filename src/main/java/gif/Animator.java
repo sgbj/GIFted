@@ -17,6 +17,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -33,7 +34,7 @@ public class Animator {
 
 	static String separador = Metodos.saberSeparador(os);
 
-	LinkedList<String> archivos = new LinkedList<String>();
+	static LinkedList<BufferedImage> archivos = new LinkedList<BufferedImage>();
 
 	public static String getSeparador() {
 		return separador;
@@ -53,7 +54,8 @@ public class Animator {
 
 	}
 
-	public Animator(GifFrame[] frames) throws IOException {
+	public Animator(GifFrame[] frames) throws IOException, ClassNotFoundException, InstantiationException,
+			IllegalAccessException, UnsupportedLookAndFeelException {
 
 		final JFrame f = new JFrame("Gif Animator");
 
@@ -132,7 +134,7 @@ public class Animator {
 
 					try {
 
-						LinkedList<File> archivos = new LinkedList<File>();
+						LinkedList<File> lista = new LinkedList<File>();
 
 						String ruta;
 
@@ -147,7 +149,7 @@ public class Animator {
 
 								for (int x = 0; x < carpetasSeleccion.size(); x++) {
 
-									archivos.add(new File(carpetasSeleccion.get(x)));
+									lista.add(new File(carpetasSeleccion.get(x)));
 
 								}
 
@@ -155,20 +157,15 @@ public class Animator {
 
 							else {
 
-								archivos.add(new File(ruta));
+								lista.add(new File(ruta));
+
 							}
 
 						}
 
-						Collections.sort(archivos);
+						Collections.sort(lista);
 
-						File[] resultado = new File[archivos.size()];
-
-						for (int i = 0; i < archivos.size(); i++) {
-							resultado[i] = archivos.get(i);
-						}
-
-						ButtonPanel.addImages(false, resultado);
+						ButtonPanel.addImages(false, lista);
 
 					}
 
@@ -183,16 +180,25 @@ public class Animator {
 		}
 
 		catch (TooManyListenersException e1) {
+
 			Metodos.mensaje("Error al mover los archivos", 1, false);
+
 		}
+
 	}
 
 	public void addGifFrame(GifFrame frame) {
+
+		archivos.add(frame.getImage());
+
 		lista.addGifFrame(frame);
+
 	}
 
 	public List<GifFrame> getGifFrames() {
+
 		return lista.getGifFrames();
+
 	}
 
 	static GifFrame createDemoGifFrame(int w, int h, String str, int delay) {

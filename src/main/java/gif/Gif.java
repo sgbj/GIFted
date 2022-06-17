@@ -6,77 +6,52 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.imageio.IIOImage;
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
-import javax.imageio.ImageTypeSpecifier;
-import javax.imageio.ImageWriter;
 import javax.imageio.metadata.IIOInvalidTreeException;
 import javax.imageio.metadata.IIOMetadata;
 import javax.imageio.metadata.IIOMetadataNode;
-import javax.imageio.stream.ImageOutputStream;
 
 public final class Gif {
 
 	public static void write(List<GifFrame> frames, boolean loopContinuously, File file)
 			throws IIOInvalidTreeException, IOException {
 
-		ImageWriter writer = ImageIO.getImageWritersByFormatName("gif").next();
+		try {
 
-		ImageOutputStream out = ImageIO.createImageOutputStream(file);
+			AnimatedGifEncoder e = new AnimatedGifEncoder();
 
-		writer.setOutput(out);
+			int contador = 0;
 
-		writer.prepareWriteSequence(writer.getDefaultStreamMetadata(writer.getDefaultWriteParam()));
+			Animator.animator.getGifFrames().get(0);
 
-		for (GifFrame frame : frames) {
+			for (BufferedImage frame : Animator.archivos) {
 
-			BufferedImage image = frame.getImage();
+				contador++;
 
-			long delay = Integer.parseInt(GifFramePanel.fps.getText());
+				if (contador == 1) {
 
-			IIOMetadata metadata = writer.getDefaultImageMetadata(new ImageTypeSpecifier(image),
-					writer.getDefaultWriteParam());
+					e.start("C:\\Users\\Yeah\\Desktop\\salida_out_Test.gif");
 
-			String fmt = metadata.getNativeMetadataFormatName();
+					e.setRepeat(0);
 
-			IIOMetadataNode root = (IIOMetadataNode) metadata.getAsTree(fmt);
+					e.setDelay(GifFramePanel.fps.getValor());
 
-			IIOMetadataNode gce = getNode(root, "GraphicControlExtension");
+				}
 
-			gce.setAttribute("disposalMethod", "none");
+				e.addFrame(frame);
 
-			gce.setAttribute("userInputFlag", "FALSE");
+			}
 
-			gce.setAttribute("transparentColorFlag", "FALSE");
+			e.finish();
 
-			gce.setAttribute("delayTime", Long.toString(delay));
+			Animator.archivos.clear();
 
-			gce.setAttribute("transparentColorIndex", "0");
+			Animator.lista.m.clear();
 
-			IIOMetadataNode appexts = getNode(root, "ApplicationExtensions");
-
-			IIOMetadataNode appext = new IIOMetadataNode("ApplicationExtension");
-
-			appext.setAttribute("applicationID", "NETSCAPE");
-
-			appext.setAttribute("authenticationCode", "2.0");
-
-			appext.setUserObject(new byte[] { 0x1, (byte) (loopContinuously ? 0x0 : 0x1), 0x0 });
-
-			appexts.appendChild(appext);
-
-			metadata.setFromTree(fmt, root);
-
-			writer.writeToSequence(new IIOImage(image, null, metadata), writer.getDefaultWriteParam());
-
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-
-		writer.endWriteSequence();
-
-		writer.reset();
-
-		out.close();
 
 	}
 
@@ -107,10 +82,12 @@ public final class Gif {
 			long delay = 500;
 
 			if (!delayTime.isEmpty()) {
+
 				delay = Long.parseLong(delayTime);
 			}
 
 			frames.add(new GifFrame(image, delay * 10));
+
 		}
 
 		return frames;

@@ -27,5 +27,7 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/Yeah/Desktop/J_Material_Swing_v_2.1.jar"/>
+	<classpathentry kind="lib" path="src/main/java/libs/Timing.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

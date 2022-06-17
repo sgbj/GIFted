@@ -8,21 +8,20 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JSeparator;
-import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.filechooser.FileFilter;
-import javax.swing.filechooser.FileNameExtensionFilter;
 
+import roundedButtonsWithImage.ButtonRoundedWithImage;
+import simple.chooser.DemoJavaFxStage;
 import utils.Metodos;
 
 public class ButtonPanel extends javax.swing.JPanel {
@@ -35,7 +34,13 @@ public class ButtonPanel extends javax.swing.JPanel {
 
 	private javax.swing.JButton open;
 
-	private javax.swing.JButton save;
+	private ButtonRoundedWithImage save;
+
+	String carpeta;
+
+	LinkedList<File> lista;
+
+	DemoJavaFxStage test;
 
 	private JSeparator separator;
 
@@ -55,7 +60,7 @@ public class ButtonPanel extends javax.swing.JPanel {
 
 	static LinkedList<String> carpetasSeleccion = new LinkedList<String>();
 
-	private JButton btnConfig;
+	private ButtonRoundedWithImage btnConfig;
 
 	private static String[] lectura;
 
@@ -94,7 +99,8 @@ public class ButtonPanel extends javax.swing.JPanel {
 		ButtonPanel.lectura = lectura;
 	}
 
-	public ButtonPanel(Animator animator) throws IOException {
+	public ButtonPanel(Animator animator) throws IOException, ClassNotFoundException, InstantiationException,
+			IllegalAccessException, UnsupportedLookAndFeelException {
 
 		ButtonPanel.animator = animator;
 
@@ -102,7 +108,12 @@ public class ButtonPanel extends javax.swing.JPanel {
 
 	}
 
-	private void initComponents() throws IOException {
+	private void initComponents() throws IOException, ClassNotFoundException, InstantiationException,
+			IllegalAccessException, UnsupportedLookAndFeelException {
+
+		lista = new LinkedList<File>();
+
+		test = new DemoJavaFxStage();
 
 		directorioActual = new File(".").getCanonicalPath() + separador;
 
@@ -120,21 +131,35 @@ public class ButtonPanel extends javax.swing.JPanel {
 
 		}
 
-		open = new javax.swing.JButton();
+		ButtonRoundedWithImage open = new ButtonRoundedWithImage();
 
-		open.setIcon(new ImageIcon(ButtonPanel.class.getResource("/images/abrir.png")));
+		open.addActionListener(new ActionListener() {
 
-		open.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(ActionEvent e) {
 
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				openActionPerformed(evt, false);
+				try {
+
+					lista = test.showOpenFileDialog(carpeta, false, "");
+
+					addImages(false, lista);
+
+					carpeta = lista.get(0).toString();
+
+				}
+
+				catch (Exception e1) {
+
+				}
+
 			}
 
 		});
 
+		open.setIcon(new ImageIcon(ButtonPanel.class.getResource("/images/abrir.png")));
+
 		setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 
-		btnConfig = new JButton("");
+		btnConfig = new ButtonRoundedWithImage();
 
 		btnConfig.addActionListener(new ActionListener() {
 
@@ -152,7 +177,7 @@ public class ButtonPanel extends javax.swing.JPanel {
 
 		add(open);
 
-		save = new javax.swing.JButton();
+		save = new ButtonRoundedWithImage();
 
 		save.setIcon(new ImageIcon(ButtonPanel.class.getResource("/images/save.png")));
 
@@ -164,14 +189,28 @@ public class ButtonPanel extends javax.swing.JPanel {
 
 		});
 
-		JButton open_1 = new JButton();
+		ButtonRoundedWithImage open_1 = new ButtonRoundedWithImage();
 
 		open_1.setIcon(new ImageIcon(ButtonPanel.class.getResource("/images/folder.png")));
 
 		open_1.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent arg0) {
-				openActionPerformed(arg0, true);
+
+				try {
+
+					lista = test.showOpenFileDialog(carpeta, true, "");
+
+					addImages(true, lista);
+
+					carpeta = lista.get(0).toString();
+
+				}
+
+				catch (Exception e1) {
+
+				}
+
 			}
 
 		});
@@ -230,124 +269,39 @@ public class ButtonPanel extends javax.swing.JPanel {
 
 	}
 
-	private void showOpenFileDialog(boolean carpeta) {
+	public static void addImages(boolean carpeta, LinkedList<File> files) {
 
-		JFileChooser fileChooser = new JFileChooser();
+		LinkedList<File> archivos = new LinkedList<File>();
 
-		fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+		if (carpeta) {
 
-		fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+			for (int i = 0; i < files.size(); i++) {
 
-		fileChooser.setMultiSelectionEnabled(true);
+				carpetasSeleccion = Metodos.directorio(files.get(i).getAbsolutePath() + Animator.getSeparador(),
+						"images", true, true);
 
-		fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("Images", "jpg", "png", "gif"));
+				for (int y = 0; y < carpetasSeleccion.size(); y++) {
 
-		fileChooser.setAcceptAllFileFilterUsed(true);
-
-		int result = fileChooser.showOpenDialog(this);
-
-		if (result == JFileChooser.APPROVE_OPTION) {
-
-			File[] selectedFile = fileChooser.getSelectedFiles();
-
-			addImages(carpeta, selectedFile);
-
-		}
-
-	}
-
-	private void openActionPerformed(java.awt.event.ActionEvent evt, boolean carpeta) {
-
-		try {
-
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-
-			showOpenFileDialog(carpeta);
-
-		}
-
-		catch (Exception e) {
-
-		}
-
-	}
-
-	public static void addImages(boolean carpeta, File[] fc) {
-
-		LinkedList<File> files = new LinkedList<File>();
-
-		int vueltas = 1;
-
-		if (!carpeta) {
-
-			files.clear();
-
-			Arrays.asList(fc).forEach(x -> {
-
-				if (x.isFile()) {
-
-					String extension = Metodos.extraerExtension(x.getAbsolutePath());
-
-					if (extension.equals("jpg") || extension.equals("png") || extension.equals("gif")) {
-
-						if (extension.equals("gif")) {
-
-							archivoGif = x.getAbsolutePath();
-
-							gif = true;
-
-						}
-
-						else {
-
-							if (!gif) {
-								archivos++;
-							}
-
-						}
-
-						files.add(new File(x.getAbsolutePath()));
-
-					}
+					archivos.add(new File(carpetasSeleccion.get(y)));
 
 				}
 
-			});
+			}
 
 		}
 
 		else {
 
-			files.clear();
-
-			Arrays.asList(fc).forEach(x -> {
-
-				if (x.isDirectory()) {
-
-					carpetasSeleccion = Metodos.directorio(x.getAbsolutePath() + Animator.getSeparador(), "images",
-							true, true);
-
-					for (int i = 0; i < carpetasSeleccion.size(); i++) {
-
-						files.add(new File(carpetasSeleccion.get(i)));
-
-					}
-
-				}
-
-			});
-
+			archivos = files;
 		}
 
 		try {
 
-			vueltas = files.size();
+			for (int i = 0; i < archivos.size(); i++) {
 
-			for (int i = 0; i < vueltas; i++) {
+				if (archivos.get(i).getName().endsWith("gif")) {
 
-				if (files.get(i).getName().endsWith("gif")) {
-
-					List<GifFrame> frames = Gif.read(files.get(i));
+					List<GifFrame> frames = Gif.read(archivos.get(i));
 
 					for (GifFrame frame : frames) {
 
@@ -358,9 +312,10 @@ public class ButtonPanel extends javax.swing.JPanel {
 
 				else {
 
-					BufferedImage image = ImageIO.read(files.get(i));
+					BufferedImage image = ImageIO.read(archivos.get(i));
 
 					animator.addGifFrame(new GifFrame(image, 500));
+
 				}
 
 			}
