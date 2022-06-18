@@ -20,5 +20,3 @@ and to the C:\Windows\SysWOW64 folder for 64-bit versions
 ![Preview](previews/1.png)
 
 ![Preview](previews/2.png)
-
-![Preview](previews/3.png)

@@ -1,10 +1,17 @@
 
 package gif;
 
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.Toolkit;
+import java.awt.Window.Type;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -13,14 +20,20 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JDialog;
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JSeparator;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.filechooser.FileFilter;
 
-import roundedButtonsWithImage.ButtonRoundedWithImage;
 import simple.chooser.DemoJavaFxStage;
 import utils.Metodos;
 
@@ -33,8 +46,6 @@ public class ButtonPanel extends javax.swing.JPanel {
 	private static Animator animator;
 
 	private javax.swing.JButton open;
-
-	private ButtonRoundedWithImage save;
 
 	String carpeta;
 
@@ -60,11 +71,9 @@ public class ButtonPanel extends javax.swing.JPanel {
 
 	static LinkedList<String> carpetasSeleccion = new LinkedList<String>();
 
-	private ButtonRoundedWithImage btnConfig;
-
 	private static String[] lectura;
 
-	private JCheckBox tool;
+	static JCheckBox tool;
 
 	static String os = System.getProperty("os.name");
 
@@ -76,8 +85,19 @@ public class ButtonPanel extends javax.swing.JPanel {
 
 	public static LinkedList<String> listaImagenesInterlace = new LinkedList<String>();
 	private JLabel lblNewLabel_1;
-	private JCheckBox reverse;
+	static JCheckBox reverse;
 	private JLabel lblNewLabel_2;
+	private JMenuBar menuBar;
+	private JMenu mnNewMenu;
+	private JMenuItem mntmNewMenuItem;
+	private JMenuItem mntmNewMenuItem_1;
+	private JMenuItem mntmNewMenuItem_2;
+	private JMenuItem mntmNewMenuItem_3;
+	private JButton btnClearFrames;
+	private JButton btnViewGif;
+	private JSeparator separator_3;
+	private JSeparator separator_4;
+	private JSeparator separator_5;
 
 	public static LinkedList<String> getListaImagenesInterlace() {
 		return listaImagenesInterlace;
@@ -111,6 +131,8 @@ public class ButtonPanel extends javax.swing.JPanel {
 	private void initComponents() throws IOException, ClassNotFoundException, InstantiationException,
 			IllegalAccessException, UnsupportedLookAndFeelException {
 
+		carpeta = "";
+
 		lista = new LinkedList<File>();
 
 		test = new DemoJavaFxStage();
@@ -131,12 +153,33 @@ public class ButtonPanel extends javax.swing.JPanel {
 
 		}
 
-		ButtonRoundedWithImage open = new ButtonRoundedWithImage();
+		setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 
-		open.addActionListener(new ActionListener() {
+		menuBar = new JMenuBar();
+		add(menuBar);
 
-			public void actionPerformed(ActionEvent e) {
+		mnNewMenu = new JMenu("Menu");
+		mnNewMenu.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+		mnNewMenu.setIcon(new ImageIcon(ButtonPanel.class.getResource("/images/settings.png")));
+		menuBar.add(mnNewMenu);
 
+		mntmNewMenuItem = new JMenuItem("Settings");
+		mntmNewMenuItem.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+		mntmNewMenuItem.setIcon(new ImageIcon(ButtonPanel.class.getResource("/images/settings.png")));
+		mntmNewMenuItem.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				new Config().setVisible(true);
+			}
+		});
+		mnNewMenu.add(mntmNewMenuItem);
+
+		mntmNewMenuItem_1 = new JMenuItem("Open Image");
+		mntmNewMenuItem_1.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+		mntmNewMenuItem_1.setIcon(new ImageIcon(ButtonPanel.class.getResource("/images/abrir.png")));
+		mntmNewMenuItem_1.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
 				try {
 
 					lista = test.showOpenFileDialog(carpeta, false, "");
@@ -152,50 +195,22 @@ public class ButtonPanel extends javax.swing.JPanel {
 				}
 
 			}
-
 		});
 
-		open.setIcon(new ImageIcon(ButtonPanel.class.getResource("/images/abrir.png")));
+		separator_5 = new JSeparator();
+		mnNewMenu.add(separator_5);
 
-		setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		mnNewMenu.add(mntmNewMenuItem_1);
 
-		btnConfig = new ButtonRoundedWithImage();
+		mntmNewMenuItem_2 = new JMenuItem("Open Folder");
+		mntmNewMenuItem_2.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+		mntmNewMenuItem_2.setIcon(new ImageIcon(ButtonPanel.class.getResource("/images/folder.png")));
 
-		btnConfig.addActionListener(new ActionListener() {
+		mntmNewMenuItem_2.addMouseListener(new MouseAdapter() {
 
-			public void actionPerformed(ActionEvent arg0) {
-				new Config().setVisible(true);
-			}
+			@Override
 
-		});
-
-		btnConfig.setIcon(new ImageIcon(ButtonPanel.class.getResource("/images/settings.png")));
-
-		btnConfig.setFont(new Font("Dialog", Font.PLAIN, 20));
-
-		add(btnConfig);
-
-		add(open);
-
-		save = new ButtonRoundedWithImage();
-
-		save.setIcon(new ImageIcon(ButtonPanel.class.getResource("/images/save.png")));
-
-		save.addActionListener(new java.awt.event.ActionListener() {
-
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				saveActionPerformed(evt);
-			}
-
-		});
-
-		ButtonRoundedWithImage open_1 = new ButtonRoundedWithImage();
-
-		open_1.setIcon(new ImageIcon(ButtonPanel.class.getResource("/images/folder.png")));
-
-		open_1.addActionListener(new ActionListener() {
-
-			public void actionPerformed(ActionEvent arg0) {
+			public void mousePressed(MouseEvent e) {
 
 				try {
 
@@ -212,20 +227,102 @@ public class ButtonPanel extends javax.swing.JPanel {
 				}
 
 			}
-
 		});
+
+		separator_4 = new JSeparator();
+		mnNewMenu.add(separator_4);
+		mnNewMenu.add(mntmNewMenuItem_2);
+
+		mntmNewMenuItem_3 = new JMenuItem("Create Gif");
+		mntmNewMenuItem_3.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+		mntmNewMenuItem_3.setIcon(new ImageIcon(ButtonPanel.class.getResource("/images/save.png")));
+		mntmNewMenuItem_3.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+
+				try {
+
+					if (animator.getGifFrames().size() > 1) {
+
+						JFileChooser fc = new JFileChooser();
+
+						fc.setSelectedFile(new File("*.gif"));
+
+						fc.setFileFilter(new FileFilter() {
+
+							@Override
+							public boolean accept(File f) {
+								return f.getName().toLowerCase().endsWith(".gif");
+							}
+
+							@Override
+							public String getDescription() {
+								return "GIF (*.gif)";
+							}
+
+						});
+
+						int o = fc.showSaveDialog(getParent());
+
+						if (o == JFileChooser.APPROVE_OPTION) {
+
+							File file = fc.getSelectedFile();
+
+							Gif.write(animator.getGifFrames(), loop.isSelected(), file);
+
+							if (tool.isSelected()) {
+
+								gifsicle(file);
+
+							}
+
+							if (reverse.isSelected()) {
+
+								String comando = "";
+
+								if (os.contains("indows")) {
+
+									comando = directorioActual + "gifsicle.exe ";
+
+								}
+
+								else {
+
+									comando = "gifsicle ";
+
+								}
+
+								Runtime.getRuntime()
+										.exec(comando + file.toString() + " \"#-1-0\" > "
+												+ file.toString().substring(0, file.toString().lastIndexOf("."))
+												+ "_reverse.gif");
+
+							}
+
+						}
+
+					}
+
+				}
+
+				catch (Exception e1) {
+
+				}
+
+			}
+		});
+
+		separator_3 = new JSeparator();
+		mnNewMenu.add(separator_3);
+		mnNewMenu.add(mntmNewMenuItem_3);
 
 		separator = new JSeparator();
 
 		add(separator);
 
-		add(open_1);
-
 		separator_1 = new JSeparator();
 
 		add(separator_1);
-
-		add(save);
 
 		separator_2 = new JSeparator();
 
@@ -266,6 +363,71 @@ public class ButtonPanel extends javax.swing.JPanel {
 		reverse = new JCheckBox("Reverse");
 		reverse.setFont(new Font("Tahoma", Font.PLAIN, 22));
 		add(reverse);
+
+		btnClearFrames = new JButton("Clear Frames");
+		btnClearFrames.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (!Animator.lista.m.isEmpty()) {
+
+					int resp = JOptionPane.showConfirmDialog(null, "Do you want to delete all frames?", "Clear Frames",
+							JOptionPane.YES_NO_OPTION);
+
+					if (resp == 0) {
+						Animator.lista.m.clear();
+					}
+
+				}
+			}
+		});
+		btnClearFrames.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		btnClearFrames.setIcon(new ImageIcon(ButtonPanel.class.getResource("/images/clean.png")));
+		add(btnClearFrames);
+
+		btnViewGif = new JButton("Preview Gif");
+		btnViewGif.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		btnViewGif.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+				if (Animator.lista.m.size() > 0) {
+
+					final JDialog d = new JDialog((JFrame) null, "Animation");
+
+					d.setType(Type.UTILITY);
+
+					d.addKeyListener(new KeyAdapter() {
+
+						@Override
+
+						public void keyPressed(KeyEvent e) {
+
+							if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+								d.dispose();
+							}
+						}
+
+					});
+
+					d.getContentPane().add(new AnimationPanel(animator.getGifFrames(), ButtonPanel.loop.isSelected()));
+
+					d.pack();
+
+					Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+
+					int height = screenSize.height;
+
+					int width = screenSize.width;
+
+					d.setSize(width - 256, height - 304);
+
+					d.setLocationRelativeTo(null);
+
+					d.setVisible(true);
+
+				}
+			}
+		});
+		btnViewGif.setIcon(new ImageIcon(ButtonPanel.class.getResource("/images/view.png")));
+		add(btnViewGif);
 
 	}
 
@@ -327,78 +489,7 @@ public class ButtonPanel extends javax.swing.JPanel {
 		}
 	}
 
-	private void saveActionPerformed(java.awt.event.ActionEvent evt) {
-
-		try {
-
-			if (animator.getGifFrames().size() > 1) {
-
-				JFileChooser fc = new JFileChooser();
-
-				fc.setSelectedFile(new File("*.gif"));
-
-				fc.setFileFilter(new FileFilter() {
-
-					@Override
-					public boolean accept(File f) {
-						return f.getName().toLowerCase().endsWith(".gif");
-					}
-
-					@Override
-					public String getDescription() {
-						return "GIF (*.gif)";
-					}
-
-				});
-
-				int o = fc.showSaveDialog(getParent());
-
-				if (o == JFileChooser.APPROVE_OPTION) {
-
-					File file = fc.getSelectedFile();
-
-					Gif.write(animator.getGifFrames(), loop.isSelected(), file);
-
-					if (tool.isSelected()) {
-
-						gifsicle(file);
-
-					}
-
-					if (reverse.isSelected()) {
-
-						String comando = "";
-
-						if (os.contains("indows")) {
-
-							comando = directorioActual + "gifsicle.exe ";
-
-						}
-
-						else {
-
-							comando = "gifsicle ";
-
-						}
-
-						Runtime.getRuntime().exec(comando + file.toString() + " \"#-1-0\" > "
-								+ file.toString().substring(0, file.toString().lastIndexOf(".")) + "_reverse.gif");
-
-					}
-
-				}
-
-			}
-
-		}
-
-		catch (Exception e) {
-
-		}
-
-	}
-
-	private void gifsicle(File file) {
+	static void gifsicle(File file) {
 
 		try {
 
@@ -443,8 +534,6 @@ public class ButtonPanel extends javax.swing.JPanel {
 					comando += " --optimize=" + lectura[1];
 
 				}
-
-				Animator.saberSize();
 
 				String escala = lectura[2];
 

@@ -1,5 +1,6 @@
 package gif;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.SystemColor;
@@ -490,7 +491,7 @@ public class Config extends javax.swing.JFrame implements ActionListener, Change
 
 		imagenes.setEditable(false);
 
-		imagenes.setBackground(SystemColor.windowBorder);
+		imagenes.setBackground(Color.WHITE);
 
 		colores = new JTextField();
 

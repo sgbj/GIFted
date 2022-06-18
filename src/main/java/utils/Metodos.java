@@ -17,7 +17,6 @@ import alertas.AlertError;
 import alertas.AlertInformation;
 import alertas.AlertSuccess;
 import alertas.AlertWarningSalir;
-import gif.Animator;
 import gif.ButtonPanel;
 
 public class Metodos {
@@ -122,17 +121,35 @@ public class Metodos {
 
 	}
 
-	public static void abrirCarpeta(String ruta) throws Exception {
+	public static void abrirCarpeta(String ruta) throws IOException {
 
-		if (Animator.getOs().contentEquals("Linux")) {
+		if (ruta != null && !ruta.equals("") && !ruta.isEmpty()) {
 
-			Runtime.getRuntime().exec("xdg-open " + ruta);
+			try {
 
-		}
+				if (System.getProperty("os.name").contains("indows")) {
 
-		else {
+					Runtime.getRuntime().exec("cmd /c C:\\Windows\\explorer.exe " + "\"" + ruta + "\"");
 
-			Runtime.getRuntime().exec("cmd /c C:\\Windows\\explorer.exe " + "\"" + ruta + "\"");
+				}
+
+				if (System.getProperty("os.name").contains("inux")) {
+
+					Runtime.getRuntime().exec("xdg-open " + ruta);
+
+				}
+
+				if (System.getProperty("os.name").contains("ac")) {
+
+					Runtime.getRuntime().exec("open " + ruta);
+
+				}
+
+			}
+
+			catch (IOException e) {
+
+			}
 
 		}
 

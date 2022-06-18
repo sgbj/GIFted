@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.imageio.ImageIO;
@@ -33,7 +34,10 @@ import javax.swing.plaf.basic.BasicListUI;
 public class GifFrameList extends JList<Object> {
 
 	private static final long serialVersionUID = 1L;
+
 	DefaultListModel<Object> m = (DefaultListModel<Object>) getModel();
+
+	private static LinkedList<File> archivos = new LinkedList<>();
 
 	public GifFrameList(Object[] listData) {
 
@@ -248,14 +252,16 @@ public class GifFrameList extends JList<Object> {
 							Collections.reverse(frames);
 
 							for (GifFrame frame : frames) {
+
 								m.add(index, frame);
+
 							}
 
 						}
 
 						else {
 
-							m.add(index, new GifFrame(ImageIO.read(file), 500));
+							archivos.add(file);
 
 						}
 
@@ -270,6 +276,29 @@ public class GifFrameList extends JList<Object> {
 					}
 
 				}
+				try {
+
+					Collections.sort(archivos);
+
+					int y = index;
+
+					for (int i = 0; i < archivos.size(); i++) {
+
+						m.add(y, new GifFrame(ImageIO.read(archivos.get(i)), 500));
+
+						y++;
+
+					}
+
+				}
+
+				catch (IOException e) {
+
+					e.printStackTrace();
+
+				}
+
+				archivos.clear();
 
 			}
 

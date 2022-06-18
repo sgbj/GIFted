@@ -6,9 +6,7 @@ import java.awt.Graphics2D;
 import java.awt.Toolkit;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.TooManyListenersException;
@@ -21,7 +19,6 @@ import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import utils.DragAndDrop;
 import utils.Metodos;
 
 public class Animator {
@@ -46,16 +43,8 @@ public class Animator {
 		return os;
 	}
 
-	public static void saberSize() {
-
-		GifFrame frame = (GifFrame) lista.getGifFrames().get(0);
-
-		panel.setGifFrame(frame);
-
-	}
-
 	public Animator(GifFrame[] frames) throws IOException, ClassNotFoundException, InstantiationException,
-			IllegalAccessException, UnsupportedLookAndFeelException {
+			IllegalAccessException, UnsupportedLookAndFeelException, TooManyListenersException {
 
 		final JFrame f = new JFrame("Gif Animator");
 
@@ -66,18 +55,19 @@ public class Animator {
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		ButtonPanel buttonPanel = new ButtonPanel(this);
+		buttonPanel.setBackground(Color.WHITE);
 
 		buttonPanel.setSize(10, 10);
 
 		f.getContentPane().add(buttonPanel, BorderLayout.NORTH);
 
 		panel = new GifFramePanel(this);
-
-		panel.setSize(10, 10);
+		panel.setBackground(Color.WHITE);
 
 		f.getContentPane().add(panel);
 
 		JPanel listPanel = new JPanel(new BorderLayout());
+		listPanel.setBackground(Color.WHITE);
 
 		JScrollPane listScrollPane = new JScrollPane();
 
@@ -98,9 +88,7 @@ public class Animator {
 
 				public void valueChanged(ListSelectionEvent e) {
 
-					GifFrame frame = (GifFrame) lista.getSelectedValue();
-
-					panel.setGifFrame(frame);
+					panel.setGifFrame((GifFrame) lista.getSelectedValue());
 
 				}
 
@@ -112,6 +100,8 @@ public class Animator {
 
 		listPanel.add(listScrollPane, BorderLayout.CENTER);
 
+		javax.swing.border.TitledBorder dragBorder = new javax.swing.border.TitledBorder("");
+
 		f.getContentPane().add(listPanel, BorderLayout.SOUTH);
 
 		f.pack();
@@ -119,71 +109,6 @@ public class Animator {
 		f.setLocationRelativeTo(null);
 
 		f.setVisible(true);
-
-		javax.swing.border.TitledBorder dragBorder = new javax.swing.border.TitledBorder("");
-
-		try {
-
-			new DragAndDrop(listScrollPane, dragBorder, true, new DragAndDrop.Listener() {
-
-				@SuppressWarnings("null")
-
-				public void filesDropped(java.io.File[] files) {
-
-					LinkedList<String> carpetasSeleccion = new LinkedList<String>();
-
-					try {
-
-						LinkedList<File> lista = new LinkedList<File>();
-
-						String ruta;
-
-						for (int i = 0; i < files.length; i++) {
-
-							ruta = files[i].getAbsolutePath();
-
-							if (!files[i].getAbsolutePath().contains(".")) {
-
-								carpetasSeleccion = Metodos.directorio(ruta + Animator.getSeparador(), "images", true,
-										true);
-
-								for (int x = 0; x < carpetasSeleccion.size(); x++) {
-
-									lista.add(new File(carpetasSeleccion.get(x)));
-
-								}
-
-							}
-
-							else {
-
-								lista.add(new File(ruta));
-
-							}
-
-						}
-
-						Collections.sort(lista);
-
-						ButtonPanel.addImages(false, lista);
-
-					}
-
-					catch (Exception e) {
-
-					}
-
-				}
-
-			});
-
-		}
-
-		catch (TooManyListenersException e1) {
-
-			Metodos.mensaje("Error al mover los archivos", 1, false);
-
-		}
 
 	}
 
