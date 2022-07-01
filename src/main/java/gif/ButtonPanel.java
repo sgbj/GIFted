@@ -163,24 +163,54 @@ public class ButtonPanel extends javax.swing.JPanel {
 		setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 
 		menuBar = new JMenuBar();
+
 		add(menuBar);
 
 		mnNewMenu = new JMenu("Menu");
+
 		mnNewMenu.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+
 		mnNewMenu.setIcon(new ImageIcon(ButtonPanel.class.getResource("/images/settings.png")));
+
 		menuBar.add(mnNewMenu);
 
 		mntmNewMenuItem_1 = new JMenuItem("Open Image");
+
 		mntmNewMenuItem_1.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+
 		mntmNewMenuItem_1.setIcon(new ImageIcon(ButtonPanel.class.getResource("/images/abrir.png")));
+
 		mntmNewMenuItem_1.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
+
 				try {
 
 					lista = test.showOpenFileDialog(carpeta, false, "");
 
-					addImages(false, lista);
+					for (int i = 0; i < lista.size(); i++) {
+
+						GifFramePanel.ruta = lista.get(i).getAbsolutePath().toString();
+
+						if (GifFramePanel.ruta.endsWith(".gif")) {
+
+							GifFramePanel.indice = Animator.lista.m.size();
+
+							ButtonPanel.archivoGif = GifFramePanel.ruta;
+
+							GifFramePanel.loadGifImage(ButtonPanel.archivoGif);
+
+							GifFramePanel.extraerFrames();
+
+						}
+
+						else {
+
+							addImages(false, lista);
+
+						}
+
+					}
 
 					carpeta = lista.get(0).toString();
 

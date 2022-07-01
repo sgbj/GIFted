@@ -555,7 +555,9 @@ public class GifFramePanel extends JPanel {
 				}
 
 				catch (Exception e1) {
+
 					e1.printStackTrace();
+
 				}
 
 			}
@@ -573,9 +575,11 @@ public class GifFramePanel extends JPanel {
 		btnrndwthmgCrop_1.setBackground(Color.WHITE);
 
 		ButtonRoundedWithImage btnNewButton_1 = new ButtonRoundedWithImage("< Back Frame");
+
 		btnNewButton_1.setFont(new Font("Tahoma", Font.PLAIN, 14));
 
 		btnNewButton_1.addActionListener(new ActionListener() {
+
 			public void actionPerformed(ActionEvent e) {
 
 				indiceFrame = Animator.lista.getSelectedIndex();
