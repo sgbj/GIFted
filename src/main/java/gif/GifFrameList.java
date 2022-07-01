@@ -35,7 +35,7 @@ public class GifFrameList extends JList<Object> {
 
 	private static final long serialVersionUID = 1L;
 
-	DefaultListModel<Object> m = (DefaultListModel<Object>) getModel();
+	public DefaultListModel<Object> m = (DefaultListModel<Object>) getModel();
 
 	private static LinkedList<File> archivos = new LinkedList<>();
 
@@ -80,6 +80,12 @@ public class GifFrameList extends JList<Object> {
 					for (int i = indices.length - 1; i >= 0; i--) {
 
 						m.remove(indices[i]);
+
+						if (indices[i] < GifFramePanel.listaArchivos.size()) {
+
+							GifFramePanel.listaArchivos.remove(indices[i]);
+
+						}
 
 						if (indices[i] < Animator.archivos.size()) {
 
@@ -239,23 +245,23 @@ public class GifFrameList extends JList<Object> {
 					return false;
 				}
 
-				for (Object o : data) {
+				File file;
 
-					File file = (File) o;
+				for (int i = 0; i < data.size(); i++) {
+
+					file = new File(data.get(i).toString());
 
 					try {
 
+						GifFramePanel.indice = index;
+
 						if (file.getName().endsWith("gif")) {
 
-							List<GifFrame> frames = Gif.read(file);
+							ButtonPanel.archivoGif = file.getAbsolutePath();
 
-							Collections.reverse(frames);
+							GifFramePanel.loadGifImage(ButtonPanel.archivoGif);
 
-							for (GifFrame frame : frames) {
-
-								m.add(index, frame);
-
-							}
+							GifFramePanel.extraerFrames();
 
 						}
 
@@ -289,6 +295,8 @@ public class GifFrameList extends JList<Object> {
 						y++;
 
 					}
+
+					GifFramePanel.ponerDimensionesFrame(Animator.animator.getGifFrames().get(0));
 
 				}
 

@@ -1,8 +1,5 @@
 package utils;
 
-import java.awt.Font;
-import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -10,23 +7,22 @@ import java.io.IOException;
 import java.util.LinkedList;
 
 import javax.imageio.ImageIO;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 
-import alertas.AlertError;
-import alertas.AlertInformation;
-import alertas.AlertSuccess;
-import alertas.AlertWarningSalir;
+import gif.Animator;
 import gif.ButtonPanel;
+import gif.GifFrame;
+import gif.GifFramePanel;
 
-public class Metodos {
+public class Utilidades {
 
 	public static float saberNumero(String cadena) {
 
 		float resultado = 0f;
 
 		try {
+
 			resultado = Float.parseFloat(cadena.trim());
+
 		}
 
 		catch (Exception e) {
@@ -34,6 +30,30 @@ public class Metodos {
 		}
 
 		return resultado;
+
+	}
+
+	public static void ponerGif() {
+
+		try {
+
+			File dir = new File(GifFramePanel.ruta + "output" + Animator.getSeparador() + GifFramePanel.nombreGif);
+
+			int x = GifFramePanel.indice;
+
+			for (int i = 0; i < dir.listFiles().length; i++) {
+
+				Animator.lista.m.add(x, new GifFrame(ImageIO.read(dir.listFiles()[i]), 500));
+
+				x++;
+
+			}
+
+		}
+
+		catch (Exception e) {
+			e.printStackTrace();
+		}
 
 	}
 
@@ -276,135 +296,6 @@ public class Metodos {
 			}
 
 		}
-
-	}
-
-	public static void mensaje(String mensaje, int titulo, boolean filtro) {
-
-		String tituloSuperior = "";
-
-		int tipo = 0;
-
-		switch (titulo) {
-
-		case 1:
-
-			if (filtro) {
-
-				AlertError error;
-
-				error = new AlertError(null, false);
-
-				error.setTitulo(mensaje);
-
-				error.setVisible(true);
-			}
-
-			else {
-
-				tipo = JOptionPane.ERROR_MESSAGE;
-
-				tituloSuperior = "Error";
-			}
-
-			break;
-
-		case 2:
-
-			if (filtro) {
-				AlertInformation informacion;
-
-				informacion = new AlertInformation(null, false);
-
-				informacion.setTitulo(mensaje);
-
-				informacion.setVisible(true);
-			}
-
-			else {
-				tipo = JOptionPane.INFORMATION_MESSAGE;
-				tituloSuperior = "Informacion";
-			}
-
-			break;
-
-		case 3:
-
-			if (filtro) {
-
-				AlertWarningSalir salir;
-
-				salir = new AlertWarningSalir(null, false);
-
-				salir.setTitulo(mensaje);
-
-				salir.setVisible(true);
-			}
-
-			else {
-				tipo = JOptionPane.WARNING_MESSAGE;
-				tituloSuperior = "Advertencia";
-			}
-
-			break;
-
-		case 4:
-
-			if (filtro) {
-				AlertSuccess exito;
-
-				exito = new AlertSuccess(null, false);
-
-				exito.setTitulo(mensaje);
-
-				exito.setVisible(true);
-			}
-
-			else {
-
-				tipo = JOptionPane.INFORMATION_MESSAGE;
-
-				tituloSuperior = "Informacion";
-
-			}
-
-			break;
-
-		default:
-			break;
-
-		}
-
-		if (!filtro) {
-
-			JLabel alerta = new JLabel(mensaje);
-
-			alerta.setFont(new Font("Arial", Font.BOLD, 18));
-
-			JOptionPane.showMessageDialog(null, alerta, tituloSuperior, tipo);
-
-		}
-
-	}
-
-	public static void resizeImage(String inputImagePath, String outputImagePath, int scaledWidth, int scaledHeight)
-			throws IOException {
-
-		File inputFile = new File(inputImagePath);
-
-		BufferedImage inputImage = ImageIO.read(inputFile);
-
-		BufferedImage outputImage = new BufferedImage(scaledWidth, scaledHeight, inputImage.getType());
-
-		Graphics2D g2d = outputImage.createGraphics();
-
-		g2d.drawImage(inputImage, 0, 0, scaledWidth, scaledHeight, null);
-
-		g2d.dispose();
-
-		String formatName = outputImagePath.substring(outputImagePath.lastIndexOf(".") + 1);
-
-		ImageIO.write(outputImage, formatName, new File(outputImagePath));
 
 	}
 

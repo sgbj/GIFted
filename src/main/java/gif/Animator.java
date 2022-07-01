@@ -2,8 +2,11 @@ package gif;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Toolkit;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -19,28 +22,32 @@ import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import utils.Metodos;
+import utils.Utilidades;
 
 public class Animator {
 
 	static Animator animator;
 
-	static GifFrameList lista;
+	public static GifFrameList lista;
 
 	static String os = System.getProperty("os.name");
 
-	static String separador = Metodos.saberSeparador(os);
+	static String separador = Utilidades.saberSeparador(os);
 
 	static LinkedList<BufferedImage> archivos = new LinkedList<BufferedImage>();
 
 	public static String getSeparador() {
+
 		return separador;
+
 	}
 
 	private static GifFramePanel panel;
 
 	public static String getOs() {
+
 		return os;
+
 	}
 
 	public Animator(GifFrame[] frames) throws IOException, ClassNotFoundException, InstantiationException,
@@ -55,6 +62,7 @@ public class Animator {
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		ButtonPanel buttonPanel = new ButtonPanel(this);
+
 		buttonPanel.setBackground(Color.WHITE);
 
 		buttonPanel.setSize(10, 10);
@@ -62,11 +70,13 @@ public class Animator {
 		f.getContentPane().add(buttonPanel, BorderLayout.NORTH);
 
 		panel = new GifFramePanel(this);
+
 		panel.setBackground(Color.WHITE);
 
 		f.getContentPane().add(panel);
 
 		JPanel listPanel = new JPanel(new BorderLayout());
+
 		listPanel.setBackground(Color.WHITE);
 
 		JScrollPane listScrollPane = new JScrollPane();
@@ -83,6 +93,52 @@ public class Animator {
 			int inset = listScrollPane.getHorizontalScrollBar().getHeight();
 
 			lista.setBorder(BorderFactory.createEmptyBorder(0, 0, inset, 0));
+
+			lista.addKeyListener(new KeyAdapter() {
+
+				@Override
+
+				public void keyPressed(KeyEvent e) {
+
+					try {
+
+						int indice = lista.getSelectedIndex();
+
+						Object frameAnterior;
+
+						if (indice > 0 && (e.getKeyCode() == KeyEvent.VK_LEFT)) {
+
+							indice--;
+
+							frameAnterior = lista.m.get(indice);
+
+							lista.m.set(indice, lista.m.get(++indice));
+
+							lista.m.set(indice, frameAnterior);
+
+						}
+
+						if (indice >= 0 && indice < lista.m.size() - 1 && (e.getKeyCode() == KeyEvent.VK_RIGHT)) {
+
+							indice++;
+
+							frameAnterior = lista.m.get(indice);
+
+							lista.m.set(indice, lista.m.get(--indice));
+
+							lista.m.set(indice, frameAnterior);
+
+						}
+
+					}
+
+					catch (Exception e1) {
+						//
+					}
+
+				}
+
+			});
 
 			lista.addListSelectionListener(new ListSelectionListener() {
 
@@ -140,7 +196,20 @@ public class Animator {
 
 		g.setColor(Color.BLACK);
 
-		g.drawString(str, (int) ((w / 2) - (bounds.getWidth() / 2)), (int) ((h / 2) + (bounds.getHeight() / 2)));
+		g.setFont(new Font(GifFramePanel.fuente.getSelectedItem().toString(), Font.PLAIN,
+				GifFramePanel.sizeFont.getValor()));
+
+		if (GifFramePanel.center.isSelected()) {
+
+			g.drawString(str, (int) (w / 2) - GifFramePanel.centerSpace.getValor(),
+					(int) ((h / 2) + (bounds.getHeight() / 2)));
+		}
+
+		else {
+
+			g.drawString(str, 0, (int) ((h / 2) + (bounds.getHeight() / 2)));
+
+		}
 
 		g.dispose();
 
@@ -165,9 +234,11 @@ public class Animator {
 	}
 
 	public static void main(String[] args) {
-
-		iniciar();
-
+		try {
+			iniciar();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 }

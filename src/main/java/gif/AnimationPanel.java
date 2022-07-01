@@ -1,6 +1,6 @@
 package gif;
 
-import java.awt.Dimension;
+import java.awt.Color;
 import java.awt.Graphics;
 import java.util.List;
 
@@ -14,7 +14,9 @@ public class AnimationPanel extends JPanel {
 
 	private int index;
 
-	public AnimationPanel(final List<GifFrame> frames, final boolean loop) {
+	public AnimationPanel(final List<GifFrame> frames, boolean loop, boolean reverse) {
+
+		setBackground(Color.WHITE);
 
 		this.frames = frames;
 
@@ -26,13 +28,15 @@ public class AnimationPanel extends JPanel {
 
 					index = 0;
 
+					if (reverse) {
+
+						index = frames.size();
+
+						index--;
+
+					}
+
 					for (int i = 0; i < frames.size(); i++) {
-
-						index = i;
-
-						GifFrame frame = frames.get(index);
-
-						setPreferredSize(new Dimension(frame.getImage().getWidth(), frame.getImage().getHeight()));
 
 						repaint();
 
@@ -50,10 +54,26 @@ public class AnimationPanel extends JPanel {
 
 								GifFramePanel.fps.setValor(10);
 
-							} catch (InterruptedException e) {
+							}
+
+							catch (InterruptedException e) {
 								//
 							}
+
 						}
+
+						if (reverse) {
+
+							index--;
+
+						}
+
+						else {
+
+							index++;
+
+						}
+
 					}
 
 				}
@@ -63,6 +83,7 @@ public class AnimationPanel extends JPanel {
 			}
 
 		}).start();
+
 	}
 
 	@Override

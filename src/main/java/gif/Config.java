@@ -19,59 +19,67 @@ import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JRadioButton;
 import javax.swing.JTextArea;
-import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import checkbox.JCheckBoxCustom;
+import combo_suggestion.ComboBoxSuggestion;
+import drag_and_drop.UtilDragAndDrop;
+import radio_button.RadioButtonCustom;
 import roundedButtonsWithImage.ButtonRoundedWithImage;
-import utils.DragAndDrop;
-import utils.Metodos;
+import spinner.Spinner;
+import textfield.TextField;
+import utils.Utilidades;
 
 @SuppressWarnings("all")
 
 public class Config extends javax.swing.JFrame implements ActionListener, ChangeListener {
 
-	private JTextField escala;
-	private JTextField perdida;
+	private Spinner escala;
 
-	private JTextField delay;
+	private Spinner perdida;
 
-	private JTextField optimize;
+	private Spinner delay;
 
-	private JTextField colores;
+	private Spinner optimize;
 
-	private JTextField ancho;
+	private Spinner colores;
 
-	private JTextField alto;
+	private Spinner ancho;
 
-	private JTextField loopCount;
+	private Spinner alto;
 
-	private JComboBox bn;
+	private Spinner loopCount;
 
-	private JRadioButton fit, touch, horizontal, vertical;
+	private ComboBoxSuggestion bn;
 
-	private JComboBox rotacion;
+	private JCheckBoxCustom fit, touch;
 
-	private JComboBox merge;
+	RadioButtonCustom horizontal;
 
-	private JCheckBox flip;
+	RadioButtonCustom vertical;
 
-	private JTextField sizeCrop;
+	private ComboBoxSuggestion rotacion;
 
-	private JTextField espacioTop;
+	private ComboBoxSuggestion merge;
 
-	private JTextField espacioLeft;
+	private JCheckBoxCustom flip;
+
+	private TextField sizeCrop;
+
+	private Spinner espacioTop;
+
+	private Spinner espacioLeft;
 
 	private JCheckBox crop;
 
 	public Config() {
+
 		setAlwaysOnTop(true);
 
 		setIconImage(Toolkit.getDefaultToolkit().getImage(Config.class.getResource("/images/settings.png")));
@@ -90,25 +98,25 @@ public class Config extends javax.swing.JFrame implements ActionListener, Change
 
 		try {
 
-			colores.setText("128");
+			colores.setValor(128);
 
-			optimize.setText("0");
+			optimize.setValor(0);
 
-			escala.setText("1");
+			escala.setValor(1);
 
-			perdida.setText("0");
+			perdida.setValor(0);
 
-			delay.setText("0");
+			delay.setValor(0);
 
-			loopCount.setText("0");
+			loopCount.setValor(0);
 
-			ancho.setText("");
+			ancho.setValor(0);
 
-			alto.setText("");
+			alto.setValor(0);
 
-			espacioLeft.setText("0");
+			espacioLeft.setValor(0);
 
-			espacioTop.setText("0");
+			espacioTop.setValor(0);
 
 			guardarDatos();
 
@@ -124,23 +132,23 @@ public class Config extends javax.swing.JFrame implements ActionListener, Change
 
 		try {
 
-			ButtonPanel.setLectura(Metodos.leerFicheroArray("ConfigEasyGifCreator.txt", 19));
+			ButtonPanel.setLectura(Utilidades.leerFicheroArray("ConfigEasyGifCreator.txt", 19));
 
-			colores.setText(ButtonPanel.getLectura()[0]);
+			colores.setValor(Integer.parseInt(ButtonPanel.getLectura()[0]));
 
-			optimize.setText(ButtonPanel.getLectura()[1]);
+			optimize.setValor(Integer.parseInt(ButtonPanel.getLectura()[1]));
 
-			escala.setText(ButtonPanel.getLectura()[2]);
+			escala.setValor(Integer.parseInt(ButtonPanel.getLectura()[2]));
 
-			perdida.setText(ButtonPanel.getLectura()[3]);
+			perdida.setValor(Integer.parseInt(ButtonPanel.getLectura()[3]));
 
-			delay.setText(ButtonPanel.getLectura()[4]);
+			delay.setValor(Integer.parseInt(ButtonPanel.getLectura()[4]));
 
-			loopCount.setText(ButtonPanel.getLectura()[5]);
+			loopCount.setValor(Integer.parseInt(ButtonPanel.getLectura()[5]));
 
-			ancho.setText(ButtonPanel.getLectura()[6]);
+			ancho.setValor(Integer.parseInt(ButtonPanel.getLectura()[6]));
 
-			alto.setText(ButtonPanel.getLectura()[7]);
+			alto.setValor(Integer.parseInt(ButtonPanel.getLectura()[7]));
 
 			if (ButtonPanel.getLectura()[8].equals("1")) {
 
@@ -195,14 +203,16 @@ public class Config extends javax.swing.JFrame implements ActionListener, Change
 			}
 
 			else {
+
 				crop.setSelected(false);
+
 			}
 
 			sizeCrop.setText(ButtonPanel.getLectura()[16]);
 
-			espacioLeft.setText(ButtonPanel.getLectura()[17]);
+			espacioLeft.setValor(Integer.parseInt(ButtonPanel.getLectura()[17]));
 
-			espacioTop.setText(ButtonPanel.getLectura()[18]);
+			espacioTop.setValor(Integer.parseInt(ButtonPanel.getLectura()[18]));
 
 		}
 
@@ -216,25 +226,25 @@ public class Config extends javax.swing.JFrame implements ActionListener, Change
 
 		try {
 
-			int color = (int) Metodos.saberNumero(colores.getText().trim());
+			int color = colores.getValor();
 
-			int optimizar = (int) Metodos.saberNumero(optimize.getText().trim());
+			int optimizar = optimize.getValor();
 
-			String scala = escala.getText().trim();
+			int scala = escala.getValor();
 
-			int lossy = (int) Metodos.saberNumero(perdida.getText().trim());
+			int lossy = perdida.getValor();
 
-			int retardo = (int) Metodos.saberNumero(delay.getText().trim());
+			int retardo = delay.getValor();
 
-			int loop = (int) Metodos.saberNumero(loopCount.getText().trim());
+			int loop = loopCount.getValor();
 
-			int width = (int) Metodos.saberNumero(ancho.getText().trim());
+			int width = ancho.getValor();
 
-			int height = (int) Metodos.saberNumero(alto.getText().trim());
+			int height = alto.getValor();
 
-			int spaceLeft = (int) Metodos.saberNumero(espacioLeft.getText().trim());
+			int spaceLeft = espacioLeft.getValor();
 
-			int spaceTop = (int) Metodos.saberNumero(espacioTop.getText().trim());
+			int spaceTop = espacioTop.getValor();
 
 			FileWriter flS = new FileWriter("ConfigEasyGifCreator.txt");
 
@@ -312,7 +322,7 @@ public class Config extends javax.swing.JFrame implements ActionListener, Change
 
 			fS.newLine();
 
-			fS.write(sizeCrop.getText().trim());
+			fS.write(sizeCrop.getText());
 
 			fS.newLine();
 
@@ -366,13 +376,13 @@ public class Config extends javax.swing.JFrame implements ActionListener, Change
 
 		JLabel lblNewLabel = new JLabel(" Number of colors");
 
-		lblNewLabel.setFont(new Font("Dialog", Font.PLAIN, 18));
+		lblNewLabel.setFont(new Font("Dialog", Font.PLAIN, 16));
 
 		lblNewLabel.setHorizontalAlignment(SwingConstants.LEFT);
 
 		lblNewLabel.setIcon(new ImageIcon(Config.class.getResource("/images/color.png")));
 
-		merge = new JComboBox();
+		merge = new ComboBoxSuggestion();
 
 		merge.addItem("None");
 
@@ -384,7 +394,7 @@ public class Config extends javax.swing.JFrame implements ActionListener, Change
 
 		merge.setFont(new Font("Dialog", Font.PLAIN, 20));
 
-		ButtonRoundedWithImage btnNewButton = new ButtonRoundedWithImage();
+		ButtonRoundedWithImage btnNewButton = new ButtonRoundedWithImage("");
 
 		btnNewButton.addActionListener(new ActionListener() {
 
@@ -404,13 +414,9 @@ public class Config extends javax.swing.JFrame implements ActionListener, Change
 
 		btnNewButton.setIcon(new ImageIcon(Config.class.getResource("/images/guardar.png")));
 
-		escala = new JTextField();
+		escala = new Spinner();
 
-		escala.setFont(new Font("Dialog", Font.PLAIN, 18));
-
-		escala.setHorizontalAlignment(SwingConstants.CENTER);
-
-		escala.setColumns(10);
+		escala.getEditor().setFont(new Font("Dialog", Font.PLAIN, 16));
 
 		JLabel lblNewLabel_2 = new JLabel(" 0  -");
 
@@ -418,29 +424,23 @@ public class Config extends javax.swing.JFrame implements ActionListener, Change
 
 		JLabel lblNewLabel_3 = new JLabel("Scale");
 
-		lblNewLabel_3.setFont(new Font("Dialog", Font.PLAIN, 18));
+		lblNewLabel_3.setFont(new Font("Dialog", Font.PLAIN, 16));
 
 		lblNewLabel_3.setIcon(new ImageIcon(Config.class.getResource("/images/regla.png")));
 
 		JLabel lblNewLabel_4 = new JLabel("Delay");
 
-		lblNewLabel_4.setFont(new Font("Dialog", Font.PLAIN, 18));
+		lblNewLabel_4.setFont(new Font("Dialog", Font.PLAIN, 16));
 
 		lblNewLabel_4.setIcon(new ImageIcon(Config.class.getResource("/images/delay.png")));
 
-		perdida = new JTextField();
-		perdida.setFont(new Font("Dialog", Font.PLAIN, 18));
+		perdida = new Spinner();
 
-		perdida.setHorizontalAlignment(SwingConstants.CENTER);
+		perdida.getEditor().setFont(new Font("Dialog", Font.PLAIN, 16));
 
-		perdida.setColumns(10);
+		delay = new Spinner();
 
-		delay = new JTextField();
-		delay.setFont(new Font("Dialog", Font.PLAIN, 18));
-
-		delay.setHorizontalAlignment(SwingConstants.CENTER);
-
-		delay.setColumns(10);
+		delay.getEditor().setFont(new Font("Dialog", Font.PLAIN, 16));
 
 		JLabel lblNewLabel_5 = new JLabel("Lossy");
 
@@ -448,14 +448,11 @@ public class Config extends javax.swing.JFrame implements ActionListener, Change
 
 		lblNewLabel_5.setFont(new Font("Dialog", Font.PLAIN, 20));
 
-		optimize = new JTextField();
-		optimize.setFont(new Font("Dialog", Font.PLAIN, 18));
+		optimize = new Spinner();
 
-		optimize.setHorizontalAlignment(SwingConstants.CENTER);
+		optimize.getEditor().setFont(new Font("Dialog", Font.PLAIN, 16));
 
-		optimize.setColumns(10);
-
-		rotacion = new JComboBox();
+		rotacion = new ComboBoxSuggestion();
 
 		listRenderer.setHorizontalAlignment(DefaultListCellRenderer.CENTER);
 
@@ -463,7 +460,7 @@ public class Config extends javax.swing.JFrame implements ActionListener, Change
 
 		setResizable(false);
 
-		rotacion.setFont(new Font("Dialog", Font.PLAIN, 18));
+		rotacion.setFont(new Font("Dialog", Font.PLAIN, 16));
 
 		rotacion.addItem("None");
 
@@ -476,7 +473,7 @@ public class Config extends javax.swing.JFrame implements ActionListener, Change
 		JCheckBox lblNewLabel_6 = new JCheckBox("Rotate");
 		lblNewLabel_6.setSelected(true);
 
-		lblNewLabel_6.setFont(new Font("Dialog", Font.PLAIN, 18));
+		lblNewLabel_6.setFont(new Font("Dialog", Font.PLAIN, 16));
 
 		lblNewLabel_6.setIcon(new ImageIcon(Config.class.getResource("/images/rotate_180.png")));
 
@@ -492,21 +489,17 @@ public class Config extends javax.swing.JFrame implements ActionListener, Change
 
 		imagenes.setBackground(Color.WHITE);
 
-		colores = new JTextField();
+		colores = new Spinner();
 
-		colores.setFont(new Font("Dialog", Font.PLAIN, 18));
-
-		colores.setHorizontalAlignment(SwingConstants.CENTER);
-
-		colores.setColumns(10);
+		colores.getEditor().setFont(new Font("Dialog", Font.PLAIN, 16));
 
 		JLabel lblNewLabel_8 = new JLabel("Optimize");
 
-		lblNewLabel_8.setFont(new Font("Dialog", Font.PLAIN, 18));
+		lblNewLabel_8.setFont(new Font("Dialog", Font.PLAIN, 16));
 
 		lblNewLabel_8.setIcon(new ImageIcon(Config.class.getResource("/images/utilities.png")));
 
-		bn = new JComboBox();
+		bn = new ComboBoxSuggestion();
 
 		bn.addItem("None");
 
@@ -524,79 +517,87 @@ public class Config extends javax.swing.JFrame implements ActionListener, Change
 
 		lblNewLabel_9.setIcon(new ImageIcon(Config.class.getResource("/images/width.png")));
 
-		ancho = new JTextField();
+		ancho = new Spinner();
 
-		ancho.setHorizontalAlignment(SwingConstants.CENTER);
-
-		ancho.setFont(new Font("Dialog", Font.PLAIN, 18));
-
-		ancho.setColumns(10);
+		ancho.getEditor().setFont(new Font("Dialog", Font.PLAIN, 16));
 
 		JLabel lblNewLabel_9_1 = new JLabel("");
+
 		lblNewLabel_9_1.setIcon(new ImageIcon(Config.class.getResource("/images/height.png")));
 
-		alto = new JTextField();
+		alto = new Spinner();
 
-		alto.setHorizontalAlignment(SwingConstants.CENTER);
-
-		alto.setFont(new Font("Dialog", Font.PLAIN, 18));
-
-		alto.setColumns(10);
+		alto.getEditor().setFont(new Font("Dialog", Font.PLAIN, 16));
 
 		JLabel resize = new JLabel(" Resize");
+
 		resize.setHorizontalAlignment(SwingConstants.CENTER);
 
-		resize.setFont(new Font("Dialog", Font.PLAIN, 18));
+		resize.setFont(new Font("Dialog", Font.PLAIN, 16));
 
 		resize.setIcon(new ImageIcon(Config.class.getResource("/images/resize.png")));
 
 		JLabel lblNewLabel_11 = new JLabel("");
+
 		lblNewLabel_11.setHorizontalAlignment(SwingConstants.CENTER);
 
 		lblNewLabel_11.setIcon(new ImageIcon(Config.class.getResource("/images/30-07-2018 1-07-31.png")));
 
-		fit = new JRadioButton("Fit");
+		fit = new JCheckBoxCustom("Fit", SwingConstants.LEFT);
+
 		fit.addMouseListener(new MouseAdapter() {
+
 			@Override
+
 			public void mousePressed(MouseEvent e) {
+
 				if (!fit.isSelected()) {
+
 					touch.setSelected(false);
+
 				}
+
 			}
+
 		});
 
 		fit.setHorizontalAlignment(SwingConstants.CENTER);
 
-		fit.setFont(new Font("Dialog", Font.PLAIN, 18));
+		fit.setFont(new Font("Dialog", Font.PLAIN, 16));
 
-		touch = new JRadioButton("Touch");
+		touch = new JCheckBoxCustom("Touch", SwingConstants.CENTER);
+
 		touch.addMouseListener(new MouseAdapter() {
+
 			@Override
+
 			public void mousePressed(MouseEvent e) {
+
 				if (!touch.isSelected()) {
+
 					fit.setSelected(false);
+
 				}
+
 			}
+
 		});
 
 		touch.setHorizontalAlignment(SwingConstants.CENTER);
 
-		touch.setFont(new Font("Dialog", Font.PLAIN, 18));
+		touch.setFont(new Font("Dialog", Font.PLAIN, 16));
 
 		JLabel lblNewLabel_12 = new JLabel("Loop Count");
 
 		lblNewLabel_12.setIcon(new ImageIcon(Config.class.getResource("/images/loop.png")));
 
-		lblNewLabel_12.setFont(new Font("Dialog", Font.PLAIN, 18));
+		lblNewLabel_12.setFont(new Font("Dialog", Font.PLAIN, 16));
 
-		loopCount = new JTextField();
-		loopCount.setFont(new Font("Dialog", Font.PLAIN, 18));
+		loopCount = new Spinner();
 
-		loopCount.setHorizontalAlignment(SwingConstants.CENTER);
+		loopCount.getEditor().setFont(new Font("Dialog", Font.PLAIN, 16));
 
-		loopCount.setColumns(10);
-
-		ButtonRoundedWithImage btnNewButton_1 = new ButtonRoundedWithImage();
+		ButtonRoundedWithImage btnNewButton_1 = new ButtonRoundedWithImage("");
 
 		btnNewButton_1.addActionListener(new ActionListener() {
 
@@ -620,7 +621,7 @@ public class Config extends javax.swing.JFrame implements ActionListener, Change
 
 		btnNewButton_1.setIcon(new ImageIcon(Config.class.getResource("/images/clean.png")));
 
-		horizontal = new JRadioButton("Horizontal");
+		horizontal = new RadioButtonCustom("Horizontal");
 
 		horizontal.addMouseListener(new MouseAdapter() {
 
@@ -644,9 +645,9 @@ public class Config extends javax.swing.JFrame implements ActionListener, Change
 
 		});
 
-		horizontal.setFont(new Font("Dialog", Font.PLAIN, 18));
+		horizontal.setFont(new Font("Dialog", Font.PLAIN, 16));
 
-		vertical = new JRadioButton("Vertical");
+		vertical = new RadioButtonCustom("Vertical");
 
 		vertical.addMouseListener(new MouseAdapter() {
 
@@ -672,8 +673,6 @@ public class Config extends javax.swing.JFrame implements ActionListener, Change
 
 		vertical.setFont(new Font("Dialog", Font.PLAIN, 19));
 
-		JLabel lblNewLabel_14 = new JLabel("");
-
 		JLabel lblNewLabel_15 = new JLabel("");
 
 		lblNewLabel_15.setIcon(new ImageIcon(Config.class.getResource("/images/flip_h.png")));
@@ -682,66 +681,71 @@ public class Config extends javax.swing.JFrame implements ActionListener, Change
 
 		lblNewLabel_16.setIcon(new ImageIcon(Config.class.getResource("/images/flip_v.png")));
 
-		flip = new JCheckBox("Flip");
+		flip = new JCheckBoxCustom("Flip", SwingConstants.CENTER);
+
 		flip.setVerticalAlignment(SwingConstants.BOTTOM);
+
 		flip.setHorizontalAlignment(SwingConstants.CENTER);
 
 		flip.setFont(new Font("Dialog", Font.PLAIN, 20));
 
 		JLabel lblNewLabel_7 = new JLabel("Join");
-		lblNewLabel_7.setFont(new Font("Dialog", Font.PLAIN, 18));
+
+		lblNewLabel_7.setFont(new Font("Dialog", Font.PLAIN, 16));
+
 		lblNewLabel_7.setIcon(new ImageIcon(Config.class.getResource("/images/merge.png")));
 
-		crop = new JCheckBox("Crop");
-		crop.setFont(new Font("Dialog", Font.PLAIN, 18));
+		crop = new JCheckBoxCustom("Crop", SwingConstants.LEFT);
 
-		sizeCrop = new JTextField();
-		sizeCrop.setFont(new Font("Dialog", Font.PLAIN, 18));
-		sizeCrop.setHorizontalAlignment(SwingConstants.CENTER);
-		sizeCrop.setColumns(10);
+		crop.setFont(new Font("Dialog", Font.PLAIN, 16));
 
-		espacioTop = new JTextField();
-		espacioTop.setHorizontalAlignment(SwingConstants.CENTER);
-		espacioTop.setFont(new Font("Dialog", Font.PLAIN, 18));
-		espacioTop.setColumns(10);
+		sizeCrop = new TextField();
 
-		espacioLeft = new JTextField();
-		espacioLeft.setHorizontalAlignment(SwingConstants.CENTER);
-		espacioLeft.setFont(new Font("Dialog", Font.PLAIN, 18));
-		espacioLeft.setColumns(10);
+		sizeCrop.setFont(new Font("Dialog", Font.PLAIN, 16));
+
+		espacioTop = new Spinner();
+
+		espacioTop.getEditor().setFont(new Font("Dialog", Font.PLAIN, 16));
+
+		espacioLeft = new Spinner();
+
+		espacioLeft.getEditor().setFont(new Font("Dialog", Font.PLAIN, 16));
 
 		JLabel textCrop = new JLabel("Width x Height");
-		textCrop.setFont(new Font("Dialog", Font.PLAIN, 18));
+
+		textCrop.setFont(new Font("Dialog", Font.PLAIN, 16));
+
 		textCrop.setHorizontalAlignment(SwingConstants.CENTER);
 
 		JLabel lblNewLabel_13 = new JLabel("Left space");
-		lblNewLabel_13.setFont(new Font("Dialog", Font.PLAIN, 18));
+
+		lblNewLabel_13.setFont(new Font("Dialog", Font.PLAIN, 16));
+
 		lblNewLabel_13.setHorizontalAlignment(SwingConstants.CENTER);
 
 		JLabel lblNewLabel_13_1 = new JLabel("Top space");
-		lblNewLabel_13_1.setFont(new Font("Dialog", Font.PLAIN, 18));
+
+		lblNewLabel_13_1.setFont(new Font("Dialog", Font.PLAIN, 16));
+
 		lblNewLabel_13_1.setHorizontalAlignment(SwingConstants.CENTER);
 
 		JLabel lblNewLabel_1 = new JLabel("");
+
 		lblNewLabel_1.setIcon(new ImageIcon(Config.class.getResource("/images/infinity.png")));
 
 		JLabel lblNewLabel_17 = new JLabel("");
+
 		lblNewLabel_17.setHorizontalAlignment(SwingConstants.CENTER);
+
 		lblNewLabel_17.setIcon(new ImageIcon(Config.class.getResource("/images/extractframes.png")));
 
 		javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
 		layout.setHorizontalGroup(layout.createParallelGroup(Alignment.TRAILING).addGroup(layout.createSequentialGroup()
-				.addGap(26)
-				.addGroup(layout.createParallelGroup(Alignment.LEADING)
+				.addGap(26).addGroup(layout.createParallelGroup(Alignment.LEADING)
 						.addGroup(layout.createSequentialGroup().addGap(7)
-								.addGroup(layout.createParallelGroup(Alignment.TRAILING)
-										.addGroup(layout.createSequentialGroup().addGap(5)
-												.addGroup(layout.createParallelGroup(Alignment.LEADING)
-														.addComponent(lblNewLabel_12).addComponent(lblNewLabel_6)
-														.addComponent(lblNewLabel_4).addComponent(lblNewLabel_5)
-														.addComponent(lblNewLabel_8).addComponent(lblNewLabel_3)))
-										.addGroup(layout.createSequentialGroup().addGroup(layout
-												.createParallelGroup(Alignment.LEADING)
+								.addGroup(layout.createParallelGroup(Alignment.TRAILING).addGroup(layout
+										.createSequentialGroup()
+										.addGroup(layout.createParallelGroup(Alignment.LEADING)
 												.addGroup(layout.createSequentialGroup()
 														.addComponent(crop, GroupLayout.DEFAULT_SIZE,
 																GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -749,93 +753,112 @@ public class Config extends javax.swing.JFrame implements ActionListener, Change
 												.addGroup(layout.createSequentialGroup().addGap(12)
 														.addComponent(lblNewLabel_17)
 														.addPreferredGap(ComponentPlacement.RELATED)))
-												.addGroup(layout.createParallelGroup(Alignment.TRAILING, false)
-														.addComponent(textCrop, Alignment.LEADING,
-																GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE,
-																Short.MAX_VALUE)
-														.addComponent(sizeCrop, Alignment.LEADING))
-												.addGap(17)))
+										.addGroup(layout.createParallelGroup(Alignment.LEADING).addComponent(textCrop)
+												.addComponent(sizeCrop, 116, 116, 116))
+										.addGap(17))
+										.addGroup(layout.createSequentialGroup().addGap(5)
+												.addGroup(layout.createParallelGroup(Alignment.LEADING)
+														.addComponent(lblNewLabel_12).addComponent(lblNewLabel_6)
+														.addComponent(lblNewLabel_4).addComponent(lblNewLabel_5)
+														.addComponent(lblNewLabel_8).addComponent(lblNewLabel_3))))
 								.addGap(55))
-						.addComponent(lblNewLabel, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 308, Short.MAX_VALUE))
+						.addComponent(lblNewLabel, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 273, Short.MAX_VALUE))
 				.addPreferredGap(ComponentPlacement.RELATED)
-				.addGroup(layout.createParallelGroup(Alignment.LEADING)
-						.addComponent(lblNewLabel_13_1, GroupLayout.DEFAULT_SIZE, 89, Short.MAX_VALUE)
-						.addGroup(layout.createSequentialGroup()
-								.addComponent(lblNewLabel_13, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE,
-										Short.MAX_VALUE)
+				.addGroup(layout.createParallelGroup(Alignment.TRAILING)
+						.addGroup(layout.createSequentialGroup().addComponent(espacioTop, 0, 0, Short.MAX_VALUE)
 								.addPreferredGap(ComponentPlacement.RELATED))
-						.addComponent(colores, GroupLayout.DEFAULT_SIZE, 89, Short.MAX_VALUE)
-						.addComponent(loopCount, GroupLayout.DEFAULT_SIZE, 89, Short.MAX_VALUE)
-						.addComponent(delay, GroupLayout.DEFAULT_SIZE, 89, Short.MAX_VALUE)
-						.addComponent(rotacion, 0, 89, Short.MAX_VALUE)
-						.addComponent(espacioLeft, GroupLayout.DEFAULT_SIZE, 89, Short.MAX_VALUE)
-						.addComponent(espacioTop, 0, 0, Short.MAX_VALUE)
-						.addComponent(optimize, GroupLayout.DEFAULT_SIZE, 89, Short.MAX_VALUE)
-						.addComponent(escala, GroupLayout.DEFAULT_SIZE, 89, Short.MAX_VALUE)
-						.addComponent(perdida, GroupLayout.DEFAULT_SIZE, 89, Short.MAX_VALUE))
-				.addGroup(layout
-						.createParallelGroup(
-								Alignment.LEADING)
-						.addGroup(layout.createSequentialGroup().addPreferredGap(ComponentPlacement.RELATED)
-								.addGroup(layout.createParallelGroup(Alignment.TRAILING).addComponent(lblNewLabel_15)
-										.addGroup(layout.createSequentialGroup()
-												.addComponent(lblNewLabel_2, GroupLayout.PREFERRED_SIZE, 38,
-														GroupLayout.PREFERRED_SIZE)
-												.addPreferredGap(ComponentPlacement.RELATED)
-												.addComponent(lblNewLabel_1))
-										.addComponent(lblNewLabel_9))
-								.addPreferredGap(ComponentPlacement.RELATED)
-								.addGroup(layout.createParallelGroup(Alignment.LEADING)
-										.addGroup(layout.createSequentialGroup().addGroup(layout
-												.createParallelGroup(Alignment.LEADING)
-												.addGroup(layout.createSequentialGroup().addGap(6)
-														.addComponent(fit, GroupLayout.DEFAULT_SIZE,
-																GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-														.addGap(87))
-												.addGroup(layout.createSequentialGroup().addGap(12)
-														.addComponent(ancho, GroupLayout.PREFERRED_SIZE, 96,
-																GroupLayout.PREFERRED_SIZE)
-														.addPreferredGap(ComponentPlacement.RELATED)))
-												.addGroup(layout.createParallelGroup(Alignment.TRAILING).addGroup(layout
-														.createSequentialGroup()
-														.addComponent(lblNewLabel_9_1, GroupLayout.PREFERRED_SIZE, 33,
-																GroupLayout.PREFERRED_SIZE)
-														.addPreferredGap(ComponentPlacement.UNRELATED)
-														.addComponent(alto, GroupLayout.PREFERRED_SIZE, 96,
-																GroupLayout.PREFERRED_SIZE))
-														.addComponent(
-																touch, GroupLayout.PREFERRED_SIZE, 149,
-																GroupLayout.PREFERRED_SIZE))
-												.addGap(205).addComponent(lblNewLabel_14).addGap(154))
-										.addGroup(layout.createSequentialGroup().addGroup(layout
-												.createParallelGroup(Alignment.TRAILING)
-												.addGroup(layout.createSequentialGroup().addGroup(layout
-														.createParallelGroup(Alignment.LEADING)
-														.addGroup(layout.createSequentialGroup()
-																.addComponent(imagenes, GroupLayout.PREFERRED_SIZE,
-																		GroupLayout.DEFAULT_SIZE,
-																		GroupLayout.PREFERRED_SIZE)
-																.addGap(18).addComponent(btnNewButton_1,
-																		GroupLayout.PREFERRED_SIZE, 58,
+						.addComponent(lblNewLabel_13_1, GroupLayout.DEFAULT_SIZE, 91, Short.MAX_VALUE)
+						.addComponent(delay, GroupLayout.DEFAULT_SIZE, 91, Short.MAX_VALUE)
+						.addComponent(escala, GroupLayout.DEFAULT_SIZE, 91, Short.MAX_VALUE)
+						.addComponent(colores, GroupLayout.DEFAULT_SIZE, 91, Short.MAX_VALUE)
+						.addComponent(lblNewLabel_13, GroupLayout.DEFAULT_SIZE, 91, Short.MAX_VALUE)
+						.addComponent(optimize, GroupLayout.DEFAULT_SIZE, 91, Short.MAX_VALUE)
+						.addComponent(perdida, GroupLayout.DEFAULT_SIZE, 91, Short.MAX_VALUE)
+						.addComponent(espacioLeft, GroupLayout.DEFAULT_SIZE, 91, Short.MAX_VALUE)
+						.addComponent(rotacion, GroupLayout.PREFERRED_SIZE, 91, Short.MAX_VALUE)
+						.addGroup(layout.createSequentialGroup()
+								.addComponent(loopCount, GroupLayout.DEFAULT_SIZE, 87, Short.MAX_VALUE)
+								.addPreferredGap(ComponentPlacement.RELATED)))
+				.addGroup(layout.createParallelGroup(Alignment.LEADING).addGroup(layout.createSequentialGroup()
+						.addPreferredGap(ComponentPlacement.RELATED)
+						.addGroup(layout.createParallelGroup(Alignment.TRAILING).addComponent(lblNewLabel_15)
+								.addGroup(layout.createSequentialGroup()
+										.addComponent(lblNewLabel_2, GroupLayout.PREFERRED_SIZE, 38,
+												GroupLayout.PREFERRED_SIZE)
+										.addPreferredGap(ComponentPlacement.UNRELATED).addComponent(lblNewLabel_1)
+										.addPreferredGap(ComponentPlacement.RELATED))
+								.addComponent(lblNewLabel_9))
+						.addGroup(layout.createParallelGroup(Alignment.LEADING)
+								.addGroup(layout.createSequentialGroup().addPreferredGap(ComponentPlacement.RELATED)
+										.addGroup(layout
+												.createParallelGroup(Alignment.LEADING).addGroup(layout
+														.createSequentialGroup().addGroup(layout
+																.createParallelGroup(Alignment.LEADING)
+																.addGroup(layout.createSequentialGroup().addGap(6)
+																		.addComponent(fit, GroupLayout.DEFAULT_SIZE,
+																				GroupLayout.DEFAULT_SIZE,
+																				Short.MAX_VALUE)
+																		.addGap(87))
+																.addGroup(layout
+																		.createSequentialGroup().addGap(12)
+																		.addComponent(ancho, GroupLayout.PREFERRED_SIZE,
+																				96, GroupLayout.PREFERRED_SIZE)
+																		.addPreferredGap(ComponentPlacement.RELATED)))
+														.addGroup(layout.createParallelGroup(Alignment.LEADING)
+																.addGroup(layout.createSequentialGroup()
+																		.addComponent(lblNewLabel_9_1,
+																				GroupLayout.PREFERRED_SIZE, 33,
+																				GroupLayout.PREFERRED_SIZE)
+																		.addPreferredGap(ComponentPlacement.UNRELATED)
+																		.addComponent(alto, GroupLayout.PREFERRED_SIZE,
+																				96, GroupLayout.PREFERRED_SIZE))
+																.addComponent(
+																		touch, GroupLayout.PREFERRED_SIZE, 187,
 																		GroupLayout.PREFERRED_SIZE))
-														.addGroup(layout.createSequentialGroup()
-																.addComponent(lblNewLabel_7)
-																.addPreferredGap(ComponentPlacement.RELATED)
-																.addComponent(merge, GroupLayout.PREFERRED_SIZE, 168,
+														.addGap(311))
+												.addGroup(layout.createSequentialGroup().addGap(15).addGroup(layout
+														.createParallelGroup(Alignment.TRAILING)
+														.addGroup(layout.createSequentialGroup().addGroup(
+																layout.createParallelGroup(Alignment.LEADING)
+																		.addGroup(layout.createSequentialGroup()
+																				.addComponent(imagenes,
+																						GroupLayout.PREFERRED_SIZE,
+																						GroupLayout.DEFAULT_SIZE,
+																						GroupLayout.PREFERRED_SIZE)
+																				.addGap(18).addComponent(btnNewButton_1,
+																						GroupLayout.PREFERRED_SIZE, 58,
+																						GroupLayout.PREFERRED_SIZE))
+																		.addGroup(layout
+																				.createSequentialGroup()
+																				.addComponent(lblNewLabel_7)
+																				.addPreferredGap(
+																						ComponentPlacement.RELATED)
+																				.addComponent(merge,
+																						GroupLayout.PREFERRED_SIZE, 168,
+																						GroupLayout.PREFERRED_SIZE)))
+																.addPreferredGap(ComponentPlacement.RELATED))
+														.addGroup(layout.createSequentialGroup().addGroup(layout
+																.createParallelGroup(Alignment.TRAILING)
+																.addComponent(
+																		flip, GroupLayout.PREFERRED_SIZE, 154,
+																		GroupLayout.PREFERRED_SIZE)
+																.addGroup(layout.createSequentialGroup()
+																		.addComponent(horizontal,
+																				GroupLayout.PREFERRED_SIZE,
+																				GroupLayout.DEFAULT_SIZE,
+																				GroupLayout.PREFERRED_SIZE)
+																		.addGap(47).addComponent(lblNewLabel_16)))
+																.addGap(18)
+																.addComponent(vertical, GroupLayout.PREFERRED_SIZE,
+																		GroupLayout.DEFAULT_SIZE,
 																		GroupLayout.PREFERRED_SIZE)))
-														.addPreferredGap(ComponentPlacement.RELATED))
-												.addGroup(layout.createSequentialGroup().addComponent(horizontal)
-														.addGap(47).addComponent(lblNewLabel_16).addGap(18)
-														.addComponent(vertical))
-												.addGroup(layout.createSequentialGroup()
-														.addComponent(flip, GroupLayout.PREFERRED_SIZE, 293,
-																GroupLayout.PREFERRED_SIZE)
-														.addGap(32))
-												.addComponent(btnNewButton, GroupLayout.PREFERRED_SIZE, 54,
-														GroupLayout.PREFERRED_SIZE))
-												.addPreferredGap(ComponentPlacement.RELATED, 167, Short.MAX_VALUE))))
-						.addGroup(layout.createSequentialGroup().addGap(132).addComponent(bn,
-								GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+														.addPreferredGap(ComponentPlacement.RELATED, 20,
+																Short.MAX_VALUE))))
+								.addGroup(layout.createSequentialGroup().addGap(43)
+										.addComponent(bn, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+												GroupLayout.PREFERRED_SIZE)
+										.addGap(59).addComponent(btnNewButton, GroupLayout.PREFERRED_SIZE, 54,
+												GroupLayout.PREFERRED_SIZE))))
 						.addGroup(layout.createSequentialGroup().addGap(186).addComponent(lblNewLabel_11))
 						.addGroup(layout.createSequentialGroup().addGap(106).addComponent(resize,
 								GroupLayout.PREFERRED_SIZE, 215, GroupLayout.PREFERRED_SIZE)))
@@ -843,116 +866,125 @@ public class Config extends javax.swing.JFrame implements ActionListener, Change
 		layout.setVerticalGroup(layout.createParallelGroup(Alignment.LEADING)
 				.addGroup(layout.createSequentialGroup().addContainerGap()
 						.addGroup(layout.createParallelGroup(Alignment.BASELINE).addComponent(lblNewLabel)
-								.addComponent(colores, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
-								.addComponent(lblNewLabel_7).addComponent(
-										merge, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-										GroupLayout.PREFERRED_SIZE))
-						.addPreferredGap(ComponentPlacement.RELATED).addComponent(textCrop).addGap(18)
-						.addGroup(layout.createParallelGroup(Alignment.LEADING)
-								.addGroup(layout.createSequentialGroup().addComponent(lblNewLabel_17).addGap(22)
-										.addComponent(crop))
-								.addComponent(sizeCrop, GroupLayout.PREFERRED_SIZE, 134, GroupLayout.PREFERRED_SIZE)
+								.addComponent(colores, GroupLayout.PREFERRED_SIZE, 58, GroupLayout.PREFERRED_SIZE)
+								.addComponent(lblNewLabel_7).addComponent(merge, GroupLayout.PREFERRED_SIZE,
+										GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addGroup(layout
+								.createParallelGroup(Alignment.LEADING)
+								.addGroup(layout.createSequentialGroup().addPreferredGap(ComponentPlacement.RELATED)
+										.addComponent(textCrop))
+								.addGroup(layout.createSequentialGroup().addGap(25).addComponent(lblNewLabel_13)))
+						.addPreferredGap(ComponentPlacement.RELATED)
+						.addGroup(layout
+								.createParallelGroup(Alignment.LEADING)
 								.addGroup(layout
-										.createSequentialGroup().addGroup(layout.createParallelGroup(Alignment.TRAILING)
-												.addGroup(layout.createSequentialGroup().addComponent(lblNewLabel_13)
-														.addGap(18)
-														.addComponent(espacioLeft, GroupLayout.PREFERRED_SIZE, 34,
-																GroupLayout.PREFERRED_SIZE)
-														.addGap(20))
-												.addGroup(layout.createSequentialGroup()
-														.addGroup(layout.createParallelGroup(Alignment.TRAILING, false)
-																.addComponent(btnNewButton_1, Alignment.LEADING, 0, 0,
-																		Short.MAX_VALUE)
-																.addComponent(imagenes, Alignment.LEADING,
-																		GroupLayout.DEFAULT_SIZE, 60, Short.MAX_VALUE))
-														.addGap(24)))
-										.addPreferredGap(ComponentPlacement.RELATED).addComponent(lblNewLabel_13_1)
-										.addGap(11)
-										.addGroup(layout.createParallelGroup(Alignment.BASELINE).addComponent(flip)
-												.addComponent(espacioTop, GroupLayout.PREFERRED_SIZE, 36,
-														GroupLayout.PREFERRED_SIZE))))
+										.createSequentialGroup().addComponent(lblNewLabel_17).addGap(22)
+										.addComponent(crop, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+												GroupLayout.PREFERRED_SIZE))
+								.addGroup(layout.createSequentialGroup().addGap(12).addGroup(layout
+										.createParallelGroup(Alignment.LEADING)
+										.addGroup(layout.createParallelGroup(Alignment.TRAILING, false)
+												.addComponent(btnNewButton_1, Alignment.LEADING, 0, 0, Short.MAX_VALUE)
+												.addComponent(imagenes, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 60,
+														Short.MAX_VALUE))
+										.addComponent(espacioLeft, GroupLayout.PREFERRED_SIZE, 52,
+												GroupLayout.PREFERRED_SIZE))
+										.addGap(18).addComponent(lblNewLabel_13_1)
+										.addGroup(layout.createParallelGroup(Alignment.LEADING)
+												.addGroup(layout.createSequentialGroup().addGap(25).addComponent(flip,
+														GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+														GroupLayout.PREFERRED_SIZE))
+												.addGroup(
+														layout.createSequentialGroup().addGap(18).addComponent(
+																espacioTop, GroupLayout.PREFERRED_SIZE,
+																GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))))
+								.addComponent(sizeCrop, GroupLayout.PREFERRED_SIZE, 129, GroupLayout.PREFERRED_SIZE))
+						.addGap(2)
 						.addGroup(layout.createParallelGroup(Alignment.LEADING).addGroup(layout.createSequentialGroup()
 								.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 								.addGroup(layout.createParallelGroup(Alignment.LEADING)
+										.addGroup(layout.createParallelGroup(Alignment.TRAILING)
+												.addComponent(horizontal, GroupLayout.PREFERRED_SIZE,
+														GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+												.addComponent(lblNewLabel_15).addComponent(
+														vertical, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+														GroupLayout.PREFERRED_SIZE))
 										.addGroup(
-												layout.createParallelGroup(Alignment.TRAILING).addComponent(horizontal)
-														.addComponent(lblNewLabel_15).addComponent(vertical))
-										.addGroup(layout.createSequentialGroup().addGap(11)
-												.addComponent(lblNewLabel_16)))
+												layout.createSequentialGroup().addGap(11).addComponent(lblNewLabel_16)))
 								.addGap(24))
 								.addGroup(layout.createSequentialGroup().addGap(18)
 										.addGroup(layout.createParallelGroup(Alignment.BASELINE)
 												.addComponent(lblNewLabel_8).addComponent(optimize,
-														GroupLayout.PREFERRED_SIZE, 41, GroupLayout.PREFERRED_SIZE))
+														GroupLayout.PREFERRED_SIZE, 50, GroupLayout.PREFERRED_SIZE))
 										.addPreferredGap(ComponentPlacement.RELATED)))
-						.addGap(6).addGroup(
-								layout.createParallelGroup(Alignment.TRAILING).addGroup(
-										layout.createParallelGroup(Alignment.BASELINE)
-												.addComponent(lblNewLabel_3, GroupLayout.PREFERRED_SIZE, 58,
-														GroupLayout.PREFERRED_SIZE)
-												.addComponent(escala, GroupLayout.PREFERRED_SIZE, 39,
-														GroupLayout.PREFERRED_SIZE))
-										.addComponent(resize))
+						.addGap(5)
+						.addGroup(layout.createParallelGroup(Alignment.TRAILING)
+								.addGroup(layout.createParallelGroup(Alignment.BASELINE)
+										.addComponent(lblNewLabel_3, GroupLayout.PREFERRED_SIZE, 58,
+												GroupLayout.PREFERRED_SIZE)
+										.addComponent(escala, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+												GroupLayout.PREFERRED_SIZE))
+								.addComponent(resize))
 						.addPreferredGap(ComponentPlacement.RELATED)
-						.addGroup(layout.createParallelGroup(Alignment.TRAILING).addGroup(layout.createSequentialGroup()
-								.addComponent(lblNewLabel_5)
-								.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-								.addGroup(layout.createParallelGroup(Alignment.LEADING)
-										.addGroup(
-												layout.createSequentialGroup().addGap(50).addComponent(lblNewLabel_14))
-										.addGroup(layout.createSequentialGroup().addGap(18)
-												.addGroup(layout.createParallelGroup(Alignment.TRAILING)
-														.addComponent(lblNewLabel_9_1)
-														.addComponent(alto, GroupLayout.PREFERRED_SIZE, 31,
+						.addGroup(layout.createParallelGroup(Alignment.TRAILING)
+								.addGroup(layout.createSequentialGroup().addComponent(lblNewLabel_5)
+										.addPreferredGap(ComponentPlacement.RELATED, 53, Short.MAX_VALUE)
+										.addGroup(layout.createParallelGroup(Alignment.TRAILING)
+												.addGroup(layout.createParallelGroup(Alignment.BASELINE)
+														.addComponent(lblNewLabel_4, GroupLayout.PREFERRED_SIZE, 48,
 																GroupLayout.PREFERRED_SIZE)
-														.addGroup(layout.createParallelGroup(Alignment.BASELINE)
-																.addComponent(lblNewLabel_4, GroupLayout.PREFERRED_SIZE,
-																		48, GroupLayout.PREFERRED_SIZE)
-																.addComponent(delay, GroupLayout.PREFERRED_SIZE, 34,
-																		GroupLayout.PREFERRED_SIZE))
-														.addComponent(lblNewLabel_9, GroupLayout.PREFERRED_SIZE, 39,
-																GroupLayout.PREFERRED_SIZE)
-														.addComponent(ancho, GroupLayout.PREFERRED_SIZE, 31,
-																GroupLayout.PREFERRED_SIZE)))))
+														.addComponent(delay, GroupLayout.PREFERRED_SIZE,
+																GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+												.addComponent(
+														lblNewLabel_9, GroupLayout.PREFERRED_SIZE, 39,
+														GroupLayout.PREFERRED_SIZE)
+												.addGroup(layout.createParallelGroup(Alignment.LEADING, false)
+														.addComponent(alto, Alignment.TRAILING, 0, 0, Short.MAX_VALUE)
+														.addComponent(lblNewLabel_9_1, Alignment.TRAILING,
+																GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE,
+																Short.MAX_VALUE)
+														.addComponent(ancho, Alignment.TRAILING,
+																GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE,
+																Short.MAX_VALUE))))
 								.addGroup(layout.createSequentialGroup()
 										.addGroup(layout.createParallelGroup(Alignment.BASELINE)
-												.addComponent(perdida, GroupLayout.PREFERRED_SIZE, 36,
+												.addComponent(perdida, GroupLayout.PREFERRED_SIZE,
+														GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+												.addComponent(fit, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
 														GroupLayout.PREFERRED_SIZE)
-												.addGroup(layout
-														.createParallelGroup(Alignment.LEADING).addComponent(fit)
-														.addComponent(touch)))
+												.addComponent(touch, GroupLayout.PREFERRED_SIZE,
+														GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 										.addGap(78)))
-						.addGroup(layout.createParallelGroup(Alignment.TRAILING).addGroup(layout.createSequentialGroup()
-								.addGap(26)
+						.addPreferredGap(ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
+						.addGroup(layout.createParallelGroup(Alignment.LEADING).addGroup(layout.createSequentialGroup()
+								.addPreferredGap(ComponentPlacement.RELATED).addComponent(lblNewLabel_11)
+								.addPreferredGap(ComponentPlacement.UNRELATED)
 								.addGroup(layout.createParallelGroup(Alignment.LEADING)
+										.addComponent(btnNewButton, GroupLayout.PREFERRED_SIZE, 55,
+												GroupLayout.PREFERRED_SIZE)
+										.addComponent(bn, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+												GroupLayout.PREFERRED_SIZE)))
+								.addGroup(layout.createSequentialGroup()
 										.addGroup(layout.createParallelGroup(Alignment.BASELINE)
 												.addComponent(lblNewLabel_6).addComponent(rotacion,
 														GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE))
-										.addGroup(layout.createSequentialGroup()
-												.addPreferredGap(ComponentPlacement.RELATED)
-												.addComponent(lblNewLabel_11)
-												.addPreferredGap(ComponentPlacement.UNRELATED).addComponent(bn,
-														GroupLayout.PREFERRED_SIZE, 24, GroupLayout.PREFERRED_SIZE)))
-								.addGap(37)
-								.addGroup(layout.createParallelGroup(Alignment.LEADING)
-										.addGroup(layout.createSequentialGroup()
-												.addComponent(lblNewLabel_1, GroupLayout.DEFAULT_SIZE, 32,
-														Short.MAX_VALUE)
-												.addGap(6))
-										.addGroup(layout.createParallelGroup(Alignment.BASELINE)
-												.addComponent(lblNewLabel_12, GroupLayout.DEFAULT_SIZE,
-														GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-												.addComponent(loopCount, GroupLayout.PREFERRED_SIZE, 36,
-														GroupLayout.PREFERRED_SIZE)
-												.addComponent(lblNewLabel_2))))
-								.addGroup(layout.createSequentialGroup().addPreferredGap(ComponentPlacement.RELATED)
-										.addComponent(btnNewButton, GroupLayout.PREFERRED_SIZE, 55,
-												GroupLayout.PREFERRED_SIZE)))
-						.addGap(97)));
+										.addGap(18)
+										.addGroup(layout.createParallelGroup(Alignment.TRAILING, false)
+												.addGroup(layout.createSequentialGroup()
+														.addComponent(lblNewLabel_1, GroupLayout.DEFAULT_SIZE,
+																GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+														.addGap(17))
+												.addGroup(layout.createParallelGroup(Alignment.BASELINE)
+														.addComponent(lblNewLabel_12, GroupLayout.PREFERRED_SIZE, 49,
+																GroupLayout.PREFERRED_SIZE)
+														.addComponent(loopCount, GroupLayout.PREFERRED_SIZE, 49,
+																GroupLayout.PREFERRED_SIZE))
+												.addComponent(lblNewLabel_2, Alignment.LEADING))))
+						.addContainerGap()));
 
 		getContentPane().setLayout(layout);
 
-		setSize(new Dimension(961, 795));
+		setSize(new Dimension(879, 813));
 
 		setLocationRelativeTo(null);
 
@@ -960,7 +992,7 @@ public class Config extends javax.swing.JFrame implements ActionListener, Change
 
 		try {
 
-			new DragAndDrop(imagenes, dragBorder, rootPaneCheckingEnabled, new DragAndDrop.Listener() {
+			new UtilDragAndDrop(imagenes, dragBorder, true, new UtilDragAndDrop.Listener() {
 
 				public void filesDropped(java.io.File[] files) {
 

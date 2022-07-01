@@ -1,6 +1,7 @@
 
 package gif;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -20,8 +21,6 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -31,11 +30,14 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JSeparator;
+import javax.swing.SwingConstants;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.filechooser.FileFilter;
 
+import checkbox.JCheckBoxCustom;
+import roundedButtonsWithImage.ButtonRoundedWithImage;
 import simple.chooser.DemoJavaFxStage;
-import utils.Metodos;
+import utils.Utilidades;
 
 public class ButtonPanel extends javax.swing.JPanel {
 
@@ -57,7 +59,7 @@ public class ButtonPanel extends javax.swing.JPanel {
 
 	private JSeparator separator_1;
 
-	public static JCheckBox loop;
+	public static JCheckBoxCustom loop;
 
 	public static String archivoGif;
 
@@ -73,11 +75,11 @@ public class ButtonPanel extends javax.swing.JPanel {
 
 	private static String[] lectura;
 
-	static JCheckBox tool;
+	static JCheckBoxCustom tool;
 
 	static String os = System.getProperty("os.name");
 
-	static String separador = Metodos.saberSeparador(os);
+	static String separador = Utilidades.saberSeparador(os);
 
 	static String directorioActual;
 
@@ -85,7 +87,7 @@ public class ButtonPanel extends javax.swing.JPanel {
 
 	public static LinkedList<String> listaImagenesInterlace = new LinkedList<String>();
 	private JLabel lblNewLabel_1;
-	static JCheckBox reverse;
+	static JCheckBoxCustom reverse;
 	private JLabel lblNewLabel_2;
 	private JMenuBar menuBar;
 	private JMenu mnNewMenu;
@@ -93,8 +95,8 @@ public class ButtonPanel extends javax.swing.JPanel {
 	private JMenuItem mntmNewMenuItem_1;
 	private JMenuItem mntmNewMenuItem_2;
 	private JMenuItem mntmNewMenuItem_3;
-	private JButton btnClearFrames;
-	private JButton btnViewGif;
+	private ButtonRoundedWithImage btnClearFrames;
+	private ButtonRoundedWithImage btnViewGif;
 	private JSeparator separator_3;
 	private JSeparator separator_4;
 	private JSeparator separator_5;
@@ -112,15 +114,20 @@ public class ButtonPanel extends javax.swing.JPanel {
 	}
 
 	public static String[] getLectura() {
+
 		return ButtonPanel.lectura;
+
 	}
 
 	public static void setLectura(String[] lectura) {
+
 		ButtonPanel.lectura = lectura;
 	}
 
 	public ButtonPanel(Animator animator) throws IOException, ClassNotFoundException, InstantiationException,
 			IllegalAccessException, UnsupportedLookAndFeelException {
+
+		setBackground(Color.WHITE);
 
 		ButtonPanel.animator = animator;
 
@@ -141,7 +148,7 @@ public class ButtonPanel extends javax.swing.JPanel {
 
 		try {
 
-			lectura = Metodos.leerFicheroArray("ConfigEasyGifCreator.txt", 19);
+			lectura = Utilidades.leerFicheroArray("ConfigEasyGifCreator.txt", 19);
 
 		}
 
@@ -162,17 +169,6 @@ public class ButtonPanel extends javax.swing.JPanel {
 		mnNewMenu.setFont(new Font("Segoe UI", Font.PLAIN, 16));
 		mnNewMenu.setIcon(new ImageIcon(ButtonPanel.class.getResource("/images/settings.png")));
 		menuBar.add(mnNewMenu);
-
-		mntmNewMenuItem = new JMenuItem("Settings");
-		mntmNewMenuItem.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-		mntmNewMenuItem.setIcon(new ImageIcon(ButtonPanel.class.getResource("/images/settings.png")));
-		mntmNewMenuItem.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mousePressed(MouseEvent e) {
-				new Config().setVisible(true);
-			}
-		});
-		mnNewMenu.add(mntmNewMenuItem);
 
 		mntmNewMenuItem_1 = new JMenuItem("Open Image");
 		mntmNewMenuItem_1.setFont(new Font("Segoe UI", Font.PLAIN, 16));
@@ -196,9 +192,6 @@ public class ButtonPanel extends javax.swing.JPanel {
 
 			}
 		});
-
-		separator_5 = new JSeparator();
-		mnNewMenu.add(separator_5);
 
 		mnNewMenu.add(mntmNewMenuItem_1);
 
@@ -268,7 +261,7 @@ public class ButtonPanel extends javax.swing.JPanel {
 
 							File file = fc.getSelectedFile();
 
-							Gif.write(animator.getGifFrames(), loop.isSelected(), file);
+							Gif.write(animator.getGifFrames(), loop.isSelected(), reverse.isSelected(), file);
 
 							if (tool.isSelected()) {
 
@@ -316,6 +309,20 @@ public class ButtonPanel extends javax.swing.JPanel {
 		mnNewMenu.add(separator_3);
 		mnNewMenu.add(mntmNewMenuItem_3);
 
+		mntmNewMenuItem = new JMenuItem("Settings");
+		mntmNewMenuItem.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+		mntmNewMenuItem.setIcon(new ImageIcon(ButtonPanel.class.getResource("/images/utilities.png")));
+		mntmNewMenuItem.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				new Config().setVisible(true);
+			}
+		});
+
+		separator_5 = new JSeparator();
+		mnNewMenu.add(separator_5);
+		mnNewMenu.add(mntmNewMenuItem);
+
 		separator = new JSeparator();
 
 		add(separator);
@@ -334,13 +341,11 @@ public class ButtonPanel extends javax.swing.JPanel {
 
 		add(lblNewLabel);
 
-		loop = new JCheckBox();
-
-		loop.setText(" Loop");
+		loop = new JCheckBoxCustom(" Loop", SwingConstants.LEFT);
 
 		loop.setSelected(true);
 
-		loop.setFont(new Font("Tahoma", Font.PLAIN, 22));
+		loop.setFont(new Font("Tahoma", Font.PLAIN, 18));
 
 		add(loop);
 
@@ -350,49 +355,70 @@ public class ButtonPanel extends javax.swing.JPanel {
 
 		add(lblNewLabel_1);
 
-		tool = new JCheckBox(" Tool");
+		tool = new JCheckBoxCustom(" Tool", SwingConstants.LEFT);
 
-		tool.setFont(new Font("Tahoma", Font.PLAIN, 22));
+		tool.setFont(new Font("Tahoma", Font.PLAIN, 18));
 
 		add(tool);
 
 		lblNewLabel_2 = new JLabel("");
+
 		lblNewLabel_2.setIcon(new ImageIcon(ButtonPanel.class.getResource("/images/reverse.png")));
+
 		add(lblNewLabel_2);
 
-		reverse = new JCheckBox("Reverse");
-		reverse.setFont(new Font("Tahoma", Font.PLAIN, 22));
+		reverse = new JCheckBoxCustom("Reverse", SwingConstants.LEFT);
+
+		reverse.setFont(new Font("Tahoma", Font.PLAIN, 18));
+
 		add(reverse);
 
-		btnClearFrames = new JButton("Clear Frames");
+		btnClearFrames = new ButtonRoundedWithImage("ClearFrames");
+
 		btnClearFrames.addActionListener(new ActionListener() {
+
 			public void actionPerformed(ActionEvent e) {
+
 				if (!Animator.lista.m.isEmpty()) {
 
 					int resp = JOptionPane.showConfirmDialog(null, "Do you want to delete all frames?", "Clear Frames",
 							JOptionPane.YES_NO_OPTION);
 
 					if (resp == 0) {
+
 						Animator.lista.m.clear();
+
+						GifFramePanel.listaArchivos.clear();
+
+						GifFramePanel.recorte.setText("");
+
+						GifFramePanel.imagen.setIcon(null);
+
 					}
 
 				}
+
 			}
+
 		});
-		btnClearFrames.setFont(new Font("Tahoma", Font.PLAIN, 14));
+
+		btnClearFrames.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		btnClearFrames.setIcon(new ImageIcon(ButtonPanel.class.getResource("/images/clean.png")));
 		add(btnClearFrames);
 
-		btnViewGif = new JButton("Preview Gif");
-		btnViewGif.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		btnViewGif = new ButtonRoundedWithImage("Preview Gif");
+
+		btnViewGif.setFont(new Font("Tahoma", Font.PLAIN, 16));
+
 		btnViewGif.addActionListener(new ActionListener() {
+
 			public void actionPerformed(ActionEvent e) {
 
 				if (Animator.lista.m.size() > 0) {
 
 					final JDialog d = new JDialog((JFrame) null, "Animation");
 
-					d.setType(Type.UTILITY);
+					d.setType(Type.POPUP);
 
 					d.addKeyListener(new KeyAdapter() {
 
@@ -401,45 +427,63 @@ public class ButtonPanel extends javax.swing.JPanel {
 						public void keyPressed(KeyEvent e) {
 
 							if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+
 								d.dispose();
+
 							}
+
 						}
 
 					});
 
-					d.getContentPane().add(new AnimationPanel(animator.getGifFrames(), ButtonPanel.loop.isSelected()));
+					d.setIconImage(Toolkit.getDefaultToolkit().getImage(Animator.class.getResource("/images/ico.png")));
+
+					d.getContentPane()
+							.add(new AnimationPanel(animator.getGifFrames(), loop.isSelected(), reverse.isSelected()));
 
 					d.pack();
 
-					Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+					int ancho = animator.getGifFrames().get(0).getImage().getWidth();
 
-					int height = screenSize.height;
+					int alto = animator.getGifFrames().get(0).getImage().getHeight();
 
-					int width = screenSize.width;
+					int sizeMax = 600;
 
-					d.setSize(width - 256, height - 304);
+					if (ancho > sizeMax || alto > sizeMax) {
+
+						ancho = sizeMax;
+
+						alto = sizeMax;
+
+					}
+
+					d.setSize(new Dimension(ancho, alto));
 
 					d.setLocationRelativeTo(null);
 
 					d.setVisible(true);
 
 				}
+
 			}
+
 		});
+
 		btnViewGif.setIcon(new ImageIcon(ButtonPanel.class.getResource("/images/view.png")));
+
 		add(btnViewGif);
 
 	}
 
 	public static void addImages(boolean carpeta, LinkedList<File> files) {
 
-		LinkedList<File> archivos = new LinkedList<File>();
+		LinkedList<File> archivos = new LinkedList<>();
 
 		if (carpeta) {
 
 			for (int i = 0; i < files.size(); i++) {
 
-				carpetasSeleccion = Metodos.directorio(files.get(i).getAbsolutePath() + Animator.getSeparador(),
+				carpetasSeleccion = Utilidades.directorio(files.get(i).getAbsolutePath() + Animator.getSeparador(),
 						"images", true, true);
 
 				for (int y = 0; y < carpetasSeleccion.size(); y++) {
@@ -741,8 +785,8 @@ public class ButtonPanel extends javax.swing.JPanel {
 
 				}
 
-				if (lectura[15].equals("1") && Metodos.saberNumero(lectura[17]) >= 0
-						&& Metodos.saberNumero(lectura[18]) >= 0) {
+				if (lectura[15].equals("1") && Utilidades.saberNumero(lectura[17]) >= 0
+						&& Utilidades.saberNumero(lectura[18]) >= 0) {
 
 					comando += " --crop " + lectura[17] + "," + lectura[18] + "+" + lectura[16];
 
