@@ -16,6 +16,7 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -186,6 +187,8 @@ public class ButtonPanel extends javax.swing.JPanel {
 
 				try {
 
+					LinkedList<File> archivos = new LinkedList<>();
+
 					lista = test.showOpenFileDialog(carpeta, false, "");
 
 					for (int i = 0; i < lista.size(); i++) {
@@ -206,11 +209,19 @@ public class ButtonPanel extends javax.swing.JPanel {
 
 						else {
 
-							addImages(false, lista);
+							GifFramePanel.listaArchivos.add(GifFramePanel.ruta);
+
+							archivos.add(new File(GifFramePanel.ruta));
 
 						}
 
 					}
+
+					Collections.sort(archivos);
+
+					ButtonPanel.addImages(false, archivos);
+
+					GifFramePanel.ponerDimensionesFrame(Animator.animator.getGifFrames().get(0));
 
 					carpeta = lista.get(0).toString();
 
