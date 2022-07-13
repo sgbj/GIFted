@@ -18,7 +18,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.LinkedList;
-import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -38,6 +37,7 @@ import javax.swing.filechooser.FileFilter;
 import checkbox.JCheckBoxCustom;
 import roundedButtonsWithImage.ButtonRoundedWithImage;
 import simple.chooser.DemoJavaFxStage;
+import util.Metodos;
 import utils.Utilidades;
 
 public class ButtonPanel extends javax.swing.JPanel {
@@ -47,8 +47,6 @@ public class ButtonPanel extends javax.swing.JPanel {
 	Config config;
 
 	private static Animator animator;
-
-	private javax.swing.JButton open;
 
 	String carpeta;
 
@@ -70,8 +68,6 @@ public class ButtonPanel extends javax.swing.JPanel {
 
 	private JSeparator separator_2;
 
-	private static boolean gif = false;
-
 	static LinkedList<String> carpetasSeleccion = new LinkedList<String>();
 
 	private static String[] lectura;
@@ -87,31 +83,51 @@ public class ButtonPanel extends javax.swing.JPanel {
 	public static LinkedList<String> listaImagenes = new LinkedList<String>();
 
 	public static LinkedList<String> listaImagenesInterlace = new LinkedList<String>();
+
 	private JLabel lblNewLabel_1;
+
 	static JCheckBoxCustom reverse;
+
 	private JLabel lblNewLabel_2;
+
 	private JMenuBar menuBar;
+
 	private JMenu mnNewMenu;
+
 	private JMenuItem mntmNewMenuItem;
+
 	private JMenuItem mntmNewMenuItem_1;
+
 	private JMenuItem mntmNewMenuItem_2;
+
 	private JMenuItem mntmNewMenuItem_3;
+
 	private ButtonRoundedWithImage btnClearFrames;
+
 	private ButtonRoundedWithImage btnViewGif;
+
 	private JSeparator separator_3;
+
 	private JSeparator separator_4;
+
 	private JSeparator separator_5;
 
 	public static LinkedList<String> getListaImagenesInterlace() {
+
 		return listaImagenesInterlace;
+
 	}
 
 	public static String getSeparador() {
+
 		return separador;
+
 	}
 
 	public static String getDirectorioActual() {
+
 		return directorioActual;
+
 	}
 
 	public static String[] getLectura() {
@@ -195,25 +211,9 @@ public class ButtonPanel extends javax.swing.JPanel {
 
 						GifFramePanel.ruta = lista.get(i).getAbsolutePath().toString();
 
-						if (GifFramePanel.ruta.endsWith(".gif")) {
+						GifFramePanel.listaArchivos.add(GifFramePanel.ruta);
 
-							GifFramePanel.indice = Animator.lista.m.size();
-
-							ButtonPanel.archivoGif = GifFramePanel.ruta;
-
-							GifFramePanel.loadGifImage(ButtonPanel.archivoGif);
-
-							GifFramePanel.extraerFrames();
-
-						}
-
-						else {
-
-							GifFramePanel.listaArchivos.add(GifFramePanel.ruta);
-
-							archivos.add(new File(GifFramePanel.ruta));
-
-						}
+						archivos.add(new File(GifFramePanel.ruta));
 
 					}
 
@@ -237,7 +237,9 @@ public class ButtonPanel extends javax.swing.JPanel {
 		mnNewMenu.add(mntmNewMenuItem_1);
 
 		mntmNewMenuItem_2 = new JMenuItem("Open Folder");
+
 		mntmNewMenuItem_2.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+
 		mntmNewMenuItem_2.setIcon(new ImageIcon(ButtonPanel.class.getResource("/images/folder.png")));
 
 		mntmNewMenuItem_2.addMouseListener(new MouseAdapter() {
@@ -250,7 +252,13 @@ public class ButtonPanel extends javax.swing.JPanel {
 
 					lista = test.showOpenFileDialog(carpeta, true, "");
 
+					Collections.sort(lista);
+
 					addImages(true, lista);
+
+					carpeta = lista.get(0).toString();
+
+					GifFramePanel.ponerDimensionesFrame(Animator.animator.getGifFrames().get(0));
 
 					carpeta = lista.get(0).toString();
 
@@ -264,14 +272,21 @@ public class ButtonPanel extends javax.swing.JPanel {
 		});
 
 		separator_4 = new JSeparator();
+
 		mnNewMenu.add(separator_4);
+
 		mnNewMenu.add(mntmNewMenuItem_2);
 
 		mntmNewMenuItem_3 = new JMenuItem("Create Gif");
+
 		mntmNewMenuItem_3.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+
 		mntmNewMenuItem_3.setIcon(new ImageIcon(ButtonPanel.class.getResource("/images/save.png")));
+
 		mntmNewMenuItem_3.addMouseListener(new MouseAdapter() {
+
 			@Override
+
 			public void mousePressed(MouseEvent e) {
 
 				try {
@@ -529,6 +544,10 @@ public class ButtonPanel extends javax.swing.JPanel {
 
 				for (int y = 0; y < carpetasSeleccion.size(); y++) {
 
+					if (Metodos.extraerExtension(carpetasSeleccion.get(y)).equals("gif")) {
+
+					}
+
 					archivos.add(new File(carpetasSeleccion.get(y)));
 
 				}
@@ -546,18 +565,21 @@ public class ButtonPanel extends javax.swing.JPanel {
 
 			for (int i = 0; i < archivos.size(); i++) {
 
-				if (archivos.get(i).getName().endsWith("gif")) {
+				if (Metodos.extraerExtension(archivos.get(i).getName()).equals("gif")) {
 
-					List<GifFrame> frames = Gif.read(archivos.get(i));
+					GifFramePanel.indice = Animator.lista.m.size();
 
-					for (GifFrame frame : frames) {
+					ButtonPanel.archivoGif = archivos.get(i).getAbsolutePath();
 
-						animator.addGifFrame(frame);
-					}
+					GifFramePanel.loadGifImage(ButtonPanel.archivoGif);
+
+					GifFramePanel.extraerFrames();
 
 				}
 
 				else {
+
+					GifFramePanel.listaArchivos.add(archivos.get(i).getAbsolutePath());
 
 					BufferedImage image = ImageIO.read(archivos.get(i));
 

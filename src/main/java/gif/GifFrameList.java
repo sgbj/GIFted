@@ -48,7 +48,7 @@ public class GifFrameList extends JList<Object> {
 		setVisibleRowCount(1);
 
 		setDragEnabled(true);
-
+		setSize(100, 100);
 		setDropMode(DropMode.INSERT);
 
 		setTransferHandler(new GifFrameTransferHandler());
@@ -60,12 +60,6 @@ public class GifFrameList extends JList<Object> {
 		GifFrameListCellRenderer renderer = new GifFrameListCellRenderer();
 
 		setCellRenderer(renderer);
-
-		Dimension cellSize = renderer.getPreferredSize();
-
-		setFixedCellWidth((int) cellSize.getWidth());
-
-		setFixedCellHeight((int) cellSize.getHeight());
 
 		addKeyListener(new KeyAdapter() {
 

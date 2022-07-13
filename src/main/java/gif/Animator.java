@@ -188,13 +188,13 @@ public class Animator {
 
 		Graphics2D g = image.createGraphics();
 
-		g.setColor(Color.WHITE);
+		g.setColor(GifFramePanel.colorBackgroundText.getColor());
 
 		g.fillRect(0, 0, w, h);
 
 		Rectangle2D bounds = g.getFontMetrics().getStringBounds(str, g);
 
-		g.setColor(Color.BLACK);
+		g.setColor(GifFramePanel.colorText.getColor());
 
 		g.setFont(new Font(GifFramePanel.fuente.getSelectedItem().toString(), Font.PLAIN,
 				GifFramePanel.sizeFont.getValor()));

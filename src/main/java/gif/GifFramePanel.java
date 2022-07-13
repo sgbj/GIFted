@@ -12,6 +12,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import java.util.Collections;
 import java.util.LinkedList;
 
@@ -34,6 +35,7 @@ import button.SimpleButton.Form;
 import checkbox.JCheckBoxCustom;
 import drag_and_drop.DragAndDrop;
 import drag_and_drop.UtilDragAndDrop;
+import net.java.dev.colorchooser.demo.CopyColor;
 import radio_button.RadioButtonCustom;
 import roundedButtonsWithImage.ButtonRoundedWithImage;
 import spinner.Spinner;
@@ -91,7 +93,12 @@ public class GifFramePanel extends JPanel {
 
 	public static Spinner centerSpace;
 
-	public GifFramePanel(Animator animator) {
+	public static CopyColor colorBackgroundText;
+
+	public static CopyColor colorText;
+	private JLabel lblNewLabel_1;
+
+	public GifFramePanel(Animator animator) throws IOException {
 
 		setBackground(Color.WHITE);
 
@@ -216,48 +223,50 @@ public class GifFramePanel extends JPanel {
 
 			carpeta.mkdir();
 
-			int size = GifDef.mFrameImageList.size();
+			if (!GifDef.mFrameImageList.isEmpty()) {
 
-			BufferedImage frame = GifDef.mFrameImageList.elementAt(0);
+				int size = GifDef.mFrameImageList.size();
 
-			int ancho = frame.getWidth();
+				BufferedImage frame = GifDef.mFrameImageList.elementAt(0);
 
-			int alto = frame.getHeight();
+				int ancho = frame.getWidth();
 
-			File pngfile;
+				int alto = frame.getHeight();
 
-			Graphics gg;
+				File pngfile;
 
-			BufferedImage bfimg;
+				Graphics gg;
 
-			String imagen = "";
+				BufferedImage bfimg;
 
-			for (int i = 0; i < size; i++) {
+				String imagen = "";
 
-				frame = GifDef.mFrameImageList.elementAt(i);
+				for (int i = 0; i < size; i++) {
 
-				bfimg = new BufferedImage(ancho, alto, BufferedImage.TYPE_INT_ARGB);
+					frame = GifDef.mFrameImageList.elementAt(i);
 
-				gg = bfimg.getGraphics();
+					bfimg = new BufferedImage(ancho, alto, BufferedImage.TYPE_INT_ARGB);
 
-				gg.drawImage(frame, 0, 0, null);
+					gg = bfimg.getGraphics();
 
-				imagen = ruta + "output" + Animator.getSeparador() + nombreGif + Animator.getSeparador()
-						+ ButtonPanel.archivoGif.substring(
-								ButtonPanel.archivoGif.lastIndexOf(Animator.getSeparador()) + 1,
-								ButtonPanel.archivoGif.length() - 4)
-						+ "_" + i + ".png";
+					gg.drawImage(frame, 0, 0, null);
 
-				pngfile = new File(imagen);
+					imagen = ruta + "output" + Animator.getSeparador() + nombreGif + Animator.getSeparador()
+							+ ButtonPanel.archivoGif.substring(
+									ButtonPanel.archivoGif.lastIndexOf(Animator.getSeparador()) + 1,
+									ButtonPanel.archivoGif.length() - 4)
+							+ "_" + i + ".png";
 
-				ImageIO.write(bfimg, "png", pngfile);
+					pngfile = new File(imagen);
 
-				listaArchivos.add(imagen);
+					ImageIO.write(bfimg, "png", pngfile);
 
+					listaArchivos.add(imagen);
+
+				}
+
+				Utilidades.ponerGif();
 			}
-
-			Utilidades.ponerGif();
-
 		}
 
 		catch (Exception e) {
@@ -268,7 +277,7 @@ public class GifFramePanel extends JPanel {
 
 	}
 
-	private void initComponents() {
+	private void initComponents() throws IOException {
 
 		centerSpace = new Spinner();
 
@@ -576,7 +585,7 @@ public class GifFramePanel extends JPanel {
 
 		ButtonRoundedWithImage btnNewButton_1 = new ButtonRoundedWithImage("< Back Frame");
 
-		btnNewButton_1.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		btnNewButton_1.setFont(new Font("Tahoma", Font.PLAIN, 16));
 
 		btnNewButton_1.addActionListener(new ActionListener() {
 
@@ -605,7 +614,7 @@ public class GifFramePanel extends JPanel {
 
 		ButtonRoundedWithImage btnNewButton_2 = new ButtonRoundedWithImage("> Next Frame");
 
-		btnNewButton_2.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		btnNewButton_2.setFont(new Font("Tahoma", Font.PLAIN, 16));
 
 		btnNewButton_2.addActionListener(new ActionListener() {
 
@@ -635,7 +644,7 @@ public class GifFramePanel extends JPanel {
 
 		ButtonRoundedWithImage btnNewButton_1_1 = new ButtonRoundedWithImage("Duplicate Frame");
 
-		btnNewButton_1_1.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		btnNewButton_1_1.setFont(new Font("Tahoma", Font.PLAIN, 16));
 
 		btnNewButton_1_1.addActionListener(new ActionListener() {
 
@@ -672,6 +681,7 @@ public class GifFramePanel extends JPanel {
 		fuente.setFont(new Font("Tahoma", Font.PLAIN, 16));
 
 		center = new JCheckBoxCustom("Center", SwingConstants.CENTER);
+		center.setText("Text Centered");
 
 		center.setFont(new Font("Tahoma", Font.PLAIN, 16));
 
@@ -695,7 +705,7 @@ public class GifFramePanel extends JPanel {
 
 		});
 
-		btnNewButton_1_2.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		btnNewButton_1_2.setFont(new Font("Tahoma", Font.PLAIN, 16));
 
 		ButtonRoundedWithImage btnNewButton_1_2_1 = new ButtonRoundedWithImage("< Back Frame");
 
@@ -711,7 +721,7 @@ public class GifFramePanel extends JPanel {
 
 		btnNewButton_1_2_1.setText("Delete All Right");
 
-		btnNewButton_1_2_1.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		btnNewButton_1_2_1.setFont(new Font("Tahoma", Font.PLAIN, 16));
 
 		ButtonRoundedWithImage btnNewButton_1_2_1_1 = new ButtonRoundedWithImage("< Back Frame");
 
@@ -727,117 +737,159 @@ public class GifFramePanel extends JPanel {
 
 		});
 
-		btnNewButton_1_2_1_1.setText("Delete Everything But The Current Frame");
+		btnNewButton_1_2_1_1.setText("Delete Others");
 
-		btnNewButton_1_2_1_1.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		btnNewButton_1_2_1_1.setFont(new Font("Tahoma", Font.PLAIN, 16));
+
+		colorBackgroundText = new CopyColor(Color.WHITE, false);
+
+		colorText = new CopyColor(Color.BLACK, false);
+
+		JLabel lblNewLabel = new JLabel("Text color");
+
+		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 14));
+
+		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
+
+		lblNewLabel_1 = new JLabel("Backgound Color");
+
+		lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 14));
 
 		GroupLayout layout = new GroupLayout(this);
-
 		layout.setHorizontalGroup(layout.createParallelGroup(Alignment.LEADING).addGroup(layout.createSequentialGroup()
 				.addContainerGap()
-				.addGroup(layout.createParallelGroup(Alignment.LEADING).addGroup(layout.createSequentialGroup()
-						.addComponent(fps, GroupLayout.PREFERRED_SIZE, 86, GroupLayout.PREFERRED_SIZE)
-						.addGroup(layout.createParallelGroup(Alignment.LEADING)
-								.addGroup(layout.createSequentialGroup().addGap(18)
+				.addGroup(layout.createParallelGroup(Alignment.LEADING)
+						.addGroup(layout
+								.createSequentialGroup()
+								.addGroup(layout.createParallelGroup(Alignment.LEADING, false)
+										.addComponent(lblNewLabel_1, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE,
+												Short.MAX_VALUE)
+										.addComponent(lblNewLabel, GroupLayout.DEFAULT_SIZE, 76, Short.MAX_VALUE))
+								.addPreferredGap(ComponentPlacement.RELATED)
+								.addGroup(layout.createParallelGroup(Alignment.LEADING)
+										.addComponent(colorBackgroundText, GroupLayout.PREFERRED_SIZE, 111,
+												GroupLayout.PREFERRED_SIZE)
+										.addComponent(
+												colorText, GroupLayout.PREFERRED_SIZE, 111, GroupLayout.PREFERRED_SIZE))
+								.addGap(18)
+								.addGroup(layout.createParallelGroup(Alignment.LEADING)
+										.addGroup(layout.createSequentialGroup()
+												.addComponent(centerSpace, GroupLayout.PREFERRED_SIZE, 120,
+														GroupLayout.PREFERRED_SIZE)
+												.addPreferredGap(ComponentPlacement.UNRELATED)
+												.addComponent(btnNewButton, GroupLayout.PREFERRED_SIZE, 61,
+														GroupLayout.PREFERRED_SIZE)
+												.addGap(14)
+												.addComponent(btnNewButton_1, GroupLayout.PREFERRED_SIZE, 129,
+														GroupLayout.PREFERRED_SIZE)
+												.addPreferredGap(ComponentPlacement.UNRELATED)
+												.addComponent(btnNewButton_2, GroupLayout.PREFERRED_SIZE,
+														GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+												.addPreferredGap(ComponentPlacement.UNRELATED)
+												.addComponent(btnNewButton_1_1, GroupLayout.PREFERRED_SIZE,
+														GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+												.addGap(10).addComponent(btnCreateGif, GroupLayout.PREFERRED_SIZE,
+														GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+										.addComponent(center, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+												GroupLayout.PREFERRED_SIZE)))
+						.addGroup(layout.createSequentialGroup().addGroup(layout.createParallelGroup(Alignment.LEADING)
+								.addGroup(layout.createSequentialGroup()
+										.addComponent(fps, GroupLayout.PREFERRED_SIZE, 86, GroupLayout.PREFERRED_SIZE)
+										.addGap(18)
 										.addComponent(todas, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
 												GroupLayout.PREFERRED_SIZE)
-										.addPreferredGap(ComponentPlacement.RELATED).addComponent(lblNewLabel_2)
-										.addGap(18)
+										.addPreferredGap(ComponentPlacement.UNRELATED).addComponent(lblNewLabel_2)
+										.addGap(16)
 										.addComponent(actual, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
 												GroupLayout.PREFERRED_SIZE)
-										.addPreferredGap(ComponentPlacement.UNRELATED).addComponent(lblNewLabel_3)
-										.addGap(18)
-										.addComponent(recorte, GroupLayout.DEFAULT_SIZE, 294, Short.MAX_VALUE)
-										.addGap(29).addComponent(btnrndwthmgCrop_1, GroupLayout.PREFERRED_SIZE,
-												GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-								.addGroup(layout.createSequentialGroup().addGap(70)
-										.addComponent(fuente, GroupLayout.PREFERRED_SIZE, 135,
+										.addPreferredGap(ComponentPlacement.RELATED).addComponent(lblNewLabel_3))
+								.addGroup(layout.createSequentialGroup()
+										.addComponent(texto, GroupLayout.PREFERRED_SIZE, 150,
 												GroupLayout.PREFERRED_SIZE)
 										.addGap(18)
-										.addComponent(sizeFont, GroupLayout.PREFERRED_SIZE, 70,
+										.addComponent(fuente, GroupLayout.PREFERRED_SIZE, 188,
 												GroupLayout.PREFERRED_SIZE)
-										.addPreferredGap(ComponentPlacement.UNRELATED)
-										.addComponent(btnNewButton_1_2, GroupLayout.PREFERRED_SIZE, 117,
-												GroupLayout.PREFERRED_SIZE)
-										.addGap(14)
-										.addComponent(btnNewButton_1_2_1, GroupLayout.PREFERRED_SIZE, 143,
-												GroupLayout.PREFERRED_SIZE)
-										.addGap(18).addComponent(btnNewButton_1_2_1_1, GroupLayout.DEFAULT_SIZE, 300,
-												Short.MAX_VALUE))))
-						.addGroup(layout.createSequentialGroup()
-								.addComponent(texto, GroupLayout.PREFERRED_SIZE, 150, GroupLayout.PREFERRED_SIZE)
-								.addPreferredGap(ComponentPlacement.UNRELATED)
-								.addComponent(center, GroupLayout.PREFERRED_SIZE, 89, GroupLayout.PREFERRED_SIZE)
-								.addPreferredGap(ComponentPlacement.RELATED)
-								.addComponent(centerSpace, GroupLayout.PREFERRED_SIZE, 134, GroupLayout.PREFERRED_SIZE)
-								.addPreferredGap(ComponentPlacement.UNRELATED)
-								.addComponent(btnNewButton, GroupLayout.PREFERRED_SIZE, 69, GroupLayout.PREFERRED_SIZE)
-								.addPreferredGap(ComponentPlacement.UNRELATED)
-								.addComponent(btnNewButton_1, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE,
-										Short.MAX_VALUE)
-								.addPreferredGap(ComponentPlacement.UNRELATED)
-								.addComponent(btnNewButton_1_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-										GroupLayout.PREFERRED_SIZE)
-								.addGap(14)
-								.addComponent(btnNewButton_2, GroupLayout.PREFERRED_SIZE, 126,
-										GroupLayout.PREFERRED_SIZE)
-								.addGap(18).addComponent(btnCreateGif, GroupLayout.PREFERRED_SIZE, 97,
-										GroupLayout.PREFERRED_SIZE)))
-				.addGap(51)).addComponent(imageScrollPane, GroupLayout.DEFAULT_SIZE, 1042, Short.MAX_VALUE));
-		layout.setVerticalGroup(layout.createParallelGroup(Alignment.TRAILING)
-				.addGroup(layout.createSequentialGroup().addGroup(layout.createParallelGroup(Alignment.LEADING)
-						.addGroup(layout.createSequentialGroup().addGap(33).addComponent(actual,
-								GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-						.addGroup(layout.createSequentialGroup().addGap(11).addGroup(layout
-								.createParallelGroup(Alignment.LEADING)
-								.addGroup(layout.createSequentialGroup().addGap(22)
-										.addGroup(layout.createParallelGroup(Alignment.LEADING)
-												.addComponent(todas, GroupLayout.PREFERRED_SIZE,
+										.addGap(15).addComponent(sizeFont, GroupLayout.PREFERRED_SIZE, 70,
+												GroupLayout.PREFERRED_SIZE)))
+								.addGap(18)
+								.addGroup(layout.createParallelGroup(Alignment.LEADING)
+										.addGroup(layout.createSequentialGroup()
+												.addPreferredGap(ComponentPlacement.RELATED)
+												.addComponent(recorte, GroupLayout.PREFERRED_SIZE, 116,
+														GroupLayout.PREFERRED_SIZE)
+												.addGap(18).addComponent(btnrndwthmgCrop_1, GroupLayout.PREFERRED_SIZE,
+														GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+										.addGroup(layout.createSequentialGroup()
+												.addComponent(btnNewButton_1_2, GroupLayout.PREFERRED_SIZE,
 														GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-												.addComponent(fps, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-														GroupLayout.PREFERRED_SIZE)))
-								.addGroup(layout.createParallelGroup(Alignment.TRAILING)
+												.addPreferredGap(ComponentPlacement.UNRELATED)
+												.addComponent(btnNewButton_1_2_1, GroupLayout.PREFERRED_SIZE,
+														GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+												.addPreferredGap(ComponentPlacement.UNRELATED)
+												.addComponent(btnNewButton_1_2_1_1, GroupLayout.PREFERRED_SIZE,
+														GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))))
+				.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+				.addComponent(imageScrollPane, GroupLayout.DEFAULT_SIZE, 975, Short.MAX_VALUE));
+		layout.setVerticalGroup(layout.createParallelGroup(Alignment.LEADING).addGroup(layout.createSequentialGroup()
+				.addGroup(layout.createParallelGroup(Alignment.LEADING).addGroup(layout.createSequentialGroup()
+						.addGap(33)
+						.addGroup(layout.createParallelGroup(Alignment.LEADING)
+								.addComponent(fps, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+										GroupLayout.PREFERRED_SIZE)
+								.addComponent(todas, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+										GroupLayout.PREFERRED_SIZE)
+								.addComponent(lblNewLabel_2).addComponent(lblNewLabel_3)
+								.addComponent(actual, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+										GroupLayout.PREFERRED_SIZE)
+								.addGroup(layout.createParallelGroup(Alignment.BASELINE)
 										.addComponent(btnrndwthmgCrop_1, GroupLayout.PREFERRED_SIZE, 61,
 												GroupLayout.PREFERRED_SIZE)
-										.addComponent(lblNewLabel_2).addComponent(lblNewLabel_3).addComponent(recorte,
-												GroupLayout.PREFERRED_SIZE, 48, GroupLayout.PREFERRED_SIZE)))))
+										.addComponent(recorte, GroupLayout.PREFERRED_SIZE, 48,
+												GroupLayout.PREFERRED_SIZE)))
 						.addGap(18)
 						.addGroup(layout.createParallelGroup(Alignment.LEADING)
-								.addGroup(layout.createParallelGroup(Alignment.TRAILING, false)
-										.addGroup(layout.createParallelGroup(Alignment.BASELINE)
-												.addComponent(btnNewButton_1_2, 0, 0, Short.MAX_VALUE)
-												.addComponent(btnNewButton_1_2_1, GroupLayout.PREFERRED_SIZE, 50,
-														GroupLayout.PREFERRED_SIZE))
-										.addGroup(layout.createParallelGroup(Alignment.BASELINE)
-												.addComponent(sizeFont, GroupLayout.DEFAULT_SIZE,
-														GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-												.addComponent(
-														fuente, GroupLayout.PREFERRED_SIZE, 34,
-														GroupLayout.PREFERRED_SIZE)))
-								.addComponent(
-										btnNewButton_1_2_1_1, GroupLayout.PREFERRED_SIZE, 50,
-										GroupLayout.PREFERRED_SIZE))
-						.addPreferredGap(ComponentPlacement.RELATED)
-						.addGroup(layout.createParallelGroup(Alignment.LEADING)
-								.addComponent(texto, GroupLayout.PREFERRED_SIZE, 58, GroupLayout.PREFERRED_SIZE)
-								.addGroup(layout.createSequentialGroup().addGap(15)
-										.addGroup(layout.createParallelGroup(Alignment.LEADING, false)
-												.addComponent(center, GroupLayout.DEFAULT_SIZE,
-														GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-												.addComponent(centerSpace, 0, 0, Short.MAX_VALUE)
-												.addGroup(layout.createParallelGroup(Alignment.BASELINE)
-														.addComponent(btnCreateGif, GroupLayout.DEFAULT_SIZE, 55,
-																Short.MAX_VALUE)
-														.addComponent(btnNewButton_2, GroupLayout.PREFERRED_SIZE, 42,
-																GroupLayout.PREFERRED_SIZE)
-														.addComponent(btnNewButton_1, GroupLayout.PREFERRED_SIZE, 42,
-																GroupLayout.PREFERRED_SIZE)
-														.addComponent(btnNewButton, GroupLayout.PREFERRED_SIZE, 50,
-																GroupLayout.PREFERRED_SIZE)
-														.addComponent(btnNewButton_1_1, GroupLayout.PREFERRED_SIZE, 42,
-																GroupLayout.PREFERRED_SIZE)))))
-						.addGap(38)
-						.addComponent(imageScrollPane, GroupLayout.PREFERRED_SIZE, 276, GroupLayout.PREFERRED_SIZE)));
+								.addComponent(texto, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+										GroupLayout.PREFERRED_SIZE)
+								.addComponent(fuente, GroupLayout.PREFERRED_SIZE, 49, GroupLayout.PREFERRED_SIZE)
+								.addGroup(layout.createParallelGroup(Alignment.BASELINE)
+										.addComponent(sizeFont, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+												GroupLayout.PREFERRED_SIZE)
+										.addComponent(btnNewButton_1_2, GroupLayout.PREFERRED_SIZE, 51, Short.MAX_VALUE)
+										.addComponent(btnNewButton_1_2_1, GroupLayout.PREFERRED_SIZE, 50,
+												GroupLayout.PREFERRED_SIZE)
+										.addComponent(btnNewButton_1_2_1_1, GroupLayout.PREFERRED_SIZE, 50,
+												GroupLayout.PREFERRED_SIZE)))
+						.addGap(8)
+						.addGroup(layout.createParallelGroup(Alignment.TRAILING, false)
+								.addComponent(lblNewLabel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE,
+										Short.MAX_VALUE)
+								.addComponent(center, Alignment.LEADING, GroupLayout.PREFERRED_SIZE,
+										GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addGroup(layout.createParallelGroup(Alignment.LEADING).addGroup(layout.createSequentialGroup()
+								.addPreferredGap(ComponentPlacement.RELATED)
+								.addGroup(layout.createParallelGroup(Alignment.LEADING).addGroup(layout
+										.createParallelGroup(Alignment.BASELINE)
+										.addComponent(centerSpace, GroupLayout.DEFAULT_SIZE, 55, Short.MAX_VALUE)
+										.addComponent(btnNewButton_1, GroupLayout.PREFERRED_SIZE,
+												GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+										.addComponent(btnNewButton_2, GroupLayout.PREFERRED_SIZE, 50,
+												GroupLayout.PREFERRED_SIZE)
+										.addComponent(btnNewButton_1_1, GroupLayout.PREFERRED_SIZE,
+												GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+										.addComponent(btnCreateGif, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE,
+												Short.MAX_VALUE)
+										.addComponent(btnNewButton, GroupLayout.DEFAULT_SIZE, 55, Short.MAX_VALUE))
+										.addComponent(colorBackgroundText, Alignment.TRAILING,
+												GroupLayout.PREFERRED_SIZE, 36, GroupLayout.PREFERRED_SIZE))
+								.addGap(30))
+								.addGroup(layout.createSequentialGroup().addGap(38).addComponent(lblNewLabel_1)
+										.addPreferredGap(ComponentPlacement.RELATED))))
+						.addGroup(layout.createSequentialGroup().addGap(179)
+								.addComponent(colorText, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE,
+										Short.MAX_VALUE)
+								.addGap(86)))
+				.addPreferredGap(ComponentPlacement.RELATED)
+				.addComponent(imageScrollPane, GroupLayout.PREFERRED_SIZE, 276, GroupLayout.PREFERRED_SIZE)));
 
 		this.setLayout(layout);
 
@@ -872,25 +924,7 @@ public class GifFramePanel extends JPanel {
 
 							}
 
-							if (ruta.endsWith(".gif")) {
-
-								indice = Animator.lista.m.size();
-
-								ButtonPanel.archivoGif = ruta;
-
-								loadGifImage(ButtonPanel.archivoGif);
-
-								extraerFrames();
-
-							}
-
-							else {
-
-								listaArchivos.add(ruta);
-
-								archivos.add(new File(ruta));
-
-							}
+							archivos.add(new File(ruta));
 
 						}
 

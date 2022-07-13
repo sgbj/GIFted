@@ -6,18 +6,11 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8">
+	<classpathentry excluding="**" kind="src" output="target/classes" path="src/main/resources">
 		<attributes>
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry exported="true" kind="con" path="org.eclipse.m2e.MAVEN2_CLASSPATH_CONTAINER">
-		<attributes>
-			<attribute name="maven.pomderived" value="true"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="src/main/java/libs/NefAnimacion_V2.1_jdk18.jar"/>
-	<classpathentry kind="lib" path="src/main/java/libs/swingx-core-1.6.2-2.jar"/>
 	<classpathentry kind="src" output="target/test-classes" path="src/test/java">
 		<attributes>
 			<attribute name="test" value="true"/>
@@ -25,7 +18,28 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry excluding="**" kind="src" output="target/test-classes" path="src/test/resources">
+		<attributes>
+			<attribute name="test" value="true"/>
+			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8">
+		<attributes>
+			<attribute name="module" value="true"/>
+			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="con" path="org.eclipse.m2e.MAVEN2_CLASSPATH_CONTAINER">
+		<attributes>
+			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="src/main/java/libs/MaterialButtoms.jar"/>
+	<classpathentry kind="lib" path="src/main/java/libs/NefAnimacion_V2.1_jdk18.jar"/>
+	<classpathentry kind="lib" path="src/main/java/libs/swingx-core-1.6.2-2.jar"/>
 	<classpathentry kind="lib" path="src/main/java/libs/Timing.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Yeah/Desktop/J_Material_Swing_v_2.1.jar"/>
+	<classpathentry kind="lib" path="src/main/java/libs/J_Material_Swing_v_2.1.jar"/>
+	<classpathentry kind="lib" path="src/main/java/libs/lib_colour_picker.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
