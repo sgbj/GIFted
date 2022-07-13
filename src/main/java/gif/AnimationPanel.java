@@ -2,6 +2,7 @@ package gif;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.util.List;
 
 import javax.swing.JPanel;
@@ -92,7 +93,29 @@ public class AnimationPanel extends JPanel {
 
 		super.paintComponent(g);
 
-		g.drawImage(frames.get(index).getImage(), 0, 0, this);
+		Image img = frames.get(index).getImage();
+
+		int ancho = frames.get(index).getImage().getWidth();
+
+		int alto = frames.get(index).getImage().getHeight();
+
+		if (alto > 560) {
+
+			ancho = (560 * ancho) / alto;
+
+			alto = 560;
+
+		}
+
+		if (ancho > 586) {
+
+			ancho = 586;
+
+		}
+
+		Image resizedImage = img.getScaledInstance(ancho, alto, 0);
+
+		g.drawImage(resizedImage, 0, 0, this);
 
 	}
 

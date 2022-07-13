@@ -992,6 +992,8 @@ public class GifFramePanel extends JPanel {
 
 		int alto = frame.getImage().getHeight();
 
+		recorte.setText(ancho + " x " + alto);
+
 		if (alto > 270) {
 
 			ancho = (270 * ancho) / alto;
@@ -1005,8 +1007,6 @@ public class GifFramePanel extends JPanel {
 		imagen.setIcon(new ImageIcon(resizedImage));
 
 		sizeImage = Integer.toString(ancho) + " x " + Integer.toString(alto);
-
-		recorte.setText(sizeImage);
 
 	}
 }

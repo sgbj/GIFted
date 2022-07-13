@@ -48,7 +48,9 @@ public class GifFrameList extends JList<Object> {
 		setVisibleRowCount(1);
 
 		setDragEnabled(true);
+
 		setSize(100, 100);
+
 		setDropMode(DropMode.INSERT);
 
 		setTransferHandler(new GifFrameTransferHandler());
@@ -161,52 +163,89 @@ public class GifFrameList extends JList<Object> {
 
 		@Override
 		protected Transferable createTransferable(JComponent c) {
+
 			JList<?> list = (JList<?>) c;
+
 			@SuppressWarnings("deprecation")
+
 			final Object[] values = list.getSelectedValues();
+
 			return new GifFrameSelection(values);
+
 		}
 
 		@Override
+
 		public boolean canImport(TransferSupport support) {
+
 			if (!support.isDataFlavorSupported(GifFrameSelection.GIF_FRAME_FLAVOR)
+
 					&& !support.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
+
 				return false;
+
 			}
+
 			support.getComponent().repaint();
+
 			return true;
+
 		}
 
 		@Override
+
 		public boolean importData(TransferSupport support) {
+
 			if (!canImport(support) || !support.isDrop()) {
+
 				return false;
+
 			}
 
 			Transferable t = support.getTransferable();
+
 			@SuppressWarnings("unchecked")
+
 			JList<Object> list = (JList<Object>) support.getComponent();
 
 			int index = list.getUI().locationToIndex(list, support.getDropLocation().getDropPoint());
+
 			Rectangle rect = list.getCellBounds(index, index);
+
 			int size = list.getModel().getSize();
+
 			if (index == size - 1) {
+
 				if (rect == null) {
+
 					index = 0;
-				} else {
+
+				}
+
+				else {
+
 					if (support.getDropLocation().getDropPoint().getX() > rect.getX() + rect.getWidth()) {
+
 						index = size;
+
 					}
+
 				}
 			}
+
 			DefaultListModel<Object> m = (DefaultListModel<Object>) list.getModel();
 
 			if (support.isDataFlavorSupported(GifFrameSelection.GIF_FRAME_FLAVOR)) {
+
 				Object[] data = null;
 
 				try {
+
 					data = (Object[]) t.getTransferData(GifFrameSelection.GIF_FRAME_FLAVOR);
-				} catch (Exception ex) {
+
+				}
+
+				catch (Exception ex) {
 
 					return false;
 				}
@@ -218,25 +257,45 @@ public class GifFrameList extends JList<Object> {
 					m.add(index + i, data[i]);
 
 					for (int j = 0; j < indices.length; j++) {
+
 						if (index < indices[j]) {
+
 							indices[j]++;
+
 						}
+
 					}
+
 				}
 
 				if (support.getDropAction() != COPY) {
+
 					for (int i = 0; i < indices.length; i++) {
+
 						m.remove(indices[i] - i);
+
 					}
+
 				}
-			} else if (support.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
+
+			}
+
+			else if (support.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
+
 				List<?> data = null;
 
 				try {
+
 					data = (List<?>) t.getTransferData(DataFlavor.javaFileListFlavor);
-				} catch (Exception ex) {
+
+				}
+
+				catch (Exception ex) {
+
 					JOptionPane.showMessageDialog(list, ex, "Exception", JOptionPane.ERROR_MESSAGE);
+
 					return false;
+
 				}
 
 				File file;
@@ -446,6 +505,7 @@ public class GifFrameList extends JList<Object> {
 			}
 
 			g.drawImage(selected ? pressed : normal, 10, 12, 58, 58, this);
+
 		}
 
 		public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected,

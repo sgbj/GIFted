@@ -22,6 +22,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
@@ -40,7 +41,7 @@ import utils.Utilidades;
 
 public class Config extends javax.swing.JFrame implements ActionListener, ChangeListener {
 
-	private Spinner escala;
+	private JTextField escala;
 
 	private Spinner perdida;
 
@@ -102,7 +103,7 @@ public class Config extends javax.swing.JFrame implements ActionListener, Change
 
 			optimize.setValor(0);
 
-			escala.setValor(1);
+			escala.setText("");
 
 			perdida.setValor(0);
 
@@ -138,7 +139,7 @@ public class Config extends javax.swing.JFrame implements ActionListener, Change
 
 			optimize.setValor(Integer.parseInt(ButtonPanel.getLectura()[1]));
 
-			escala.setValor(Integer.parseInt(ButtonPanel.getLectura()[2]));
+			escala.setText(ButtonPanel.getLectura()[2]);
 
 			perdida.setValor(Integer.parseInt(ButtonPanel.getLectura()[3]));
 
@@ -230,7 +231,7 @@ public class Config extends javax.swing.JFrame implements ActionListener, Change
 
 			int optimizar = optimize.getValor();
 
-			int scala = escala.getValor();
+			String scala = escala.getText();
 
 			int lossy = perdida.getValor();
 
@@ -414,9 +415,9 @@ public class Config extends javax.swing.JFrame implements ActionListener, Change
 
 		btnNewButton.setIcon(new ImageIcon(Config.class.getResource("/images/guardar.png")));
 
-		escala = new Spinner();
-
-		escala.getEditor().setFont(new Font("Dialog", Font.PLAIN, 16));
+		escala = new JTextField();
+		escala.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		escala.setHorizontalAlignment(SwingConstants.CENTER);
 
 		JLabel lblNewLabel_2 = new JLabel(" 0  -");
 
@@ -759,17 +760,17 @@ public class Config extends javax.swing.JFrame implements ActionListener, Change
 										.addGroup(layout.createSequentialGroup().addGap(5)
 												.addGroup(layout.createParallelGroup(Alignment.LEADING)
 														.addComponent(lblNewLabel_12).addComponent(lblNewLabel_6)
-														.addComponent(lblNewLabel_4).addComponent(lblNewLabel_5)
-														.addComponent(lblNewLabel_8).addComponent(lblNewLabel_3))))
+														.addComponent(lblNewLabel_4).addComponent(lblNewLabel_8)
+														.addComponent(lblNewLabel_3).addComponent(lblNewLabel_5))))
 								.addGap(55))
 						.addComponent(lblNewLabel, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 273, Short.MAX_VALUE))
 				.addPreferredGap(ComponentPlacement.RELATED)
 				.addGroup(layout.createParallelGroup(Alignment.TRAILING)
+						.addComponent(escala, GroupLayout.DEFAULT_SIZE, 91, Short.MAX_VALUE)
 						.addGroup(layout.createSequentialGroup().addComponent(espacioTop, 0, 0, Short.MAX_VALUE)
 								.addPreferredGap(ComponentPlacement.RELATED))
 						.addComponent(lblNewLabel_13_1, GroupLayout.DEFAULT_SIZE, 91, Short.MAX_VALUE)
 						.addComponent(delay, GroupLayout.DEFAULT_SIZE, 91, Short.MAX_VALUE)
-						.addComponent(escala, GroupLayout.DEFAULT_SIZE, 91, Short.MAX_VALUE)
 						.addComponent(colores, GroupLayout.DEFAULT_SIZE, 91, Short.MAX_VALUE)
 						.addComponent(lblNewLabel_13, GroupLayout.DEFAULT_SIZE, 91, Short.MAX_VALUE)
 						.addComponent(optimize, GroupLayout.DEFAULT_SIZE, 91, Short.MAX_VALUE)
@@ -922,13 +923,12 @@ public class Config extends javax.swing.JFrame implements ActionListener, Change
 								.addGroup(layout.createParallelGroup(Alignment.BASELINE)
 										.addComponent(lblNewLabel_3, GroupLayout.PREFERRED_SIZE, 58,
 												GroupLayout.PREFERRED_SIZE)
-										.addComponent(escala, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+										.addComponent(escala, GroupLayout.PREFERRED_SIZE, 36,
 												GroupLayout.PREFERRED_SIZE))
 								.addComponent(resize))
-						.addPreferredGap(ComponentPlacement.RELATED)
-						.addGroup(layout.createParallelGroup(Alignment.TRAILING)
-								.addGroup(layout.createSequentialGroup().addComponent(lblNewLabel_5)
-										.addPreferredGap(ComponentPlacement.RELATED, 53, Short.MAX_VALUE)
+						.addPreferredGap(ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
+						.addGroup(
+								layout.createParallelGroup(Alignment.TRAILING)
 										.addGroup(layout.createParallelGroup(Alignment.TRAILING)
 												.addGroup(layout.createParallelGroup(Alignment.BASELINE)
 														.addComponent(lblNewLabel_4, GroupLayout.PREFERRED_SIZE, 48,
@@ -938,23 +938,25 @@ public class Config extends javax.swing.JFrame implements ActionListener, Change
 												.addComponent(
 														lblNewLabel_9, GroupLayout.PREFERRED_SIZE, 39,
 														GroupLayout.PREFERRED_SIZE)
-												.addGroup(layout.createParallelGroup(Alignment.LEADING, false)
+												.addGroup(layout
+														.createParallelGroup(Alignment.LEADING, false)
 														.addComponent(alto, Alignment.TRAILING, 0, 0, Short.MAX_VALUE)
 														.addComponent(lblNewLabel_9_1, Alignment.TRAILING,
 																GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE,
 																Short.MAX_VALUE)
 														.addComponent(ancho, Alignment.TRAILING,
 																GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE,
-																Short.MAX_VALUE))))
-								.addGroup(layout.createSequentialGroup()
-										.addGroup(layout.createParallelGroup(Alignment.BASELINE)
-												.addComponent(perdida, GroupLayout.PREFERRED_SIZE,
-														GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-												.addComponent(fit, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-														GroupLayout.PREFERRED_SIZE)
-												.addComponent(touch, GroupLayout.PREFERRED_SIZE,
-														GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-										.addGap(78)))
+																Short.MAX_VALUE)))
+										.addGroup(layout.createSequentialGroup()
+												.addGroup(layout.createParallelGroup(Alignment.BASELINE)
+														.addComponent(perdida, GroupLayout.PREFERRED_SIZE,
+																GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+														.addComponent(fit, GroupLayout.PREFERRED_SIZE,
+																GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+														.addComponent(touch, GroupLayout.PREFERRED_SIZE,
+																GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+														.addComponent(lblNewLabel_5))
+												.addGap(78)))
 						.addPreferredGap(ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
 						.addGroup(layout.createParallelGroup(Alignment.LEADING).addGroup(layout.createSequentialGroup()
 								.addPreferredGap(ComponentPlacement.RELATED).addComponent(lblNewLabel_11)
