@@ -1,7 +1,8 @@
 package gif;
 
-import java.awt.Dimension;
+import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.util.List;
 
 import javax.swing.JPanel;
@@ -14,7 +15,9 @@ public class AnimationPanel extends JPanel {
 
 	private int index;
 
-	public AnimationPanel(final List<GifFrame> frames, final boolean loop) {
+	public AnimationPanel(final List<GifFrame> frames, boolean loop, boolean reverse) {
+
+		setBackground(Color.WHITE);
 
 		this.frames = frames;
 
@@ -26,18 +29,22 @@ public class AnimationPanel extends JPanel {
 
 					index = 0;
 
+					if (reverse) {
+
+						index = frames.size();
+
+						index--;
+
+					}
+
 					for (int i = 0; i < frames.size(); i++) {
-
-						index = i;
-
-						GifFrame frame = frames.get(index);
-
-						setPreferredSize(new Dimension(frame.getImage().getWidth(), frame.getImage().getHeight()));
 
 						repaint();
 
 						try {
-							Thread.sleep(Long.parseLong(GifFramePanel.fps.getText() + "0"));
+
+							Thread.sleep(Long.parseLong(GifFramePanel.fps.getValor() + "0"));
+
 						}
 
 						catch (Exception ex) {
@@ -46,12 +53,28 @@ public class AnimationPanel extends JPanel {
 
 								Thread.sleep(10L);
 
-								GifFramePanel.fps.setText("10");
+								GifFramePanel.fps.setValor(10);
 
-							} catch (InterruptedException e) {
+							}
+
+							catch (InterruptedException e) {
 								//
 							}
+
 						}
+
+						if (reverse) {
+
+							index--;
+
+						}
+
+						else {
+
+							index++;
+
+						}
+
 					}
 
 				}
@@ -61,16 +84,39 @@ public class AnimationPanel extends JPanel {
 			}
 
 		}).start();
+
 	}
 
 	@Override
-	
+
 	protected void paintComponent(Graphics g) {
-		
+
 		super.paintComponent(g);
-		
-		g.drawImage(frames.get(index).getImage(), 0, 0, this);
-		
+
+		Image img = frames.get(index).getImage();
+
+		int ancho = frames.get(index).getImage().getWidth();
+
+		int alto = frames.get(index).getImage().getHeight();
+
+		if (alto > 560) {
+
+			ancho = (560 * ancho) / alto;
+
+			alto = 560;
+
+		}
+
+		if (ancho > 586) {
+
+			ancho = 586;
+
+		}
+
+		Image resizedImage = img.getScaledInstance(ancho, alto, 0);
+
+		g.drawImage(resizedImage, 0, 0, this);
+
 	}
-	
+
 }

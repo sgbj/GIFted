@@ -18,7 +18,7 @@ import javax.imageio.stream.ImageOutputStream;
 
 public final class Gif {
 
-	public static void write(List<GifFrame> frames, boolean loopContinuously, File file)
+	public static void write(List<GifFrame> frames, boolean loopContinuously, boolean reverse, File file)
 			throws IIOInvalidTreeException, IOException {
 
 		ImageWriter writer = ImageIO.getImageWritersByFormatName("gif").next();
@@ -29,11 +29,21 @@ public final class Gif {
 
 		writer.prepareWriteSequence(writer.getDefaultStreamMetadata(writer.getDefaultWriteParam()));
 
-		for (GifFrame frame : frames) {
+		int index = 0;
 
-			BufferedImage image = frame.getImage();
+		if (reverse) {
 
-			long delay = Integer.parseInt(GifFramePanel.fps.getText());
+			index = frames.size();
+
+			index--;
+
+		}
+
+		for (int i = 0; i < frames.size(); i++) {
+
+			BufferedImage image = frames.get(index).getImage();
+
+			long delay = GifFramePanel.fps.getValor();
 
 			IIOMetadata metadata = writer.getDefaultImageMetadata(new ImageTypeSpecifier(image),
 					writer.getDefaultWriteParam());
@@ -69,6 +79,18 @@ public final class Gif {
 			metadata.setFromTree(fmt, root);
 
 			writer.writeToSequence(new IIOImage(image, null, metadata), writer.getDefaultWriteParam());
+
+			if (reverse) {
+
+				index--;
+
+			}
+
+			else {
+
+				index++;
+
+			}
 
 		}
 

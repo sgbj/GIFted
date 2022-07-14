@@ -2,13 +2,14 @@ package gif;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Toolkit;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.TooManyListenersException;
@@ -17,43 +18,40 @@ import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import utils.DragAndDrop;
-import utils.Metodos;
+import utils.Utilidades;
 
 public class Animator {
 
 	static Animator animator;
 
-	static GifFrameList lista;
+	public static GifFrameList lista;
 
 	static String os = System.getProperty("os.name");
 
-	static String separador = Metodos.saberSeparador(os);
+	static String separador = Utilidades.saberSeparador(os);
 
-	LinkedList<String> archivos = new LinkedList<String>();
+	static LinkedList<BufferedImage> archivos = new LinkedList<BufferedImage>();
 
 	public static String getSeparador() {
+
 		return separador;
+
 	}
 
 	private static GifFramePanel panel;
 
 	public static String getOs() {
+
 		return os;
-	}
-
-	public static void saberSize() {
-
-		GifFrame frame = (GifFrame) lista.getGifFrames().get(0);
-
-		panel.setGifFrame(frame);
 
 	}
 
-	public Animator(GifFrame[] frames) throws IOException {
+	public Animator(GifFrame[] frames) throws IOException, ClassNotFoundException, InstantiationException,
+			IllegalAccessException, UnsupportedLookAndFeelException, TooManyListenersException {
 
 		final JFrame f = new JFrame("Gif Animator");
 
@@ -65,17 +63,21 @@ public class Animator {
 
 		ButtonPanel buttonPanel = new ButtonPanel(this);
 
+		buttonPanel.setBackground(Color.WHITE);
+
 		buttonPanel.setSize(10, 10);
 
 		f.getContentPane().add(buttonPanel, BorderLayout.NORTH);
 
 		panel = new GifFramePanel(this);
 
-		panel.setSize(10, 10);
+		panel.setBackground(Color.WHITE);
 
 		f.getContentPane().add(panel);
 
 		JPanel listPanel = new JPanel(new BorderLayout());
+
+		listPanel.setBackground(Color.WHITE);
 
 		JScrollPane listScrollPane = new JScrollPane();
 
@@ -92,13 +94,57 @@ public class Animator {
 
 			lista.setBorder(BorderFactory.createEmptyBorder(0, 0, inset, 0));
 
+			lista.addKeyListener(new KeyAdapter() {
+
+				@Override
+
+				public void keyPressed(KeyEvent e) {
+
+					try {
+
+						int indice = lista.getSelectedIndex();
+
+						Object frameAnterior;
+
+						if (indice > 0 && (e.getKeyCode() == KeyEvent.VK_LEFT)) {
+
+							indice--;
+
+							frameAnterior = lista.m.get(indice);
+
+							lista.m.set(indice, lista.m.get(++indice));
+
+							lista.m.set(indice, frameAnterior);
+
+						}
+
+						if (indice >= 0 && indice < lista.m.size() - 1 && (e.getKeyCode() == KeyEvent.VK_RIGHT)) {
+
+							indice++;
+
+							frameAnterior = lista.m.get(indice);
+
+							lista.m.set(indice, lista.m.get(--indice));
+
+							lista.m.set(indice, frameAnterior);
+
+						}
+
+					}
+
+					catch (Exception e1) {
+						//
+					}
+
+				}
+
+			});
+
 			lista.addListSelectionListener(new ListSelectionListener() {
 
 				public void valueChanged(ListSelectionEvent e) {
 
-					GifFrame frame = (GifFrame) lista.getSelectedValue();
-
-					panel.setGifFrame(frame);
+					panel.setGifFrame((GifFrame) lista.getSelectedValue());
 
 				}
 
@@ -110,6 +156,8 @@ public class Animator {
 
 		listPanel.add(listScrollPane, BorderLayout.CENTER);
 
+		javax.swing.border.TitledBorder dragBorder = new javax.swing.border.TitledBorder("");
+
 		f.getContentPane().add(listPanel, BorderLayout.SOUTH);
 
 		f.pack();
@@ -118,81 +166,20 @@ public class Animator {
 
 		f.setVisible(true);
 
-		javax.swing.border.TitledBorder dragBorder = new javax.swing.border.TitledBorder("");
-
-		try {
-
-			new DragAndDrop(listScrollPane, dragBorder, true, new DragAndDrop.Listener() {
-
-				@SuppressWarnings("null")
-
-				public void filesDropped(java.io.File[] files) {
-
-					LinkedList<String> carpetasSeleccion = new LinkedList<String>();
-
-					try {
-
-						LinkedList<File> archivos = new LinkedList<File>();
-
-						String ruta;
-
-						for (int i = 0; i < files.length; i++) {
-
-							ruta = files[i].getAbsolutePath();
-
-							if (!files[i].getAbsolutePath().contains(".")) {
-
-								carpetasSeleccion = Metodos.directorio(ruta + Animator.getSeparador(), "images", true,
-										true);
-
-								for (int x = 0; x < carpetasSeleccion.size(); x++) {
-
-									archivos.add(new File(carpetasSeleccion.get(x)));
-
-								}
-
-							}
-
-							else {
-
-								archivos.add(new File(ruta));
-							}
-
-						}
-
-						Collections.sort(archivos);
-
-						File[] resultado = new File[archivos.size()];
-
-						for (int i = 0; i < archivos.size(); i++) {
-							resultado[i] = archivos.get(i);
-						}
-
-						ButtonPanel.addImages(false, resultado);
-
-					}
-
-					catch (Exception e) {
-
-					}
-
-				}
-
-			});
-
-		}
-
-		catch (TooManyListenersException e1) {
-			Metodos.mensaje("Error al mover los archivos", 1, false);
-		}
 	}
 
 	public void addGifFrame(GifFrame frame) {
+
+		archivos.add(frame.getImage());
+
 		lista.addGifFrame(frame);
+
 	}
 
 	public List<GifFrame> getGifFrames() {
+
 		return lista.getGifFrames();
+
 	}
 
 	static GifFrame createDemoGifFrame(int w, int h, String str, int delay) {
@@ -201,15 +188,28 @@ public class Animator {
 
 		Graphics2D g = image.createGraphics();
 
-		g.setColor(Color.WHITE);
+		g.setColor(GifFramePanel.colorBackgroundText.getColor());
 
 		g.fillRect(0, 0, w, h);
 
 		Rectangle2D bounds = g.getFontMetrics().getStringBounds(str, g);
 
-		g.setColor(Color.BLACK);
+		g.setColor(GifFramePanel.colorText.getColor());
 
-		g.drawString(str, (int) ((w / 2) - (bounds.getWidth() / 2)), (int) ((h / 2) + (bounds.getHeight() / 2)));
+		g.setFont(new Font(GifFramePanel.fuente.getSelectedItem().toString(), Font.PLAIN,
+				GifFramePanel.sizeFont.getValor()));
+
+		if (GifFramePanel.center.isSelected()) {
+
+			g.drawString(str, (int) (w / 2) - GifFramePanel.centerSpace.getValor(),
+					(int) ((h / 2) + (bounds.getHeight() / 2)));
+		}
+
+		else {
+
+			g.drawString(str, 0, (int) ((h / 2) + (bounds.getHeight() / 2)));
+
+		}
 
 		g.dispose();
 
@@ -234,9 +234,11 @@ public class Animator {
 	}
 
 	public static void main(String[] args) {
-
-		iniciar();
-
+		try {
+			iniciar();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 }
